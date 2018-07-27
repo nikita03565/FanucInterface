@@ -403,10 +403,10 @@ public class FanucModel : RoboModel
                         num = j;
                     }
                 }
-                if (min < 200f)
-                {
-                    return new float[] { res[num, 0], res[num, 1], res[num, 2], res[num, 3], res[num, 4], res[num, 5] };
-                }
+               
+               
+                return new float[] { res[num, 0], res[num, 1], res[num, 2], res[num, 3], res[num, 4], res[num, 5] };
+               
             }
             return prevPos;
         }

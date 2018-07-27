@@ -168,23 +168,42 @@ public class FanucScript : MonoBehaviour
 
                 if (arr.Length == 6)
                 {
-                    for (int i = 0; i < 6; ++i)
+                    if (mode == 0)
                     {
-                        newCoord[i] = float.Parse(arr[i]);
-                        if (newCoord[i] > FanucModel.limMax[i] || newCoord[i] < FanucModel.limMin[i])
+                        for (int i = 0; i < 6; ++i)
                         {
-                            input.text = "Out of limits";
-                            throw new System.Exception();
+                            newCoord[i] = float.Parse(arr[i]);
+                            if (newCoord[i] > FanucModel.limMax[i] || newCoord[i] < FanucModel.limMin[i])
+                            {
+                                input.text = "Out of limits";
+                                throw new System.Exception();
+                            }
                         }
-                    }
-                    for (int i = 0; i < 6; ++i)
-                    {
-                        diff[i] = newCoord[i] - jointAngles[i];
-                    }
-                    normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
-                        diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            diff[i] = newCoord[i] - jointAngles[i];
+                        }
+                        normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                            diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
 
-                    StartCoroutine("Move");
+                        StartCoroutine("Move");
+                    } else
+                    {
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            newCoord[i] = float.Parse(arr[i]);
+                        }
+                        float[] newCoordTmp = FanucModel.chooseNearestPose(model.InverseTask(ref newCoord), ref jointAngles);
+                        newCoord = newCoordTmp;
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            diff[i] = newCoord[i] - jointAngles[i];
+                        }
+                        normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                            diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+
+                        StartCoroutine("Move");
+                    }
                 }
                 else
                 {
@@ -217,7 +236,7 @@ public class FanucScript : MonoBehaviour
     }
     IEnumerator Move()
     {
-        Debug.Log(jointAngles[0] - newCoord[0]);
+        //Debug.Log(jointAngles[0] - newCoord[0]);
         float[] diff2 = new float[6];
 
         float error = normCoef;
@@ -243,15 +262,17 @@ public class FanucScript : MonoBehaviour
             yield return new WaitForFixedUpdate();
 
             RotateFanuc(Fanuc, jointAngles);
-
-
-
+            CoordDisplayAndSave();
         }
+
         if (NoCollisions)
+        {
             for (int i = 0; i < 6; ++i)
             {
                 jointAngles[i] = newCoord[i];
             }
+            CoordDisplayAndSave();
+        }
 
     }
 
@@ -279,7 +300,7 @@ public class FanucScript : MonoBehaviour
         if (Joints[2]) Joints[2].localRotation = Quaternion.Euler(0, jointAngles[2] + jointAngles[1], 0);
         if (Joints[3]) Joints[3].localRotation = Quaternion.Euler(-jointAngles[3], 0, 0);
         if (Joints[4]) Joints[4].localRotation = Quaternion.Euler(0, jointAngles[4], 0);
-        if (Joints[5]) Joints[5].localRotation = Quaternion.Euler(-jointAngles[5], 0, 0); //!!!!!!!!!!!!!
+        if (Joints[5]) Joints[5].localRotation = Quaternion.Euler(-jointAngles[5], 0, 0);
     }
     void CoordDisplayAndSave()
     {
@@ -335,12 +356,6 @@ public class FanucScript : MonoBehaviour
 
             if (mode == 2)
             {
-                //for (int i = 0; i < 6; ++i)
-                //{
-                //    worldPos[i] = Mathf.Round(worldPos[i] * 100f) / 100f;
-                //}
-                //Debug.Log(worldPos[0] + " " + worldPos[1] + " " + worldPos[2] + " " + worldPos[3] + " " +
-                //    worldPos[4] + " " + worldPos[5]);
                 try
                 {
                     var tmp = model.InverseTask(ref worldPos);
