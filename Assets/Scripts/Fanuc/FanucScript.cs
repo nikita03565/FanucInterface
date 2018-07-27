@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Assets;
 using UnityEngine.EventSystems;
 
 public class FanucScript : MonoBehaviour

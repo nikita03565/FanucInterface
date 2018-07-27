@@ -32,6 +32,7 @@ public class CommandFanucUI : MonoBehaviour
     internal void show()
     {
         this.gameObject.SetActive(true);
+        SceneManager.dropdownSceneObjects.gameObject.SetActive(true);
     }
 
     public void LockInput(InputField input)
@@ -75,7 +76,6 @@ public class CommandFanucUI : MonoBehaviour
 
     public void OnConfirm()
     {
-
         var toggle = ModeGroup.GetActive();
         if (toggle.name == "Mode1")
             command.mode = 0;
@@ -98,6 +98,7 @@ public class CommandFanucUI : MonoBehaviour
             inputField.text = "";
             GraspGroup.SetActive(2);
             this.gameObject.SetActive(false);
+            SceneManager.dropdownSceneObjects.gameObject.SetActive(false);
         }
            
         //throw new System.NotImplementedException();

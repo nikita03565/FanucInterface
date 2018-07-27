@@ -5,7 +5,8 @@ using UnityEngine;
 public class PullManager : MonoBehaviour {
     public List<GameObject> PullObjects=new List<GameObject>();
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         foreach (Transform child in transform)
         { 
       
@@ -30,5 +31,10 @@ public class PullManager : MonoBehaviour {
             
         }
         return null;
+    }
+
+    public GameObject Find(int n)
+    {
+        return PullObjects[n];
     }
 }

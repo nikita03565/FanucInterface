@@ -79,10 +79,10 @@ public class raycast : MonoBehaviour {
         }
 
         
-        PointList.text = "";
+        //PointList.text = "";
         for (int j = 0; j <= aims.Count-1; j++)
         {
-            PointList.text += aims[j].x.ToString("N2") + "  " + aims[j].z.ToString("N2") + "\r\n";
+            //PointList.text += aims[j].x.ToString("N2") + "  " + aims[j].z.ToString("N2") + "\r\n";
 
         }
        

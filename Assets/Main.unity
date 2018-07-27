@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 8
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,8 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
-  m_UseRadianceAmbientProbe: 0
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -55,10 +54,11 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 10
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
-    m_AtlasSize: 1024
+    m_TextureWidth: 1024
+    m_TextureHeight: 1024
     m_AO: 0
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
@@ -430,7 +430,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 566d8934450337a45be81346bd9249bc, type: 3}
   m_StaticBatchInfo:
@@ -2040,7 +2039,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 566d8934450337a45be81346bd9249bc, type: 3}
   m_StaticBatchInfo:
@@ -2614,6 +2612,7 @@ MonoBehaviour:
   SettingsButton: {fileID: 0}
   DeleteButton: {fileID: 0}
   command:
+    energy: 0
     time: 0
     parallel: 0
     CommandToSend: 
@@ -3917,6 +3916,7 @@ MonoBehaviour:
   SettingsButton: {fileID: 0}
   DeleteButton: {fileID: 0}
   command:
+    energy: 0
     time: 0
     parallel: 0
     CommandToSend: 
@@ -4139,6 +4139,7 @@ GameObject:
   - component: {fileID: 625035939}
   - component: {fileID: 625035938}
   - component: {fileID: 625035941}
+  - component: {fileID: 625035942}
   m_Layer: 5
   m_Name: AvaibleCommandsField
   m_TagString: Untagged
@@ -4237,6 +4238,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &625035942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 625035936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb580aa10422444e8d76468550d94f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AvaibleCommandsSet: []
 --- !u!1 &695696360
 GameObject:
   m_ObjectHideFlags: 0
@@ -4857,6 +4870,7 @@ MonoBehaviour:
   SettingsButton: {fileID: 0}
   DeleteButton: {fileID: 0}
   command:
+    energy: 0
     time: 0
     parallel: 0
     CommandToSend: 
@@ -5087,8 +5101,9 @@ Transform:
   - {fileID: 1018366210}
   - {fileID: 1125556954}
   - {fileID: 1544013671}
+  - {fileID: 1825052628}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &761080566
 MonoBehaviour:
@@ -5702,7 +5717,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 566d8934450337a45be81346bd9249bc, type: 3}
   m_StaticBatchInfo:
@@ -6289,6 +6303,7 @@ MonoBehaviour:
   SettingsButton: {fileID: 0}
   DeleteButton: {fileID: 0}
   command:
+    energy: 0
     time: 0
     parallel: 0
     CommandToSend: 
@@ -7319,6 +7334,7 @@ MonoBehaviour:
   point: {fileID: 1758390002}
   BallPr: {fileID: 1933016994540218, guid: cb42eeffc2590dd4c9ed6beabb18ff3b, type: 2}
   BallSpirit: {fileID: 1494794429}
+  PointList: {fileID: 0}
   aims: []
   balls: []
 --- !u!1 &1037920874
@@ -7768,34 +7784,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1133706022}
---- !u!1 &1134438735
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1134438736}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1134438736
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1134438735}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 624, y: 286, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1147999378
 GameObject:
   m_ObjectHideFlags: 0
@@ -8259,7 +8247,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 566d8934450337a45be81346bd9249bc, type: 3}
   m_StaticBatchInfo:
@@ -8337,7 +8324,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 566d8934450337a45be81346bd9249bc, type: 3}
   m_StaticBatchInfo:
@@ -8399,6 +8385,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 1091003557}
+  Camera: {fileID: 0}
+  PointList: {fileID: 0}
+  ScrollBar: {fileID: 0}
 --- !u!1 &1306799229
 GameObject:
   m_ObjectHideFlags: 0
@@ -9244,6 +9233,60 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1394360219}
+--- !u!1001 &1415835105
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 761080565}
+    m_Modifications:
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -624.958
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -285.2286
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.104
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.3584074
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.9335653
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 42.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c65d184c267cc474085f74997bc61749, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1417412675
 GameObject:
   m_ObjectHideFlags: 0
@@ -9275,6 +9318,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 1438771935}
+  Camera: {fileID: 0}
+  PointList: {fileID: 0}
+  ScrollBar: {fileID: 0}
 --- !u!114 &1417412677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9902,7 +9948,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 566d8934450337a45be81346bd9249bc, type: 3}
   m_StaticBatchInfo:
@@ -10733,6 +10778,7 @@ MonoBehaviour:
   SettingsButton: {fileID: 0}
   DeleteButton: {fileID: 0}
   command:
+    energy: 0
     time: 0
     parallel: 0
     CommandToSend: 
@@ -10847,7 +10893,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 50664ee7992828f4491fbd4cb8fcdf93, type: 2}
   m_StaticBatchInfo:
@@ -12283,6 +12328,11 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 0836aa66160ffa04494dabc5ac3b0b0f, type: 3}
   m_PrefabInternal: {fileID: 710319349}
+--- !u!4 &1825052628 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749,
+    type: 2}
+  m_PrefabInternal: {fileID: 1415835105}
 --- !u!1 &1826765148
 GameObject:
   m_ObjectHideFlags: 0
@@ -12606,7 +12656,7 @@ Prefab:
     - target: {fileID: 224259310057205056, guid: 138bb8013b7c6a5439bac3e49701a58a,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000015258789
+      value: 0.000015258789
       objectReference: {fileID: 0}
     - target: {fileID: 224259310057205056, guid: 138bb8013b7c6a5439bac3e49701a58a,
         type: 2}
@@ -14152,6 +14202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teleg: {fileID: 2032102932}
+  Camera: {fileID: 0}
   step: 0.02
   rotstep: 2
   bar1: {fileID: 1805786668}
@@ -14247,7 +14298,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 566d8934450337a45be81346bd9249bc, type: 3}
   m_StaticBatchInfo:
@@ -14290,7 +14340,7 @@ GameObject:
   - component: {fileID: 2040077203}
   - component: {fileID: 2040077206}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: Scene Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14312,9 +14362,9 @@ RectTransform:
   m_Father: {fileID: 92954393}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4, y: 122}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -207, y: -66}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2040077203
@@ -14410,7 +14460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a78c083d7a8b0b34fb59f1b40eeb0e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraList: {fileID: 2040077203}
+  SceneObjects: {fileID: 0}
+  outCoordsStr: 
 --- !u!1 &2048422612
 GameObject:
   m_ObjectHideFlags: 0
@@ -15150,6 +15201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948e61ad1c3813c438cb6432420f364f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SavedCommand: {fileID: 0}
 --- !u!1 &2146254162
 GameObject:
   m_ObjectHideFlags: 0

@@ -41,30 +41,32 @@ public class BuilderInterface : MonoBehaviour
         SavedCommand = newCommand;
         SerializeToJson(SavedCommand);
         CommandBuilder.ResetBuilder();
+        SceneManager.avaibleCommands.AvaibleCommandsSet.Add(SavedCommand);
 
     }
     public void Rewrite()
     {
         SaveNewComplexCommand();
         Debug.Log(ActiveCommand.UICommandElements.Count + "   " + SavedCommand.UICommandElements.Count);
-       for (int i = 0, j = 0; i+j < ActiveCommand.UICommandElements.Count+ SavedCommand.UICommandElements.Count-1;)
-       {
+        SceneManager.avaibleCommands.RewriteAllrefs(ActiveCommand, SavedCommand);
+        //for (int i = 0, j = 0; i + j <= ActiveCommand.UICommandElements.Count + SavedCommand.UICommandElements.Count - 2;)
+        //{
 
-            if (i == j)
-            {
-                ActiveCommand.UICommandElements[i].command.CommandToSend = SavedCommand.UICommandElements[i].command.CommandToSend;
-                ActiveCommand.UICommandElements[i].command.parallel = SavedCommand.UICommandElements[i].command.parallel;
-                ActiveCommand.UICommandElements[i].command.time = SavedCommand.UICommandElements[i].command.time;
-                ActiveCommand.UICommandElements[i].command.energy = SavedCommand.UICommandElements[i].command.energy;
-            }
-            else if (i < j) ActiveCommand.UICommandElements.Add(Instantiate(SavedCommand.UICommandElements[j]));
-            else if (i > j) ActiveCommand.UICommandElements.RemoveAt(i);
-            Debug.Log(i+ "  " + j);
-            if (i < ActiveCommand.UICommandElements.Count) ++i;
-            if (j < SavedCommand.UICommandElements.Count) ++j;
+        //    if (i == j)
+        //    {
+        //        ActiveCommand.UICommandElements[i].command.CommandToSend = SavedCommand.UICommandElements[i].command.CommandToSend;
+        //        ActiveCommand.UICommandElements[i].command.parallel = SavedCommand.UICommandElements[i].command.parallel;
+        //        ActiveCommand.UICommandElements[i].command.time = SavedCommand.UICommandElements[i].command.time;
+        //        ActiveCommand.UICommandElements[i].command.energy = SavedCommand.UICommandElements[i].command.energy;
+        //    }
+        //    else if (i < j) ActiveCommand.UICommandElements.Add(Instantiate(SavedCommand.UICommandElements[j]));
+        //    else if (i > j) ActiveCommand.UICommandElements.RemoveAt(i);
+        //    Debug.Log(i + "  " + j);
+        //    if (i < ActiveCommand.UICommandElements.Count - 1) ++i;
+        //    if (j < SavedCommand.UICommandElements.Count - 1) ++j;
 
-            //ActiveCommand.
-        }
+        //    ActiveCommand.
+        // }
         //Destroy(ActiveCommand.gameObject);
 
 
@@ -89,6 +91,14 @@ public class BuilderInterface : MonoBehaviour
         RewriteButton = GameObject.Find("RewriteButton").GetComponent<Button>();
         CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
         RewriteButton.gameObject.SetActive(false);
+        string[] Files= Directory.GetFiles(Application.persistentDataPath,"*.json");
+        Debug.Log(Files.Length);
+        for (int i=Files.Length-1;i>=0;--i)
+        {
+            Debug.Log(Files[i]);
+            DeserializeJson(Files[i]);
+        }
+
     }
 
 
@@ -103,17 +113,20 @@ public class BuilderInterface : MonoBehaviour
 
     }
    
-    public void DeserializeJson()
+    public void DeserializeJson(string JsonPath)
     {
         UIComplexCommand newCommand = Instantiate(CommandBuilder.Commandprefab.gameObject, GameObject.Find("AvaibleCommandsField").transform).GetComponent<UIComplexCommand>();
-        string str = File.ReadAllText(Application.persistentDataPath + "/save.json");
+        string str = File.ReadAllText(JsonPath);
         JsonUtility.FromJsonOverwrite(str, newCommand);
-        Debug.Log("deser " + newCommand.UICommandElements.Count);
+        //Debug.Log("deser " + newCommand.UICommandElements.Count);
+        string name = JsonPath.Substring(Application.persistentDataPath.Length+1);
+        name = name.Remove(name.Length - 5, 5);
+        newCommand.GetComponentInChildren<Text>().text = name;
         for (int i = 0; i < newCommand.UICommandElements.Count; ++i)
         {
 
-            newCommand.UICommandElements[i] = Instantiate<UICommand>(ActiveCommand.UICommandElements[i], newCommand.transform) as UICommand;
-            newCommand.UICommandElements[i].gameObject.SetActive(false);
+           // newCommand.UICommandElements[i] = Instantiate<UICommand>(ActiveCommand.UICommandElements[i], newCommand.transform) as UICommand;
+            //newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
 
 

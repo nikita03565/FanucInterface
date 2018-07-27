@@ -138,7 +138,7 @@ public class NetConnection : MonoBehaviour {
     }
     public void OnQuit()
     {
-        string MessageToServer = "{\"Flag\": \"e\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"\"}]}";
+        string MessageToServer = "{\"flag\": \"e\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"\"}]}";
 
 
         Debug.Log(MessageToServer);
