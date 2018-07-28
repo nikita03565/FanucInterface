@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class TelegaModeSwitch : MonoBehaviour {
 
-   
     public Text textOnButton;
     public GameObject panel;
 
@@ -26,12 +25,11 @@ public class TelegaModeSwitch : MonoBehaviour {
 
     public void Click ()
     {
-        
         if (!isTelegaMode)
         {
             isTelegaMode = true;
-          camera.GetComponent<raycast>().enabled = true;
-          camera.GetComponent<CameraOrbit>().SwitchMode();
+            camera.GetComponent<raycast>().enabled = true;
+            camera.GetComponent<CameraOrbit>().SwitchMode();
             
             camera.GetComponent<Camera>().orthographic = true;
             textOnButton.text = "Normal mode";
@@ -53,6 +51,5 @@ public class TelegaModeSwitch : MonoBehaviour {
     {
         // GameObject.Find("telega").GetComponent<telegaScript>().enabled = true;
         GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
-        
     }
 }

@@ -13,6 +13,7 @@ public class CommandFanucUI : MonoBehaviour
     public ToggleGroup ModeGroup;
     public ToggleGroup GraspGroup;
     public InputField inputField;
+    float[] coord = new float[6];
 
     public void Start()
     {
@@ -41,6 +42,7 @@ public class CommandFanucUI : MonoBehaviour
         {
             if (input.text.Contains(","))
             {
+                input.text = "Don't use commas";
                 throw new System.Exception();
             }
             if (input.text.Length > 0)
@@ -49,29 +51,37 @@ public class CommandFanucUI : MonoBehaviour
 
                 if (arr.Length == 6)
                 {
+
                     for (int i = 0; i < 6; ++i)
-                        float.Parse(arr[i]);
+                    {
+                        coord[i] = float.Parse(arr[i]);
+                    }
                 }
                 else
                 {
+                    input.text = "6 coords are required";
                     throw new System.Exception();
                 }
             }
             else
             {
+                input.text = "You must write something";
                 throw new System.Exception();
-            }
+            };
         }
         catch (System.Exception)
         {
             Debug.Log("Wrong string");
-            input.text = "Wrong string";
+            //input.text = "Wrong string. Try again";
         }
     }
 
-    public void DoCommand()
+public void DoCommand()
     {
-        throw new System.NotImplementedException();
+        SceneManager.fanuc.mode = command.mode;
+        SceneManager.fanuc.newCoord = coord;
+        SceneManager.fanuc.StartCoroutine("Move");
+        //throw new System.NotImplementedException();
     }
 
     public void OnConfirm()
@@ -91,12 +101,12 @@ public class CommandFanucUI : MonoBehaviour
             command.grasp = -1;
         if (inputField.text != "Wrong string" && inputField.text.Length != 0)
         {
-
             command.CommandToSend = RobotCommands.FanucMoving(inputField.text);
 
             ModeGroup.SetActive(0);
             inputField.text = "";
             GraspGroup.SetActive(2);
+            DoCommand();
             this.gameObject.SetActive(false);
             SceneManager.dropdownSceneObjects.gameObject.SetActive(false);
         }

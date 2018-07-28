@@ -12,18 +12,25 @@ public class SceneManager : MonoBehaviour {
     public static PullManager Pull;
     public static AvaibleCommands avaibleCommands;
     public static DropdownSceneObjects dropdownSceneObjects;
+    public static FanucScript fanuc;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         FanucSettingsPanel = FindObjectOfType<CommandFanucUI>();
         FanucSettingsPanel.gameObject.SetActive(false);
+
         CameraSettingsPanel = FindObjectOfType<CommandCameraUI>();
         CameraSettingsPanel.gameObject.SetActive(false);
+
         TelegaSettingsPanel = FindObjectOfType<CommandTelegaUI>();
         TelegaSettingsPanel.gameObject.SetActive(false);
+
         avaibleCommands = FindObjectOfType<AvaibleCommands>();
-        Net = FindObjectOfType<NetConnection>();
-        //Net.gameObject.SetActive(false);
+
+       // Net = FindObjectOfType<NetConnection>();
+       // Net.gameObject.SetActive(false);
+
         Pull = FindObjectOfType<PullManager>();
         
         ScenarioEditor = GameObject.Find("ScenarioEditor");
@@ -32,6 +39,7 @@ public class SceneManager : MonoBehaviour {
         dropdownSceneObjects = FindObjectOfType<DropdownSceneObjects>();
         dropdownSceneObjects.gameObject.SetActive(false);
 
+        fanuc = FindObjectOfType<FanucScript>();
     }
 	
 	public void ShowScenarioEditor()

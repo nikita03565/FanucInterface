@@ -98,19 +98,15 @@ public class BuilderInterface : MonoBehaviour
             Debug.Log(Files[i]);
             DeserializeJson(Files[i]);
         }
-
     }
 
 
     public void SerializeToJson(UIComplexCommand com)
     {
-
-
         Debug.Log("ss-s-s-s-s-SAVED");
       //  File.Create(Application.persistentDataPath +"/" +com.GetComponentInChildren<Text>() + ".json");
 
         File.WriteAllText(Application.persistentDataPath+"/" +com.GetComponentInChildren<Text>().text+".json", JsonUtility.ToJson(com));
-
     }
    
     public void DeserializeJson(string JsonPath)
@@ -128,8 +124,6 @@ public class BuilderInterface : MonoBehaviour
            // newCommand.UICommandElements[i] = Instantiate<UICommand>(ActiveCommand.UICommandElements[i], newCommand.transform) as UICommand;
             //newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
-
-
     }
 }
 [System.Serializable]

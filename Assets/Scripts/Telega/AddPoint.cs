@@ -21,9 +21,7 @@ public class AddPoint : MonoBehaviour {
 	}
 
     public void Add()
-    {
-    
-
+    { 
         try
         {
             if (input.text.Contains(","))
@@ -69,7 +67,6 @@ public class AddPoint : MonoBehaviour {
 
     public void Delete()
     {
-        
         int count = Camera.GetComponent<raycast>().aims.Count;
         if (count > 0)
         {
@@ -79,8 +76,7 @@ public class AddPoint : MonoBehaviour {
 
             if (Camera.GetComponent<raycast>().balls.Count < 9)
             {
-                PointList.GetComponent<ContentSizeFitter>().enabled = false;
-                
+                PointList.GetComponent<ContentSizeFitter>().enabled = false; 
             }
         }
     }

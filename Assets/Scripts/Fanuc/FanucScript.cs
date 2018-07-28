@@ -15,18 +15,17 @@ public class FanucScript : MonoBehaviour
     float[] jointAnglesInc = new float[6];
     float[] worldPosInc = new float[6];
 
-    float[] newCoord = new float[6];
-    float[] diff = new float[6];
+    public float[] newCoord = new float[6];
+    //float[] diff = new float[6];
 
     string[] Axis = new string[] { "First", "Second", "Third", "Fourth", "Fifth", "Sixth" };
     
-    int mode;
+    public int mode;
 
     float[] ControllerJointUpdate = new float[6] { 0f, 0f, 0f, 0f, 0f, 0f };
     float[] ControllerWorldUpdate = new float[6] { 0f, 0f, 0f, 0f, 0f, 0f };
     public Transform[] Fanuc;
     public Transform[] FanucColliders;
-
 
     public Text speedText;
     public Text hideshow;
@@ -37,7 +36,7 @@ public class FanucScript : MonoBehaviour
     public Text worldCoord;
     bool NoCollisions = true;
     bool ReadytoSend = true;
-    private float normCoef;
+    //private float normCoef;
 
     public InputField inputField;
 
@@ -45,24 +44,6 @@ public class FanucScript : MonoBehaviour
 
     void Start()
     {
-        //float[] coord = new float[] { 7f, -5f, 8f, 0f, -21f, 10f };
-        //var res = FanucModel.GetCoordsFromMat(model.fanucForwardTask(ref coord));
-        //std::array<double, 6> res = getCoordsFromMat(model.fanucForwardTask({ -10.4332,-60.0605,33.7463,-7.2156,19.0713,-0.12345 }));
-
-        //var resInv = FanucModel.chooseNearestPose(model.InverseTask(ref res), ref jointAngles);
-        //Debug.Log("resInv size: " + resInv.Length.ToString());
-        //Debug.Log("resInv");
-        //System.String str = System.String.Empty;
-        //int k = 0;
-        //foreach (float temp in resInv)
-        //{
-        //    str += ((temp).ToString() + " ");
-        //    ++k;
-        //    if (k % 6 == 0) str += "\n";
-        //    Debug.Log(temp * 180.0f / Mathf.PI);
-        //}
-        //Debug.Log(str);
-        //Debug.Log("resInv");
         modeName.text = "Mode: Joints";
         mode = 0;
         speedText.text = speed.ToString();
@@ -179,12 +160,12 @@ public class FanucScript : MonoBehaviour
                                 throw new System.Exception();
                             }
                         }
-                        for (int i = 0; i < 6; ++i)
-                        {
-                            diff[i] = newCoord[i] - jointAngles[i];
-                        }
-                        normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
-                            diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+                        //for (int i = 0; i < 6; ++i)
+                        //{
+                        //    diff[i] = newCoord[i] - jointAngles[i];
+                        //}
+                        //normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                        //    diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
 
                         StartCoroutine("Move");
                     } else
@@ -193,14 +174,14 @@ public class FanucScript : MonoBehaviour
                         {
                             newCoord[i] = float.Parse(arr[i]);
                         }
-                        float[] newCoordTmp = FanucModel.chooseNearestPose(model.InverseTask(ref newCoord), ref jointAngles);
-                        newCoord = newCoordTmp;
-                        for (int i = 0; i < 6; ++i)
-                        {
-                            diff[i] = newCoord[i] - jointAngles[i];
-                        }
-                        normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
-                            diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+                        //float[] newCoordTmp = FanucModel.chooseNearestPose(model.InverseTask(ref newCoord), ref jointAngles);
+                        //newCoord = newCoordTmp;
+                        //for (int i = 0; i < 6; ++i)
+                        //{
+                        //    diff[i] = newCoord[i] - jointAngles[i];
+                        //}
+                        //normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                        //    diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
 
                         StartCoroutine("Move");
                     }
@@ -236,7 +217,32 @@ public class FanucScript : MonoBehaviour
     }
     IEnumerator Move()
     {
+        Debug.Log(newCoord[0] + " " + newCoord[1] + " " + newCoord[2] + " " +
+            newCoord[3] + " " + newCoord[4] + " " + newCoord[5] + " " + mode);
         //Debug.Log(jointAngles[0] - newCoord[0]);
+        float[] diff = new float[6];
+        float normCoef;
+        if (mode == 0)
+        {
+            for (int i = 0; i < 6; ++i)
+            {
+                diff[i] = newCoord[i] - jointAngles[i];
+            }
+            normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+        }
+        else
+        {
+            float[] newCoordTmp = FanucModel.chooseNearestPose(model.InverseTask(ref newCoord), ref jointAngles);
+            newCoord = newCoordTmp;
+            for (int i = 0; i < 6; ++i)
+            {
+                diff[i] = newCoord[i] - jointAngles[i];
+            }
+            normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+        }
+
         float[] diff2 = new float[6];
 
         float error = normCoef;

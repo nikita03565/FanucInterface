@@ -9,7 +9,6 @@ public class PullManager : MonoBehaviour {
     {
         foreach (Transform child in transform)
         { 
-      
             PullObjects.Add(child.gameObject);
         }
 	}
@@ -22,6 +21,12 @@ public class PullManager : MonoBehaviour {
             PullObjects[i].SetActive(false);
         }
     }
+
+    public void Add (GameObject obj)
+    {
+        PullObjects.Add(obj);
+    }
+
     public GameObject Find(string Name)
     {
         for (int i = 0; i < PullObjects.Count; ++i)

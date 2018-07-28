@@ -16,7 +16,6 @@ public class DropdownSceneObjects : MonoBehaviour {
     {
         SceneObjects = GetComponent<Dropdown>();
         SceneObjects.onValueChanged.AddListener(delegate {DropdownValueChanged(SceneObjects);});
-
         //objectCoordPanel = GameObject.Find("ObjectCoordPanel");
         //coordText = objectCoordPanel.GetComponentInChildren<Text>();
         
