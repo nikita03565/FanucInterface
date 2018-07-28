@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
-public class InstantiateFromCam : MonoBehaviour {
+public class InstantiateFromCam : MonoBehaviour
+{
     PullManager Pull;
 
     // Use this for initialization
-    void Start() {
-
+    void Start()
+    {
+        //SceneSynchro();
     }
    void SceneSynchro()
     {
         //-------------------------------------Here should be parser--------------------------------------------------------
-
+        string message = "{\"fanuc\":\"12 32 1 34 65 -90\",\"telega\":\"100 200 300 -1 -2 -3\"}";
+        var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
+        foreach (var i in dict.Keys)
+        {
+            Debug.Log(i + ": " + dict[i][0]);
+        }
         //-------------------------------------Here he ends------------------------------------------------------------------
 
         // 10 is stub

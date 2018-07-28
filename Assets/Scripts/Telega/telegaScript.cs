@@ -15,8 +15,9 @@ public class telegaScript : MonoBehaviour {
     public float WheelAngleSpeed;
     public float WheelRadius;
     public float telegaRadius;
-    public NetConnection Net;
-    public float Bar1ForSend, Bar2ForSend, Bar3ForSend, Wheel1ForSend, Wheel2ForSend, Wheel3ForSend;
+    public NetConnection net = SceneManager.Net;
+    public float Bar1ForSend, Bar2ForSend, Bar3ForSend, Wheel1ForSend, Wheel2ForSend, Wheel3ForSend,
+        Dist1ForSend, Dist2ForSend, Dist3ForSend;
     public bool ToSend = true;
     
 
@@ -44,8 +45,8 @@ public class telegaScript : MonoBehaviour {
         step = WheelAngleSpeed * WheelRadius * Mathf.PI / 180f;
 
         C = PointA.transform.position;
-        Net = SceneManager.Net;
-
+        //Net = SceneManager.Net;
+        //Net.gameObject.SetActive(true);
         Camera = GameObject.Find("Camera");
     }
 
@@ -74,7 +75,7 @@ public class telegaScript : MonoBehaviour {
                  
                              transform.position += a.normalized * WheelAngleSpeed * WheelRadius * Mathf.PI / 180f;
                          }
-                         Debug.Log(B.x * WheelAngleSpeed * WheelRadius + " " + B.y * WheelAngleSpeed * WheelRadius + " " + B.z * WheelAngleSpeed * WheelRadius);
+                         //Debug.Log(B.x * WheelAngleSpeed * WheelRadius + " " + B.y * WheelAngleSpeed * WheelRadius + " " + B.z * WheelAngleSpeed * WheelRadius);
                  }
         }
     }
@@ -126,7 +127,6 @@ public class telegaScript : MonoBehaviour {
             //Debug.Log(transform.localEulerAngles);
 
         }
-        Debug.Log("IM HERE");
     }
 
     void TurningBars(float RotBar1, float RotBar2, float RotBar3)
@@ -248,8 +248,11 @@ public class telegaScript : MonoBehaviour {
         
         if (ToSend == true && GameObject.Find("TelegaMode").GetComponent<TelegaModeSwitch>().isTelegaMode == true)
         {
-            //   Debug.Log("send");
-            // Net.Sender(RobotCommands.TelegaMoving());
+            Debug.Log("send");
+            net.
+                Sender(
+                RobotCommands.
+                TelegaMoving());
             StartCoroutine(WaitToSend(0.1f));
         }
 

@@ -352,7 +352,7 @@ public class FanucModel : RoboModel
         }
 
         float[,] thetaFinal = new float[indFinal.Count, 6];
-        Debug.Log("indFinal.Count = " + indFinal.Count.ToString());
+        //Debug.Log("indFinal.Count = " + indFinal.Count.ToString());
         for (int it = 0; it < indFinal.Count; ++it)
         {
             thetaFinal[it, 0] = thetaPrefinal[indFinal[it], 0] * Mathf.Rad2Deg;
@@ -363,16 +363,16 @@ public class FanucModel : RoboModel
             thetaFinal[it, 5] = thetaPrefinal[indFinal[it], 5] * Mathf.Rad2Deg;
         }
 
-        System.String str = System.String.Empty;
-        int k1 = 0;
-        foreach (float temp in thetaFinal)
-        {
-            str += ((temp).ToString() + " ");
-            ++k1;
-            if (k1 % 6 == 0) str += "\n";
-            //Debug.Log(temp);
-        }
-        Debug.Log(str);
+        //System.String str = System.String.Empty;
+        //int k1 = 0;
+        //foreach (float temp in thetaFinal)
+        //{
+        //    str += ((temp).ToString() + " ");
+        //    ++k1;
+        //    if (k1 % 6 == 0) str += "\n";
+        //    //Debug.Log(temp);
+        //}
+        //Debug.Log(str);
         return thetaFinal;
     }
 

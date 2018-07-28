@@ -28,8 +28,9 @@ public class SceneManager : MonoBehaviour {
 
         avaibleCommands = FindObjectOfType<AvaibleCommands>();
 
-       // Net = FindObjectOfType<NetConnection>();
-       // Net.gameObject.SetActive(false);
+        Net = FindObjectOfType<NetConnection>();
+       // Net.Sender("ARRRRRRR");
+        //Net.gameObject.SetActive(true);
 
         Pull = FindObjectOfType<PullManager>();
         

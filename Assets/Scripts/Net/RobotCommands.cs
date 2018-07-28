@@ -30,7 +30,9 @@ public  class RobotCommands:MonoBehaviour{
     {
         telegaScript Telega = FindObjectOfType<telegaScript>();
         string MessageToServer = "{'Flag':0;'name':'t';'command':'m";
-        MessageToServer += " " + Telega.Bar2ForSend + " " + Telega.Wheel2ForSend + " " + Telega.Bar1ForSend + " " + Telega.Wheel1ForSend + " " + Telega.Bar3ForSend + " " + Telega.Wheel3ForSend+ " '}";
+        MessageToServer += " " + Telega.Bar2ForSend + " " + Telega.Wheel2ForSend + " " + 10f.ToString() + 
+                           " " + Telega.Bar1ForSend + " " + Telega.Wheel1ForSend + " " + 10f.ToString() +
+                           " " + Telega.Bar3ForSend + " " + Telega.Wheel3ForSend + " " + 10f.ToString() + "'}";
         Debug.Log(MessageToServer); 
 
         return MessageToServer;

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class FanucScript : MonoBehaviour
 {
     FanucModel model = new FanucModel();
-    public NetConnection net;
+    //public NetConnection net;
     float speed = 30.0f;
 
     public float[] jointAngles = new float[6] { 0f, 0f, 0f, 0f, -90f, 0f };
@@ -209,10 +209,10 @@ public class FanucScript : MonoBehaviour
     IEnumerator CoordtoServer()
     {
         yield return new WaitForSeconds(0.1f);
-
-        if (mode == 0) net.Sender(RobotCommands.FanucMoving());
-        else net.Sender(RobotCommands.FanucMoving(false));
-        ReadytoSend = true;
+        //
+        //if (mode == 0) net.Sender(RobotCommands.FanucMoving());
+        //else net.Sender(RobotCommands.FanucMoving(false));
+        //ReadytoSend = true;
 
     }
     IEnumerator Move()

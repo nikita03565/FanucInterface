@@ -11,8 +11,10 @@ public class NetConnection : MonoBehaviour {
     public string message;
     public FanucScript Fanuc;
     NetworkStream stream;
-    const string Hostname="192.168.1.5";
-    const int Port = 9090;
+    //const string Hostname="192.168.1.5";
+    const string Hostname = "192.168.1.106";
+    const int Port = 8880;
+    //const int Port = 9090;
     TcpClient SocketConnection;
     Thread ReceiveThread;
  
@@ -23,13 +25,11 @@ public class NetConnection : MonoBehaviour {
     void Start () {
         try
         {
-            
+            Debug.Log("NET STARTED");
             ReceiveThread = new Thread(new ThreadStart(Listener));
             ReceiveThread.IsBackground = true;
             
             ReceiveThread.Start();
-
-
         }
         catch(UnityException Error)
         {
@@ -40,7 +40,6 @@ public class NetConnection : MonoBehaviour {
     {
         try
         {
-            
             SocketConnection = new TcpClient(Hostname, Port);
             
             stream = SocketConnection.GetStream();
@@ -56,8 +55,6 @@ public class NetConnection : MonoBehaviour {
                         Debug.Log("im  dead");
                     while ((length = stream.Read(buffer, 0, buffer.Length)) != 0)
                     {
-
-
                         var ByteMessage = new byte[length];
                       //  mutex.WaitOne();
                         System.Array.Copy(buffer, ByteMessage, length);
@@ -67,7 +64,6 @@ public class NetConnection : MonoBehaviour {
                         message += ASCIIEncoding.ASCII.GetString(ByteMessage);
                         Debug.Log(message);
                         //Message in string here!\
-
                     }
                 }
             }
@@ -78,7 +74,6 @@ public class NetConnection : MonoBehaviour {
         }
         finally
         {
-           
             SocketConnection.Close();
         }
     }
@@ -98,18 +93,15 @@ public class NetConnection : MonoBehaviour {
         Debug.Log(Command);
         if (SocketConnection==null)
         {
-            //return;
+            return;
         }
         try
         {
-            
             if (!SocketConnection.Connected)
                 return;
             
             if (stream.CanWrite)
             {
-
-               
                 //Command = "m";
                 //for (int i = 0; i < 6; ++i)
                 //{
@@ -122,40 +114,34 @@ public class NetConnection : MonoBehaviour {
                 Debug.Log("sended");
             }        
             else Debug.Log("stream cant write");
-
         }
         catch(SocketException Error)
         {
             Debug.Log("Socket Sender Error: " + Error);
         }
         finally
-        {
-            
+        {  
            // stream.Close();
            // SocketConnection.Close();
-        }
-        
+        }  
     }
+
     public void OnQuit()
     {
         string MessageToServer = "{\"flag\": \"e\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"\"}]}";
-
 
         Debug.Log(MessageToServer);
         byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(MessageToServer);
         stream.Write(ByteMessageToServer, 0, ByteMessageToServer.Length);
         Debug.Log("sended Exit message");
     }
+
     void OnApplicationQuit()
     {
-
         OnQuit();
 
         stream.Close();
         SocketConnection.Close();
-        ReceiveThread.Abort();
-        
+        ReceiveThread.Abort(); 
     }
-    
-
 }
