@@ -13,7 +13,7 @@ public class NetConnection : MonoBehaviour {
     NetworkStream stream;
     //const string Hostname="192.168.1.5";
     const string Hostname = "192.168.1.106";
-    const int Port = 8889;
+    const int Port = 8882;
     //const int Port = 9090;
     TcpClient SocketConnection;
     Thread ReceiveThread;

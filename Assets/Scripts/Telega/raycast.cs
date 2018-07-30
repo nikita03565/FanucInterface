@@ -26,6 +26,11 @@ public class raycast : MonoBehaviour {
         
     }
 	
+    IEnumerator DropScrollbar()
+    {
+        yield return new WaitForSeconds(0.02f);
+        GameObject.Find("ScrollbarTelega").GetComponent<Scrollbar>().value = 0f;
+    }
 	// Update is called once per frame
 	void Update ()
     {
@@ -66,7 +71,7 @@ public class raycast : MonoBehaviour {
                     {
                         GameObject.Find("PointList").GetComponent<ContentSizeFitter>().enabled = true;
                         // GameObject.Find("PointList").transform.position = new Vector3(GameObject.Find("PointList").transform.position.x, GameObject.Find("RectObject").transform.position.y, GameObject.Find("PointList").transform.position.z);
-                        GameObject.Find("ScrollbarTelega").GetComponent<Scrollbar>().value = 0f;
+                        StartCoroutine("DropScrollbar"); 
                     }
                 }
             }

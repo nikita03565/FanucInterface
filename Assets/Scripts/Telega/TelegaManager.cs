@@ -20,12 +20,12 @@ public class TelegaManager : MonoBehaviour
     public float[] isReversed;
     public float[] dist;
     public float[] angle;
-    
+
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-        velocity = new float[3];
+        velocity = new float[3] { 200f, 200f, 200f };
         angle = new float[3];
         dist = new float[3];
         isReversed = new float[3];
@@ -34,23 +34,23 @@ public class TelegaManager : MonoBehaviour
         telega = GameObject.Find("telega").GetComponent<telegaScript>();
         camera = GameObject.Find("Camera");
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {	
-	}
 
-    public void Click ()
+    // Update is called once per frame
+    void Update()
+    {
+    }
+
+    public void Click()
     {
         if (!isTelegaMode)
         {
             isTelegaMode = true;
             camera.GetComponent<raycast>().enabled = true;
             camera.GetComponent<CameraOrbit>().SwitchMode();
-            
+
             camera.GetComponent<Camera>().orthographic = true;
             textOnButton.text = "Normal mode";
-            panel.transform.position = new Vector3 (88, panel.transform.position.y, panel.transform.position.z);
+            panel.transform.position = new Vector3(88, panel.transform.position.y, panel.transform.position.z);
             camera.GetComponent<CameraOrbit>().SwitchMode();
         }
         else
@@ -63,7 +63,7 @@ public class TelegaManager : MonoBehaviour
         }
     }
 
-    public void Synchronize()
+    IEnumerator doThisShit()
     {
 
         rc.aims.Insert(0, telega.PointA.transform.position);
@@ -75,7 +75,7 @@ public class TelegaManager : MonoBehaviour
         }
 
         for (int j = 1; j < rc.aims.Count - 1; ++j)
-        { 
+        {
             a = rc.aims[j] - rc.aims[j - 1];
             b = rc.aims[j + 1] - rc.aims[j];
 
@@ -99,17 +99,24 @@ public class TelegaManager : MonoBehaviour
                 {
                     isReversed[i] = 1f;
                 }
-                
+
                 dist[i] = Mathf.Sqrt((rc.aims[j + 1].x - rc.aims[j].x) * (rc.aims[j + 1].x - rc.aims[j].x) +
                     (rc.aims[j + 1].z - rc.aims[j].z) * (rc.aims[j + 1].z - rc.aims[j].z)) * 1000f;
             }
 
             telega.net.Sender(RobotCommands.TelegaMoving());
-
+            yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
         }
         rc.aims.RemoveAt(0);
         rc.aims.RemoveAt(0);
+        SceneManager.Net.Sender("end");
 
+    }
+
+
+    public void Synchronize()
+    {
+        StartCoroutine("doThisShit");
     }
 }

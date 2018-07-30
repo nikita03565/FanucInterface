@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoordTransformation : MonoBehaviour {
+public class CoordTransformation
+{
     Matrix4x4 FromRobotToUnity = new Matrix4x4 
         (new Vector4(-1f, 0f, 0f, 0f), new Vector4(0f, 0f, -1f, 0f),
-         new Vector4(0f, 1f, 0f, 0f), new Vector4(0f, 525f, 0f, 1f));
+         new Vector4(0f, 1f, 0f, 0f), new Vector4(0f, 555f, 0f, 1f));
     Matrix4x4 FromUnityToRobot = new Matrix4x4
         (new Vector4(-1f, 0f, 0f, 0f), new Vector4(0f, 0f, 1f, 0f),
-         new Vector4(0f, -1f, 0f, 0f), new Vector4(0f, 0f, -0.525f, 1f));
+         new Vector4(0f, -1f, 0f, 0f), new Vector4(0f, 0f, -0.555f, 1f));
 	
-	void Start ()
-    {
-
-    }
 	
     public Vector4 RobotToUnityPosOnly(Vector4 vec)
     {

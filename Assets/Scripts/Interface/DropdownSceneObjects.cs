@@ -33,13 +33,14 @@ public class DropdownSceneObjects : MonoBehaviour {
         var obj = SceneManager.Pull.Find(change.value);
         //Debug.Log("ROT: " + obj.transform.rotation.eulerAngles);
         //Vector4 coordsPos = new Vector4 ( obj.transform.position[0], obj.transform.position[1], obj.transform.position[2], 1 );
-        Matrix4x4 coords = FanucModel.rotMatrixDegrees(obj.transform.rotation.eulerAngles[0], obj.transform.rotation.eulerAngles[1], obj.transform.rotation.eulerAngles[2]);
+        Debug.Log(obj.transform.eulerAngles);
+        Matrix4x4 coords = FanucModel.rotMatrixDegrees(obj.transform.eulerAngles.x, obj.transform.eulerAngles.y, obj.transform.eulerAngles.z);
         coords[0, 3] = obj.transform.position[0];
         coords[1, 3] = obj.transform.position[1];
         coords[2, 3] = obj.transform.position[2];
         coords = coordTrans.UnityToRobot(coords);
         var outCoords = FanucModel.GetCoordsFromMat(coords);
-        outCoordsStr = outCoords[0] + " " + outCoords[1] + " " + outCoords[2] + " " + outCoords[3] + " "
+        outCoordsStr = outCoords[0] + " " + outCoords[1] + " " + (outCoords[2] + 190f) + " " + outCoords[3] + " "
             + outCoords[4] + " " + outCoords[5];
         SceneManager.FanucSettingsPanel.inputField.text = outCoordsStr;
         //coordText.text = coordTrans.UnityToRobotPosOnly(coordsPos).ToString();
