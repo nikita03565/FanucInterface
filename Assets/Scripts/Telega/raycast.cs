@@ -62,21 +62,21 @@ public class raycast : MonoBehaviour {
 
                     balls.Add(Instantiate(BallPr,aims[aims.Count-1],Quaternion.identity));
 
-                    if (balls.Count >= 10)
+                    if (balls.Count >= 11)
                     {
                         GameObject.Find("PointList").GetComponent<ContentSizeFitter>().enabled = true;
                         // GameObject.Find("PointList").transform.position = new Vector3(GameObject.Find("PointList").transform.position.x, GameObject.Find("RectObject").transform.position.y, GameObject.Find("PointList").transform.position.z);
-                        GameObject.Find("Scrollbar").GetComponent<Scrollbar>().value = 0.00000f;
+                        GameObject.Find("ScrollbarTelega").GetComponent<Scrollbar>().value = 0f;
                     }
                 }
             }
         }
 
         
-        //PointList.text = "";
+        PointList.text = "";
         for (int j = 0; j <= aims.Count-1; j++)
         {
-            //PointList.text += aims[j].x.ToString("N2") + "  " + aims[j].z.ToString("N2") + "\r\n";
+            PointList.text += aims[j].x.ToString("N2") + "  " + aims[j].z.ToString("N2") + "\r\n";
         }
     }
 }

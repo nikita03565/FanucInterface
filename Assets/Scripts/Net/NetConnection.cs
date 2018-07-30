@@ -13,7 +13,7 @@ public class NetConnection : MonoBehaviour {
     NetworkStream stream;
     //const string Hostname="192.168.1.5";
     const string Hostname = "192.168.1.106";
-    const int Port = 8880;
+    const int Port = 8889;
     //const int Port = 9090;
     TcpClient SocketConnection;
     Thread ReceiveThread;
@@ -36,6 +36,7 @@ public class NetConnection : MonoBehaviour {
             Debug.Log("Thread init exception: " + Error);
         }
 	}
+
     void Listener()
     {
         try
@@ -72,21 +73,13 @@ public class NetConnection : MonoBehaviour {
         {
             Debug.Log("Socket Listener exception: " + Error);
         }
-        finally
-        {
-            SocketConnection.Close();
-        }
+        //finally
+        //{
+            //SocketConnection.Close();
+        //}
     }
 
-   // public void doMessage( string MessageToServer)
-    //{
-        //for (int i = 0; i < 6; ++i)
-        //{
-        //    MessageToServer += " " + Fanuc.jointAngles[i].ToString();
-        //}
-        //MessageToServer += " 0 ";
-      //  Debug.Log(MessageToServer);
-   // }
+  
     public void Sender(string Command)
     {
         Debug.Log("trying to send");
@@ -101,14 +94,7 @@ public class NetConnection : MonoBehaviour {
                 return;
             
             if (stream.CanWrite)
-            {
-                //Command = "m";
-                //for (int i = 0; i < 6; ++i)
-                //{
-                //    Command += " " + Fanuc.jointAngles[i].ToString();
-                //}
-                //Command += " 0 ";
-                
+            {                
                 byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(Command);
                 stream.Write(ByteMessageToServer, 0, ByteMessageToServer.Length);
                 Debug.Log("sended");
@@ -119,26 +105,30 @@ public class NetConnection : MonoBehaviour {
         {
             Debug.Log("Socket Sender Error: " + Error);
         }
-        finally
-        {  
+        //finally
+        //{  
            // stream.Close();
            // SocketConnection.Close();
-        }  
+        //}  
     }
 
-    public void OnQuit()
-    {
-        string MessageToServer = "{\"flag\": \"e\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"\"}]}";
+    //public void OnQuit()
+    //{
+    //    string MessageToServer = "{\"flag\": \"e\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"\"}]}";
 
-        Debug.Log(MessageToServer);
-        byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(MessageToServer);
-        stream.Write(ByteMessageToServer, 0, ByteMessageToServer.Length);
-        Debug.Log("sended Exit message");
-    }
+    //    Debug.Log(MessageToServer);
+    //    byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(MessageToServer);
+    //    stream.
+    //        Write(
+    //        ByteMessageToServer,
+    //        0, 
+    //        ByteMessageToServer.Length);
+    //    Debug.Log("sended Exit message");
+    //}
 
     void OnApplicationQuit()
     {
-        OnQuit();
+        //OnQuit();
 
         stream.Close();
         SocketConnection.Close();

@@ -28,11 +28,13 @@ public  class RobotCommands:MonoBehaviour{
     //WIP
     static public string TelegaMoving()
     {
-        telegaScript Telega = FindObjectOfType<telegaScript>();
-        string MessageToServer = "{'Flag':0;'name':'t';'command':'m";
-        MessageToServer += " " + Telega.Bar2ForSend + " " + Telega.Wheel2ForSend + " " + 10f.ToString() + 
-                           " " + Telega.Bar1ForSend + " " + Telega.Wheel1ForSend + " " + 10f.ToString() +
-                           " " + Telega.Bar3ForSend + " " + Telega.Wheel3ForSend + " " + 10f.ToString() + "'}";
+        TelegaManager Telega = FindObjectOfType<TelegaManager>();
+        //telegaScript Telega = FindObjectOfType<telegaScript>();
+        //string MessageToServer = "{'flag':0;'name':'t';'command':'m";
+        string MessageToServer = "{\"flag\": \"0\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"telega\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"m";
+        MessageToServer += " " + (-Telega.angle[1]).ToString("0.0") + " " + (Telega.isReversed[1] * Telega.velocity[1]).ToString("0.0") + " " + Telega.dist[1].ToString("0.0") + 
+                           " " + (-Telega.angle[0]).ToString("0.0") + " " + (Telega.isReversed[0] * Telega.velocity[0]).ToString("0.0") + " " + Telega.dist[0].ToString("0.0") +
+                           " " + (-Telega.angle[2]).ToString("0.0") + " " + (Telega.isReversed[2] * Telega.velocity[2]).ToString("0.0") + " " + Telega.dist[2].ToString("0.0") + "\"}]}";
         Debug.Log(MessageToServer); 
 
         return MessageToServer;
