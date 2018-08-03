@@ -15,7 +15,7 @@ public class CommandTelega : Command
 
     public CommandTelega(Command parent)
     {
-        Debug.Log("AAAAAAAAAA TELEGA");
+
         this.CommandToSend = parent.CommandToSend;
         this.parallel = parent.parallel;
     }

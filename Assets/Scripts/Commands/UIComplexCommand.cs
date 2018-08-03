@@ -26,11 +26,19 @@ public class UIComplexCommand :UICommand {
     }
     protected override void Settings()
     {
+        //CommandBuilder.ResetBuilder();
         BuilderInterface.ActiveCommand = this;
+        //for (int i = 0; i < UICommandElements.Count; ++i)
+        //{
+        //    UICommandElements[i].transform.SetParent(CommandBuilder.transform);
+        //    UICommandElements[i].gameObject.SetActive(true);
+        //    CommandBuilder.AddUIElementToGroup(UICommandElements[i]);
+        //}
+        //BuilderInterface.RewriteButton.gameObject.SetActive(true);
         UICommand[] newObjs = new UICommand[UICommandElements.Count];
-       for (int i=0;i<UICommandElements.Count;++i)
+        for (int i = 0; i < UICommandElements.Count; ++i)
         {
-           
+
             newObjs[i] = Instantiate(UICommandElements[i]);
             newObjs[i].name = UICommandElements[i].name;
             switch (newObjs[i].name)
@@ -55,9 +63,9 @@ public class UIComplexCommand :UICommand {
 
             newObjs[i].Start();
             newObjs[i].gameObject.SetActive(true);
-            
-                    
-       }
+
+
+        }
         CommandBuilder.ResetBuilder();
         for (int i = 0; i < UICommandElements.Count; ++i)
         {
@@ -66,7 +74,7 @@ public class UIComplexCommand :UICommand {
             CommandBuilder.AddUIElementToGroup(newObjs[i]);
         }
         BuilderInterface.RewriteButton.gameObject.SetActive(true);
-            
+
     }
     public override int GetNumberofCommands()
     {

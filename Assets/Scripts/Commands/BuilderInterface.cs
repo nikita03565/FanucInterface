@@ -34,8 +34,18 @@ public class BuilderInterface : MonoBehaviour
             newCommand.UICommandElements[i].name = CommandBuilder.UICommandElements[i].name;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
-        for (int i = 0; i < CommandBuilder.CommandsSet.Count; ++i)
-            newCommand.CommandsSet.Add(CommandBuilder.CommandsSet[i]);
+        for (int i = 0; i < newCommand.UICommandElements.Count; ++i)
+            if ((newCommand.UICommandElements[i].isComplex))
+            { //newCommand.CommandsSet.AddRange(newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet);
+                for (int j = 0; j < newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet.Count; ++j)
+                    newCommand.CommandsSet.Add(newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet[j]);
+
+            }
+
+
+            else newCommand.CommandsSet.Add(newCommand.UICommandElements[i].command);
+        // for (int i = 0; i < CommandBuilder.CommandsSet.Count; ++i)
+        //newCommand.CommandsSet.Add(CommandBuilder.CommandsSet[i]);
         newCommand.GetComponentInChildren<Text>().text = CommandBuilder.CommandName.text;
         
         SavedCommand = newCommand;
@@ -47,8 +57,21 @@ public class BuilderInterface : MonoBehaviour
     public void Rewrite()
     {
         SaveNewComplexCommand();
-        Debug.Log(ActiveCommand.UICommandElements.Count + "   " + SavedCommand.UICommandElements.Count);
+       
+            
+        //for(int i=0;i<CommandBuilder.CommandsSet.Count;++i)
+        //{
+        //    Command.Copy(ActiveCommand.CommandsSet[i], CommandBuilder.CommandsSet[i]);
+        //}
+        CommandBuilder.ResetBuilder();
+        //if(CommandBuilder.UICommandElements.Count<ActiveCommand.UICommandElements.Count)
+        //{
+        //    ActiveCommand.UICommandElements.Remove(ActiveCommand.UICommandElements[2]);
+        //    ActiveCommand.CommandsSet.Remove(ActiveCommand.CommandsSet[2]);
+        //}
         SceneManager.avaibleCommands.RewriteAllrefs(ActiveCommand, SavedCommand);
+        
+        
         //for (int i = 0, j = 0; i + j <= ActiveCommand.UICommandElements.Count + SavedCommand.UICommandElements.Count - 2;)
         //{
 
@@ -92,7 +115,7 @@ public class BuilderInterface : MonoBehaviour
         CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
         RewriteButton.gameObject.SetActive(false);
         string[] Files= Directory.GetFiles(Application.persistentDataPath,"*.json");
-        Debug.Log(Files.Length);
+
         for (int i=Files.Length-1;i>=0;--i)
         {
             Debug.Log(Files[i]);
