@@ -9,7 +9,7 @@ public  class Command
     public int energy;
     public int time;
     public  bool parallel;
-    public string CommandToSend;
+    public string CommandToSend="";
     public Command()
     {
 
@@ -47,10 +47,14 @@ public  class Command
 
     public static bool IsEQ(Command com1, Command com2)
     {
-        if (com1.parallel == com2.parallel && 
-            com1.time == com2.time && 
-            com1.CommandToSend == com2.CommandToSend && 
-            com1.energy == com2.energy)
+     
+
+
+        Debug.Log(com1.energy ==com2.energy);
+        if ((com1.parallel == com2.parallel) && 
+            (com1.time == com2.time) && 
+            (com1.CommandToSend==com2.CommandToSend) && 
+            (com1.energy == com2.energy))
             return true;
         else return false;
 

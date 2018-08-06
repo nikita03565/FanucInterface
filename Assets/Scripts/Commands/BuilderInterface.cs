@@ -30,7 +30,7 @@ public class BuilderInterface : MonoBehaviour
                 newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().UICommandElements = CommandBuilder.UICommandElements[i].GetComponent<UIComplexCommand>().UICommandElements;
                 newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet = CommandBuilder.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet;
             }
-                else newCommand.UICommandElements[i].command = CommandBuilder.UICommandElements[i].command;
+            else newCommand.UICommandElements[i].command = CommandBuilder.UICommandElements[i].command;
             newCommand.UICommandElements[i].name = CommandBuilder.UICommandElements[i].name;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }

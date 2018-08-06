@@ -26,9 +26,10 @@ public class AvaibleCommands : MonoBehaviour {
             for (int k = 0, l = 0; AvaibleCommandsSet[i].GetNumberofCommands() - k >= CommandToRewrite.GetNumberofCommands(); ++k)
             {
 
-
+                Debug.Log("Fast check " +k + " " + l);
                 if (Command.IsEQ(AvaibleCommandsSet[i].CommandsSet[k], CommandToRewrite.CommandsSet[l]))
                 {
+                    
                     Index = k;
                     ++k; ++l;
                     for (; l < CommandToRewrite.GetNumberofCommands();)
@@ -50,7 +51,19 @@ public class AvaibleCommands : MonoBehaviour {
                     {
                         Debug.Log("Deleted" + " " + (Index ) + " " + CommandToRewrite.GetNumberofCommands() + " of " + AvaibleCommandsSet[i].CommandsSet.Count);
                         AvaibleCommandsSet[i].CommandsSet.RemoveRange(Index, CommandToRewrite.GetNumberofCommands());
-                        AvaibleCommandsSet[i].CommandsSet.InsertRange(Index, NewCommand.CommandsSet);
+                        //-_-----------------------
+                        int sum = 0;
+                        for (int s = 0; s < AvaibleCommandsSet[i].UICommandElements.Count; ++s)
+                        {
+                            sum += AvaibleCommandsSet[i].UICommandElements[s].GetNumberofCommands();
+
+                            if ((sum > Index) && (AvaibleCommandsSet[i].UICommandElements[s].GetNumberofCommands() == CommandToRewrite.GetNumberofCommands()))
+                            {
+                                AvaibleCommandsSet[i].UICommandElements[s] = NewCommand;
+                            }
+                        }
+                        //-_-----------------------
+                                AvaibleCommandsSet[i].CommandsSet.InsertRange(Index, NewCommand.CommandsSet);
                         deletedcommandsoffset +=  CommandToRewrite.GetNumberofCommands()- NewCommand.GetNumberofCommands();
                         Debug.Log("k--" + deletedcommandsoffset);
                         k -= CommandToRewrite.GetNumberofCommands() - NewCommand.GetNumberofCommands();
