@@ -5,10 +5,22 @@ using UnityEngine.UI;
 
 [System.Serializable]
 public class UIComplexCommand :UICommand {
-   
+    private static int saveIndex = 0;
+    public int localSaveIndex = 0;
     public List<UICommand> UICommandElements= new List<UICommand>();
     public List<Command> CommandsSet = new List<Command>();
-   
+    
+    public int IndexUp()
+    {
+        ++saveIndex;
+        return localSaveIndex = saveIndex;
+    }
+    public UIComplexCommand(UIComplexCommand com)
+    {
+        this.UICommandElements = new List<UICommand>(com.UICommandElements);
+        this.CommandsSet = new List<Command>(com.CommandsSet);
+    }
+
     // Use this for initialization
     override public void Start()
     {
@@ -28,13 +40,7 @@ public class UIComplexCommand :UICommand {
     {
         //CommandBuilder.ResetBuilder();
         BuilderInterface.ActiveCommand = this;
-        //for (int i = 0; i < UICommandElements.Count; ++i)
-        //{
-        //    UICommandElements[i].transform.SetParent(CommandBuilder.transform);
-        //    UICommandElements[i].gameObject.SetActive(true);
-        //    CommandBuilder.AddUIElementToGroup(UICommandElements[i]);
-        //}
-        //BuilderInterface.RewriteButton.gameObject.SetActive(true);
+      
         UICommand[] newObjs = new UICommand[UICommandElements.Count];
         for (int i = 0; i < UICommandElements.Count; ++i)
         {
@@ -92,7 +98,7 @@ public class UIComplexCommand :UICommand {
     
     public override void Add()
     {
-        UIComplexCommand NewCommand = Instantiate(CommandBuilder.Commandprefab, CommandBuilder.transform).GetComponent<UIComplexCommand>();
+        UIComplexCommand NewCommand = Instantiate(CommandBuilder.ComplexCommandPrefab, CommandBuilder.transform).GetComponent<UIComplexCommand>();
         NewCommand.CommandsSet = this.CommandsSet;
         //for (int i = 0; i < GetNumberofCommands(); ++i)
         //{
@@ -110,6 +116,7 @@ public class UIComplexCommand :UICommand {
         NewCommand.isOriginal = false;
         NewCommand.SettingsButton.interactable = false;
         NewCommand.GetComponentInChildren<Text>().text = this.GetComponentInChildren<Text>().text;
+        NewCommand.CommandName = this.CommandName;
 
     }
    

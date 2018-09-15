@@ -18,9 +18,11 @@ public class BuilderInterface : MonoBehaviour
 
     public void SaveNewComplexCommand()
     {
+        
         if (CommandBuilder.UICommandElements.Count == 0)
             return;
-        UIComplexCommand newCommand = Instantiate(CommandBuilder.Commandprefab, GameObject.Find("AvaibleCommandsField").transform).GetComponent<UIComplexCommand>();
+        UIComplexCommand newCommand = Instantiate(CommandBuilder.ComplexCommandPrefab, GameObject.Find("AvaibleCommandsField").transform).GetComponent<UIComplexCommand>();
+        
         for (int i = 0; i < CommandBuilder.UICommandElements.Count; ++i)
         {
 
@@ -32,6 +34,7 @@ public class BuilderInterface : MonoBehaviour
             }
             else newCommand.UICommandElements[i].command = CommandBuilder.UICommandElements[i].command;
             newCommand.UICommandElements[i].name = CommandBuilder.UICommandElements[i].name;
+            newCommand.UICommandElements[i].CommandName = CommandBuilder.UICommandElements[i].CommandName;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
         for (int i = 0; i < newCommand.UICommandElements.Count; ++i)
@@ -47,6 +50,7 @@ public class BuilderInterface : MonoBehaviour
         // for (int i = 0; i < CommandBuilder.CommandsSet.Count; ++i)
         //newCommand.CommandsSet.Add(CommandBuilder.CommandsSet[i]);
         newCommand.GetComponentInChildren<Text>().text = CommandBuilder.CommandName.text;
+        newCommand.CommandName = CommandBuilder.CommandName.text;
         
         SavedCommand = newCommand;
         SerializeToJson(SavedCommand);
@@ -111,46 +115,74 @@ public class BuilderInterface : MonoBehaviour
     }
     void Start()
     {
+
         RewriteButton = GameObject.Find("RewriteButton").GetComponent<Button>();
         CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
         RewriteButton.gameObject.SetActive(false);
         string[] Files= Directory.GetFiles(Application.persistentDataPath,"*.json");
 
-        for (int i=Files.Length-1;i>=0;--i)
+        for (int i=0;i<Files.Length;++i)
         {
             Debug.Log(Files[i]);
             DeserializeJson(Files[i]);
         }
+       // SceneManager.avaibleCommands.RewriteRefs();
     }
 
 
     public void SerializeToJson(UIComplexCommand com)
     {
+        System.IO.Directory.CreateDirectory( Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text);
         Debug.Log("ss-s-s-s-s-SAVED");
-      //  File.Create(Application.persistentDataPath +"/" +com.GetComponentInChildren<Text>() + ".json");
-
+        com.IndexUp();
         File.WriteAllText(Application.persistentDataPath+"/" +com.GetComponentInChildren<Text>().text+".json", JsonUtility.ToJson(com));
+        //3 here is number of standart defolt childs(text, sett, del)
+        for (int i = 0; i < com.transform.childCount-3; ++i)
+        {
+            File.WriteAllText(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text + "/" + i+ ".json", JsonUtility.ToJson(com.transform.GetChild(i+3).GetComponent<UICommand>()));
+        }
+
     }
    
     public void DeserializeJson(string JsonPath)
     {
-        UIComplexCommand newCommand = Instantiate(CommandBuilder.Commandprefab.gameObject, GameObject.Find("AvaibleCommandsField").transform).GetComponent<UIComplexCommand>();
+
+        UIComplexCommand newCommand = Instantiate(CommandBuilder.ComplexCommandPrefab.gameObject, GameObject.Find("AvaibleCommandsField").transform).GetComponent<UIComplexCommand>();
         string str = File.ReadAllText(JsonPath);
+        //Debug.Log(str);
         JsonUtility.FromJsonOverwrite(str, newCommand);
-        //Debug.Log("deser " + newCommand.UICommandElements.Count);
         string name = JsonPath.Substring(Application.persistentDataPath.Length+1);
         name = name.Remove(name.Length - 5, 5);
         newCommand.GetComponentInChildren<Text>().text = name;
-        for (int i = 0; i < newCommand.UICommandElements.Count; ++i)
+        string[] SubFiles = Directory.GetFiles(Application.persistentDataPath+"/"+name, "*.json");
+       
+        for (int i = 0; i < SubFiles.Length; ++i)
         {
+            //Read from json string which prefab will be used
+            string CommandinJson = File.ReadAllText(SubFiles[i]);
+          
+            if(CommandinJson.Substring(CommandinJson.IndexOf("isComplex")+11,4)=="true")
+                newCommand.UICommandElements[i] = Instantiate(CommandBuilder.ComplexCommandPrefab.gameObject, newCommand.transform).GetComponent<UIComplexCommand>();
+            else
+                newCommand.UICommandElements[i] = Instantiate(CommandBuilder.CommandPrefab.gameObject, newCommand.transform).GetComponent<UICommand>();
 
-           // newCommand.UICommandElements[i] = Instantiate<UICommand>(ActiveCommand.UICommandElements[i], newCommand.transform) as UICommand;
-            //newCommand.UICommandElements[i].gameObject.SetActive(false);
+
+            JsonUtility.FromJsonOverwrite(File.ReadAllText(SubFiles[i]), newCommand.UICommandElements[i]);
+            newCommand.UICommandElements[i].gameObject.name = newCommand.UICommandElements[i].CommandName;
+            newCommand.UICommandElements[i].GetComponentInChildren<Text>().text= newCommand.UICommandElements[i].CommandName;
+            newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
+        if(newCommand.localSaveIndex>SceneManager.avaibleCommands.AvaibleCommandsSet.Count)
+            SceneManager.avaibleCommands.AvaibleCommandsSet.Insert(SceneManager.avaibleCommands.AvaibleCommandsSet.Count, newCommand);
+        else
+            SceneManager.avaibleCommands.AvaibleCommandsSet.Insert(newCommand.localSaveIndex, newCommand);
+
+        SceneManager.avaibleCommands.SetSavedOrderIndex(newCommand);
     }
 }
 [System.Serializable]
 public  class ComplexScenario
 {
+    
     public List<Command> Scenario;
 }

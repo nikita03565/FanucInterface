@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPointerEnterHandler{
      public List<UICommand> UICommandElements = new List<UICommand>();
-    [SerializeField]
+    //[SerializeField]
     public List<Command> CommandsSet = new List<Command>();
-    public GameObject Commandprefab;
+    public GameObject ComplexCommandPrefab;
+    public GameObject CommandPrefab;
     Vector3 startCoord;
    
     float UICommandHeight;
