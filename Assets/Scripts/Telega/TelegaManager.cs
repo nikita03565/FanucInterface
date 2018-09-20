@@ -63,6 +63,7 @@ public class TelegaManager : MonoBehaviour
         }
     }
 
+    //need to be fixed
     IEnumerator doThisShit()
     {
 

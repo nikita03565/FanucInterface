@@ -8,6 +8,8 @@ public class FanucScript : MonoBehaviour
 {
     FanucModel model = new FanucModel();
     public NetConnection net;
+
+    //need to be changed for cartesian coords
     float speed = 30.0f;
 
     public float[] jointAngles = new float[6] { 0f, 0f, 0f, 0f, -90f, 0f };
@@ -15,9 +17,10 @@ public class FanucScript : MonoBehaviour
     float[] jointAnglesInc = new float[6];
     float[] worldPosInc = new float[6];
 
-    public float[] newCoord = new float[6];
-    //float[] diff = new float[6];
 
+    //move to another class?
+    public float[] newCoord = new float[6];
+    
     string[] Axis = new string[] { "First", "Second", "Third", "Fourth", "Fifth", "Sixth" };
     
     public int mode;
@@ -27,6 +30,8 @@ public class FanucScript : MonoBehaviour
     public Transform[] Fanuc;
     public Transform[] FanucColliders;
 
+
+    //move to FanucScriptUI
     public Text speedText;
     public Text hideshow;
     public GameObject panel;
@@ -34,19 +39,22 @@ public class FanucScript : MonoBehaviour
     public Text modeName;
     public Text jointCoord;
     public Text worldCoord;
-    bool NoCollisions = true;
-    bool ReadytoSend = true;
-    //private float normCoef;
 
     public InputField inputField;
 
     public InputField InputSpeedField;
 
+
+    bool NoCollisions = true;
+    bool ReadytoSend = true;
+
     void Start()
     {
+        //move to FanucScriptUI
         modeName.text = "Mode: Joints";
-        mode = 0;
         speedText.text = speed.ToString();
+
+        mode = 0;
         Fanuc[4].transform.localRotation = Quaternion.Euler(0, jointAngles[4], 0);
         inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });    
     }
@@ -56,11 +64,13 @@ public class FanucScript : MonoBehaviour
         if (mode == 2)
         {
             mode = 0;
+            //move to FanucScriptUI
             modeName.text = "Mode: Joints";
         }
         else if (mode == 0)
         {
             mode = 2;
+            //move to FanucScriptUI
             modeName.text = "Mode: World";
         }
     }
@@ -69,6 +79,7 @@ public class FanucScript : MonoBehaviour
     public void IncSpeed(int n)
     {
         speed += 5;
+        //move to FanucScriptUI
         speedText.text = speed.ToString();
     }
 
@@ -79,21 +90,25 @@ public class FanucScript : MonoBehaviour
         {
             speed = 0;
         }
+        //move to FanucScriptUI
         speedText.text = speed.ToString();
     }
 
+    //move to FanucScriptUI
     public void InputSpeed(InputField s)
     {
         speedText.text = s.text;
         speed = float.Parse(s.text);
     }
 
+    //move to FanucScriptUI
     public void Visibility(GameObject panel)
     {
         panel.SetActive(!panel.activeSelf);
         ChangeTextShow(hideshow);
     }
 
+    //move to FanucScriptUI
     public void ChangeTextShow(Text text)
     {
 
@@ -118,22 +133,25 @@ public class FanucScript : MonoBehaviour
         }
     }
 
-    public void IncCoord(int n)
-    {
-        if (mode == 0)
-            ControllerJointUpdate[n] = Time.deltaTime * speed;
-        else if (mode == 2)
-            ControllerWorldUpdate[n] = Time.deltaTime * speed;
-    }
+    //to delete
+    //public void IncCoord(int n)
+    //{
+    //    if (mode == 0)
+    //        ControllerJointUpdate[n] = Time.deltaTime * speed;
+    //    else if (mode == 2)
+    //        ControllerWorldUpdate[n] = Time.deltaTime * speed;
+    //}
 
-    public void DecCoord(int n)
-    {
-        if (mode == 0)
-            ControllerJointUpdate[n] = -Time.deltaTime * speed;
-        else if (mode == 2)
-            ControllerWorldUpdate[n] = -Time.deltaTime * speed;
-    }
+    //to delete
+    //public void DecCoord(int n)
+    //{
+    //    if (mode == 0)
+    //        ControllerJointUpdate[n] = -Time.deltaTime * speed;
+    //    else if (mode == 2)
+    //        ControllerWorldUpdate[n] = -Time.deltaTime * speed;
+    //}
 
+    //move to FanucScriptUI
     public void LockInput(InputField input)
     {
         try
@@ -160,12 +178,6 @@ public class FanucScript : MonoBehaviour
                                 throw new System.Exception();
                             }
                         }
-                        //for (int i = 0; i < 6; ++i)
-                        //{
-                        //    diff[i] = newCoord[i] - jointAngles[i];
-                        //}
-                        //normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
-                        //    diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
 
                         StartCoroutine("Move");
                     } else
@@ -174,14 +186,6 @@ public class FanucScript : MonoBehaviour
                         {
                             newCoord[i] = float.Parse(arr[i]);
                         }
-                        //float[] newCoordTmp = FanucModel.chooseNearestPose(model.InverseTask(ref newCoord), ref jointAngles);
-                        //newCoord = newCoordTmp;
-                        //for (int i = 0; i < 6; ++i)
-                        //{
-                        //    diff[i] = newCoord[i] - jointAngles[i];
-                        //}
-                        //normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
-                        //    diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
 
                         StartCoroutine("Move");
                     }
@@ -202,7 +206,6 @@ public class FanucScript : MonoBehaviour
         catch (System.Exception)
         {
             Debug.Log("Wrong string");
-            //input.text = "Wrong string. Try again";
         }
     }
 
@@ -210,11 +213,12 @@ public class FanucScript : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         
-        //if (mode == 0) net.Sender(RobotCommands.FanucMoving());
-        //else net.Sender(RobotCommands.FanucMoving(false));
-        //ReadytoSend = true;
+        if (mode == 0) net.Sender(RobotCommands.FanucMoving());
+        else net.Sender(RobotCommands.FanucMoving(false));
+        ReadytoSend = true;
     }
 
+    //move to another class? make an newCoord argument
     IEnumerator Move()
     {
         Debug.Log(newCoord[0] + " " + newCoord[1] + " " + newCoord[2] + " " +
@@ -308,6 +312,8 @@ public class FanucScript : MonoBehaviour
         if (Joints[4]) Joints[4].localRotation = Quaternion.Euler(0, jointAngles[4], 0);
         if (Joints[5]) Joints[5].localRotation = Quaternion.Euler(-jointAngles[5], 0, 0);
     }
+
+    //move to FanucScriptUI
     void CoordDisplayAndSave()
     {
         string outputAngles = "";
@@ -360,6 +366,7 @@ public class FanucScript : MonoBehaviour
         
             NoCollisions = true;
 
+            //realize what the hell is going on here
             if (mode == 2)
             {
                 try
@@ -385,6 +392,7 @@ public class FanucScript : MonoBehaviour
                 }
                 RotateFanuc(Fanuc, jointAngles);
             }
+            //move to FanucScriptUI
             CoordDisplayAndSave();
         }
     }

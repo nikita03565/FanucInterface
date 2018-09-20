@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class UIComplexCommand :UICommand {
+public class UIComplexCommand :UICommand
+{
     private static int saveIndex = 0;
     public int localSaveIndex = 0;
-    public List<UICommand> UICommandElements= new List<UICommand>();
+    public List<UICommand> UICommandElements = new List<UICommand>();
     public List<Command> CommandsSet = new List<Command>();
     
     public int IndexUp()
@@ -15,6 +16,7 @@ public class UIComplexCommand :UICommand {
         ++saveIndex;
         return localSaveIndex = saveIndex;
     }
+
     public UIComplexCommand(UIComplexCommand com)
     {
         this.UICommandElements = new List<UICommand>(com.UICommandElements);
@@ -26,16 +28,16 @@ public class UIComplexCommand :UICommand {
     {
         CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
         if (isOriginal)
+        {
             this.GetComponent<Button>().onClick.AddListener(() => Add());
-       // if (UISize == 0) UISize = Mathf.FloorToInt(this.gameObject.GetComponent<RectTransform>().rect.height);
-
-       // if (UIScale == 0) UIScale = this.gameObject.GetComponent<RectTransform>().localScale.y;
+        }
         DeleteButton = this.transform.Find("DeleteButton").GetComponent<Button>();
         DeleteButton.onClick.AddListener(() => Delete());
         SettingsButton = this.transform.Find("Settings").GetComponent<Button>();
         SettingsButton.onClick.AddListener(() => Settings());        
         isComplex = true;
     }
+
     protected override void Settings()
     {
         //CommandBuilder.ResetBuilder();
@@ -44,14 +46,12 @@ public class UIComplexCommand :UICommand {
         UICommand[] newObjs = new UICommand[UICommandElements.Count];
         for (int i = 0; i < UICommandElements.Count; ++i)
         {
-
             newObjs[i] = Instantiate(UICommandElements[i]);
             newObjs[i].name = UICommandElements[i].name;
             switch (newObjs[i].name)
             {
                 case "1":
                     {
-
                         newObjs[i].command = new CommandFanuc(UICommandElements[i].command);
                         break;
                     }
@@ -66,11 +66,8 @@ public class UIComplexCommand :UICommand {
                         break;
                     }
             }
-
             newObjs[i].Start();
             newObjs[i].gameObject.SetActive(true);
-
-
         }
         CommandBuilder.ResetBuilder();
         for (int i = 0; i < UICommandElements.Count; ++i)
@@ -82,33 +79,21 @@ public class UIComplexCommand :UICommand {
         BuilderInterface.RewriteButton.gameObject.SetActive(true);
 
     }
+
     public override int GetNumberofCommands()
     {
         return CommandsSet.Count;
     }
+
     public Command GetCommandFromSet(int index)
     {
         return CommandsSet[index];
     }
-    // Update is called once per frame
-    void Update () {
-		
-	}
-   
     
     public override void Add()
     {
         UIComplexCommand NewCommand = Instantiate(CommandBuilder.ComplexCommandPrefab, CommandBuilder.transform).GetComponent<UIComplexCommand>();
-        NewCommand.CommandsSet = this.CommandsSet;
-        //for (int i = 0; i < GetNumberofCommands(); ++i)
-        //{
-        //    UICommand com = Instantiate(NewCommand.UICommandElements[i],NewCommand.transform) as UICommand;
-        //    NewCommand.UICommandElements.Add( com);
-        //    com.gameObject.AddComponent<DragDrop>();
-
-        //    com.isOriginal = false;
-        //}
-        
+        NewCommand.CommandsSet = this.CommandsSet;        
         NewCommand.transform.SetParent(CommandBuilder.transform);
         NewCommand.transform.localScale = new Vector3(UIScale, UIScale);
         CommandBuilder.AddUIElementToGroup(NewCommand.GetComponent<UICommand>());
@@ -117,12 +102,10 @@ public class UIComplexCommand :UICommand {
         NewCommand.SettingsButton.interactable = false;
         NewCommand.GetComponentInChildren<Text>().text = this.GetComponentInChildren<Text>().text;
         NewCommand.CommandName = this.CommandName;
-
     }
    
     public override void Delete()
     {
-        
         CommandBuilder.UIElementRemoveFromGroup(this, true);
         Destroy(this.gameObject);
     }

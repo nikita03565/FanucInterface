@@ -15,16 +15,8 @@ public class CommandTelega : Command
 
     public CommandTelega(Command parent)
     {
-
-        this.CommandToSend = parent.CommandToSend;
-        this.parallel = parent.parallel;
+        Command.Copy(this, parent);
     }
-
-
-
-    //public CommandTelega(Command command) : base(command)
-    //{
-    //}
 
     public override void DoCommand()
     {
@@ -33,7 +25,6 @@ public class CommandTelega : Command
 
     public override void GetWindow()
     {
-        
         if (!window) window = SceneManager.TelegaSettingsPanel;
         window.command = this;
         window.show();

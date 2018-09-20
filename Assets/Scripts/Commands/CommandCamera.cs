@@ -15,8 +15,7 @@ public class CommandCamera : Command
 
     public CommandCamera(Command parent)
     {
-        this.CommandToSend = parent.CommandToSend;
-        this.parallel = parent.parallel;
+        Command.Copy(this, parent);
     }
 
     //public CommandCamera(Command command) : base(command)
