@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoordTransformation
+public static class CoordTransformation
 {
-    Matrix4x4 FromRobotToUnity = new Matrix4x4 
+    private static Matrix4x4 FromRobotToUnity = new Matrix4x4 
         (new Vector4(-1f, 0f, 0f, 0f), new Vector4(0f, 0f, -1f, 0f),
          new Vector4(0f, 1f, 0f, 0f), new Vector4(0f, 555f, 0f, 1f));
-    Matrix4x4 FromUnityToRobot = new Matrix4x4
+    private static Matrix4x4 FromUnityToRobot = new Matrix4x4
         (new Vector4(-1f, 0f, 0f, 0f), new Vector4(0f, 0f, 1f, 0f),
          new Vector4(0f, -1f, 0f, 0f), new Vector4(0f, 0f, -0.555f, 1f));
 	
 	
-    public Vector4 RobotToUnityPosOnly(Vector4 vec)
+    public static Vector4 RobotToUnityPosOnly(Vector4 vec)
     {
         Vector4 tmp = FromRobotToUnity * vec;
         tmp[0] /= 1000f;
@@ -21,7 +21,7 @@ public class CoordTransformation
         return tmp;
     }
 
-    public Matrix4x4 RobotToUnity(Matrix4x4 input)
+    public static Matrix4x4 RobotToUnity(Matrix4x4 input)
     {
         Matrix4x4 tmp = FromRobotToUnity * input;
         tmp[0, 3] /= 1000f;
@@ -30,7 +30,7 @@ public class CoordTransformation
         return tmp;
     }
 
-    public Vector4 UnityToRobotPosOnly(Vector4 vec)
+    public static Vector4 UnityToRobotPosOnly(Vector4 vec)
     {
         Vector4 tmp = FromUnityToRobot * vec;
         tmp[0] *= 1000f;
@@ -40,7 +40,7 @@ public class CoordTransformation
         return tmp;
     }
 
-    public Matrix4x4 UnityToRobot(Matrix4x4 input)
+    public static Matrix4x4 UnityToRobot(Matrix4x4 input)
     {
         Matrix4x4 tmp = FromUnityToRobot * input;
         tmp[0, 3] *= 1000f;

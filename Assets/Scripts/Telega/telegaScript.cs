@@ -56,29 +56,26 @@ public class telegaScript : MonoBehaviour {
     {
         rot = transform.eulerAngles.y * Mathf.Deg2Rad;
         if (!isWaited)
+        {
             if (isMoved)
             {
 
-                 if (Vector3.Angle(a, b) > rotstep)
-                 
-                 TurnToDirection();
-                 else
-                 {
-                         TurningBars(0, 0, 0);
-                         if (!isWaited)
-                         {
-                             wheel1.transform.Rotate(0, -WheelAngleSpeed, 0);
-                             wheel2.transform.Rotate(0, -WheelAngleSpeed, 0);
-                             wheel3.transform.Rotate(0, -WheelAngleSpeed, 0);
-                 
-                             //Wheel1ForSend = WheelAngleSpeed * WheelRadius * 1000;
-                             //Wheel2ForSend = WheelAngleSpeed * WheelRadius * 1000;
-                             //Wheel3ForSend = WheelAngleSpeed * WheelRadius * 1000;
-                 
-                             transform.position += a.normalized * WheelAngleSpeed * WheelRadius * Mathf.Deg2Rad;
-                         }
-                         //Debug.Log(B.x * WheelAngleSpeed * WheelRadius + " " + B.y * WheelAngleSpeed * WheelRadius + " " + B.z * WheelAngleSpeed * WheelRadius);
-                 }
+                if (Vector3.Angle(a, b) > rotstep)
+
+                    TurnToDirection();
+                else
+                {
+                    TurningBars(0, 0, 0);
+                    if (!isWaited)
+                    {
+                        wheel1.transform.Rotate(0, -WheelAngleSpeed, 0);
+                        wheel2.transform.Rotate(0, -WheelAngleSpeed, 0);
+                        wheel3.transform.Rotate(0, -WheelAngleSpeed, 0);
+
+                        transform.position += a.normalized * WheelAngleSpeed * WheelRadius * Mathf.Deg2Rad;
+                    }
+                }
+            }
         }
     }
 
@@ -87,34 +84,25 @@ public class telegaScript : MonoBehaviour {
      
         TurningBars(90.0f, 320f, 40.0f);
         if (isWaited) return;
-        //if (Vector3.Angle(a, b) > rotstep)
+        
+        if (Vector3.Cross(a, b).y > 0)
         {
-            if (Vector3.Cross(a, b).y > 0)
-            {
-                transform.Rotate(0, 0, rotstep);
+            transform.Rotate(0, 0, rotstep);
 
-                wheel1.transform.Rotate(0, -WheelAngleSpeed, 0);
-                wheel2.transform.Rotate(0, -WheelAngleSpeed, 0);
-                wheel3.transform.Rotate(0, WheelAngleSpeed, 0);
-
-                //Wheel1ForSend = WheelAngleSpeed * WheelRadius * 1000;
-                //Wheel2ForSend = WheelAngleSpeed * WheelRadius * 1000;
-                //Wheel3ForSend = - WheelAngleSpeed * WheelRadius * 1000;
-            }
-
-            if (Vector3.Cross(a, b).y < 0)
-            {
-                transform.Rotate(0, 0, -rotstep);
-
-                wheel1.transform.Rotate(0, WheelAngleSpeed, 0);
-                wheel2.transform.Rotate(0, WheelAngleSpeed, 0);
-                wheel3.transform.Rotate(0, -WheelAngleSpeed, 0);
-
-                //Wheel1ForSend = -WheelAngleSpeed * WheelRadius * 1000;
-                //Wheel2ForSend = -WheelAngleSpeed * WheelRadius * 1000;
-                //Wheel3ForSend = WheelAngleSpeed * WheelRadius * 1000;
-            }
+            wheel1.transform.Rotate(0, -WheelAngleSpeed, 0);
+            wheel2.transform.Rotate(0, -WheelAngleSpeed, 0);
+            wheel3.transform.Rotate(0, WheelAngleSpeed, 0);
         }
+
+        if (Vector3.Cross(a, b).y < 0)
+        {
+            transform.Rotate(0, 0, -rotstep);
+
+            wheel1.transform.Rotate(0, WheelAngleSpeed, 0);
+            wheel2.transform.Rotate(0, WheelAngleSpeed, 0);
+            wheel3.transform.Rotate(0, -WheelAngleSpeed, 0);
+        }
+        
         A = PointA.transform.position;
         B = PointB.transform.position;
 
@@ -123,11 +111,7 @@ public class telegaScript : MonoBehaviour {
 
         if (Vector3.Angle(a, b) < rotstep)
         {
-
-            //Debug.Log(transform.localEulerAngles);
             transform.localEulerAngles = new Vector3(-90, 0, Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y);
-            //Debug.Log(transform.localEulerAngles);
-
         }
     }
 
@@ -158,10 +142,6 @@ public class telegaScript : MonoBehaviour {
             if (isMoved)
                 if (Math.Abs(Vector3.Cross(b, a1).y) > 0.01 || Vector3.Dot(b, a1) < 0)
                 {
-                    //bar1.transform.localEulerAngles = new Vector3(0, 0, Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y - Vector3.Angle(Vector3.left, a) * Vector3.Cross(Vector3.left, a).normalized.y);
-                    //bar2.transform.localEulerAngles = new Vector3(0, 0, Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y - Vector3.Angle(Vector3.left, a) * Vector3.Cross(Vector3.left, a).normalized.y);
-                    //bar3.transform.localEulerAngles = new Vector3(0, 0, Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y - Vector3.Angle(Vector3.left, a) * Vector3.Cross(Vector3.left, a).normalized.y);
-                    //        StartCoroutine(Wait(2));
                     TurningBars(
                         Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y - Vector3.Angle(Vector3.left, a) * Vector3.Cross(Vector3.left, a).normalized.y,
                         Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y - Vector3.Angle(Vector3.left, a) * Vector3.Cross(Vector3.left, a).normalized.y,
@@ -172,10 +152,6 @@ public class telegaScript : MonoBehaviour {
                     wheel1.transform.Rotate(0, -WheelAngleSpeed, 0);
                     wheel2.transform.Rotate(0, -WheelAngleSpeed, 0);
                     wheel3.transform.Rotate(0, -WheelAngleSpeed, 0);
-
-                    //Wheel1ForSend = WheelAngleSpeed * WheelRadius * 1000;
-                    //Wheel2ForSend = WheelAngleSpeed * WheelRadius * 1000;
-                    //Wheel3ForSend = WheelAngleSpeed * WheelRadius * 1000;
 
                     transform.position += b.normalized * WheelAngleSpeed * WheelRadius * Mathf.Deg2Rad;
                 }

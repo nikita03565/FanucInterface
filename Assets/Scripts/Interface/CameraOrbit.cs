@@ -3,7 +3,6 @@ using System.Collections;
 
 public class CameraOrbit : MonoBehaviour
 {
-
     protected Transform _XForm_Camera;
     protected Transform _XForm_Parent;
 
@@ -16,10 +15,9 @@ public class CameraOrbit : MonoBehaviour
     public float ScrollDampening = 6f;
 
     public float num1 = 0f;
-    public float num2 = 0;
+    public float num2 = 0f;
 
     public bool CameraDisabled = true;
-
 
     // Use this for initialization
     void Start()
@@ -31,11 +29,7 @@ public class CameraOrbit : MonoBehaviour
 
     public void SwitchMode()
     {
-       
         this._LocalRotation = new Vector3(0, 90, 0);
-        
-
-
     }
 
     void Update()
@@ -65,20 +59,12 @@ public class CameraOrbit : MonoBehaviour
         {
             num1 -= 0.02f;
         }
-
-    
     }
 
     void LateUpdate()
     {
-        
-       
-
         if (!CameraDisabled)
         {
-
-
-
             //Rotation of the Camera based on Mouse Coordinates
             if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
             {
@@ -118,8 +104,8 @@ public class CameraOrbit : MonoBehaviour
         Quaternion QT = Quaternion.Euler(_LocalRotation.y, _LocalRotation.x, 0);
         this._XForm_Parent.rotation = Quaternion.Lerp(this._XForm_Parent.rotation, QT, Time.deltaTime * OrbitDampening);
 
-       // if (this._XForm_Camera.localPosition.z != this._CameraDistance * -1f)
-         this._XForm_Camera.localPosition = new Vector3(num1, num2, Mathf.Lerp(this._XForm_Camera.localPosition.z, this._CameraDistance * -1f, Time.deltaTime * ScrollDampening));
+        //if (this._XForm_Camera.localPosition.z != this._CameraDistance * -1f)
+        this._XForm_Camera.localPosition = new Vector3(num1, num2, Mathf.Lerp(this._XForm_Camera.localPosition.z, this._CameraDistance * -1f, Time.deltaTime * ScrollDampening));
         
     }
 }

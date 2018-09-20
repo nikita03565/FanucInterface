@@ -2,23 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FanucCollision : MonoBehaviour {
-    FanucScript fanucScript;
-	// Use this for initialization
-	void Start () {
-       fanucScript= FindObjectOfType<FanucScript>();
-	}
+public class FanucCollision : MonoBehaviour
+{
     void OnTriggerStay(Collider col)
     {
        
         if (col.gameObject.tag == "fanuc")
         {
-          
-            fanucScript.CollisionLimiter();
+            SceneManager.fanuc.CollisionLimiter();
         }
-    }
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    } 
 }

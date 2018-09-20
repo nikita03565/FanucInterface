@@ -13,6 +13,7 @@ public class SceneManager : MonoBehaviour {
     public static AvaibleCommands avaibleCommands;
     public static DropdownSceneObjects dropdownSceneObjects;
     public static FanucScript fanuc;
+    //add SlotScript
 
     // Use this for initialization
     void Start ()

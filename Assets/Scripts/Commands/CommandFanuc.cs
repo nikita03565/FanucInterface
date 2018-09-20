@@ -11,8 +11,7 @@ public class CommandFanuc : Command
 
     public CommandFanuc(Command parent)
     {
-        this.CommandToSend = parent.CommandToSend;
-        this.parallel = parent.parallel;
+        Command.Copy(this, parent);        
     }
 
     public CommandFanuc()
@@ -21,13 +20,11 @@ public class CommandFanuc : Command
 
     public override void GetWindow()
     {
-        
-
         if (!window) window = SceneManager.FanucSettingsPanel;
         window.command = this;
-        window.show(); 
-        
+        window.show();    
     }
+
     public override void DoCommand()
     {
       

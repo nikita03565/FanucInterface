@@ -8,16 +8,15 @@ public  class RobotCommands:MonoBehaviour{
 
     static public string FanucMoving(bool Joints = true)
     {
-        FanucScript Fanuc = FindObjectOfType<FanucScript>();
+        //FanucScript Fanuc = SceneManager.fanuc; //FindObjectOfType<FanucScript>();
         string MessageToServer = "{\"flag\": \"0\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"fanuc\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"m";
         //string MessageToServer = "m";
         for (int i = 0; i < 6; ++i)
         {
-           if(Joints) MessageToServer += " " + Fanuc.jointAngles[i].ToString();
-           else MessageToServer += " " + Fanuc.worldPos[i].ToString();
+           if(Joints) MessageToServer += " " + SceneManager.fanuc.jointAngles[i].ToString();
+           else MessageToServer += " " + SceneManager.fanuc.worldPos[i].ToString();
         }
         MessageToServer += " 0\"}]}";
-        //MessageToServer += " 0 ";
         return MessageToServer;
     }
 
