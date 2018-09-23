@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class UICommand : MonoBehaviour
 {
-    protected SlotScript CommandBuilder;
+    protected CommandBuilder CommandBuilder;
     public  Button SettingsButton;
     public  Button DeleteButton;
     public Command command;
@@ -22,7 +22,7 @@ public class UICommand : MonoBehaviour
     {
         //Debug.Log("Staaart "+this.gameObject.name);
         CommandName = this.GetComponentInChildren<Text>().text;
-        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
+        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
         if (isOriginal)
         {
             this.GetComponent<Button>().onClick.AddListener(() => Add());
@@ -89,7 +89,10 @@ public class UICommand : MonoBehaviour
         NewCommand.DeleteButton.interactable = true;
         CommandBuilder.AddUIElementToGroup(NewCommand.GetComponent<UICommand>());
     }
+    public virtual void Copy(UIComplexCommand com)
+    {
 
+    }
     public virtual void Delete()
     {
         CommandBuilder.UIElementRemoveFromGroup(this);

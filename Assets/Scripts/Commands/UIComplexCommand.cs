@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 [System.Serializable]
 public class UIComplexCommand :UICommand
@@ -22,17 +23,23 @@ public class UIComplexCommand :UICommand
         this.UICommandElements = new List<UICommand>(com.UICommandElements);
         this.CommandsSet = new List<Command>(com.CommandsSet);
     }
-
+    public override void Copy(UIComplexCommand com)
+    {
+        this.CommandsSet = new List<Command>(com.CommandsSet);
+        this.CommandName = com.CommandName;
+        this.GetComponentInChildren<Text>().text = com.CommandName;
+    }
     // Use this for initialization
     override public void Start()
     {
-        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
+        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
         if (isOriginal)
         {
             this.GetComponent<Button>().onClick.AddListener(() => Add());
         }
         DeleteButton = this.transform.Find("DeleteButton").GetComponent<Button>();
-        DeleteButton.onClick.AddListener(() => Delete());
+        if(this.isOriginal) DeleteButton.onClick.AddListener(() => Destroy());
+        else DeleteButton.onClick.AddListener(() => Delete());
         SettingsButton = this.transform.Find("Settings").GetComponent<Button>();
         SettingsButton.onClick.AddListener(() => Settings());        
         isComplex = true;
@@ -85,10 +92,7 @@ public class UIComplexCommand :UICommand
         return CommandsSet.Count;
     }
 
-    public Command GetCommandFromSet(int index)
-    {
-        return CommandsSet[index];
-    }
+   
     
     public override void Add()
     {
@@ -108,5 +112,12 @@ public class UIComplexCommand :UICommand
     {
         CommandBuilder.UIElementRemoveFromGroup(this, true);
         Destroy(this.gameObject);
+    }
+    public void Destroy()
+    {
+        Directory.Delete(Application.persistentDataPath + "/" + this.CommandName,true);
+        File.Delete(Application.persistentDataPath + "/" + this.CommandName+".json");
+        Destroy(this.gameObject);
+        SceneManager.avaibleCommands.AvaibleCommandsSet.Remove(this);
     }
 }
