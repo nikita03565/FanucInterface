@@ -82,8 +82,7 @@ public class TelegaManager : MonoBehaviour
 
             for (int i = 0; i < 3; ++i)
             {
-                angle[i] = Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y - Vector3.Angle(Vector3.left, a) * Vector3.Cross(Vector3.left, a).normalized.y;
-
+                angle[i] = Mathf.Acos(Vector3.Dot(a.normalized, b.normalized)) * Mathf.Rad2Deg;
                 if (angle[i] > 180f) angle[i] = angle[i] - 360f;
 
                 if (angle[i] > 120f)
@@ -130,8 +129,8 @@ public class TelegaManager : MonoBehaviour
             a = rc.aims[j] - rc.aims[j - 1];
             b = rc.aims[j + 1] - rc.aims[j];
 
-            angle = new float[3] { 90f, 320f, 40f };
-            float alpha = Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y - Vector3.Angle(Vector3.left, a) * Vector3.Cross(Vector3.left, a).normalized.y;
+            angle = new float[3] { 30f, -30f, 90f };
+            float alpha = Mathf.Acos(Vector3.Dot(a.normalized, b.normalized)) * Mathf.Rad2Deg;
             dist = new float[3] { Mathf.Abs(Mathf.PI * 20f * alpha / 180f), Mathf.Abs(Mathf.PI * 20f * alpha / 180f), Mathf.Abs(Mathf.PI * 20f * alpha / 180f) };
 
             if (Vector3.Cross(a, b).y >= 0)
