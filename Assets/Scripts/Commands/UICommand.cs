@@ -11,6 +11,7 @@ public class UICommand : MonoBehaviour
     public  Button DeleteButton;
     public Command command;
     public string CommandName;
+    public UICommand Original;
 
     public static int UISize = 0;
     public static float UIScale = 0;

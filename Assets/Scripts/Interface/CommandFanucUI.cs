@@ -76,11 +76,11 @@ public class CommandFanucUI : MonoBehaviour
         }
     }
 
-public void DoCommand()
+    public void DoCommand()
     {
         SceneManager.fanuc.mode = command.mode;
-        SceneManager.fanuc.newCoord = coord;
-        SceneManager.fanuc.StartCoroutine("Move");
+        //SceneManager.fanuc.newCoord = coord;
+        SceneManager.fanuc.StartCoroutine("Move", coord);
         //throw new System.NotImplementedException();
     }
 
@@ -125,4 +125,8 @@ public void DoCommand()
         throw new System.NotImplementedException();
     }
 
+    public void CloseWindow()
+    {
+        SceneManager.FanucSettingsPanel.gameObject.SetActive(false);
+    }
 }

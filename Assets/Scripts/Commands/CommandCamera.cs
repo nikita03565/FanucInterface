@@ -6,9 +6,7 @@ public class CommandCamera : Command
 {
     public int mode; //0 - all scene, 1 - specific object
     public string id;
-    CommandCameraUI window;
-    
-
+   
     public CommandCamera()
     {
     }
@@ -29,10 +27,8 @@ public class CommandCamera : Command
 
     public override void GetWindow()
     {
-       
-        if (!window) window = SceneManager.CameraSettingsPanel;
-        window.command = this;
-        window.show();
+        SceneManager.CameraSettingsPanel.command = this;
+        SceneManager.CameraSettingsPanel.show();
     }
 
     public override void Load()

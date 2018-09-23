@@ -6,7 +6,6 @@ public class CommandTelega : Command
 {
     public int mode; //0 - directional, 1 - parallel
     public float[] coord; // x, y, yaw
-    CommandTelegaUI window;
     //private Command command;
 
     public CommandTelega()
@@ -25,9 +24,8 @@ public class CommandTelega : Command
 
     public override void GetWindow()
     {
-        if (!window) window = SceneManager.TelegaSettingsPanel;
-        window.command = this;
-        window.show();
+        SceneManager.TelegaSettingsPanel.command = this;
+        SceneManager.TelegaSettingsPanel.show();
     }
 
     public override void Load()
