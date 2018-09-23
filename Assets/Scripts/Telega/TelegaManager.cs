@@ -63,12 +63,8 @@ public class TelegaManager : MonoBehaviour
         }
     }
 
-    //need to be fixed
-<<<<<<< HEAD
+
     IEnumerator ParallelMoving()
-=======
-    IEnumerator doThisShit()
->>>>>>> temporary-artem
     {
 
         rc.aims.Insert(0, telega.PointA.transform.position);
@@ -108,7 +104,7 @@ public class TelegaManager : MonoBehaviour
                     (rc.aims[j + 1].z - rc.aims[j].z) * (rc.aims[j + 1].z - rc.aims[j].z)) * 1000f;
             }
 
-            telega.net.Sender(RobotCommands.TelegaMoving());
+            SceneManager.Net.Sender(RobotCommands.TelegaMoving());
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
         }
@@ -146,7 +142,7 @@ public class TelegaManager : MonoBehaviour
                 isReversed = new float[3] { 1, 1, -1 };
             }
 
-            telega.net.Sender(RobotCommands.TelegaMoving());
+            SceneManager.Net.Sender(RobotCommands.TelegaMoving());
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
 
@@ -157,7 +153,7 @@ public class TelegaManager : MonoBehaviour
             dist = new float[3] {dst, dst, dst};
             isReversed[0] = isReversed[1] = isReversed[2] = 1;
             angle[0] = angle[1] = angle[2] = 0;
-            telega.net.Sender(RobotCommands.TelegaMoving());
+            SceneManager.Net.Sender(RobotCommands.TelegaMoving());
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
         }

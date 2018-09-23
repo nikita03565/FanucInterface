@@ -23,16 +23,12 @@ public class UIComplexCommand :UICommand
         this.UICommandElements = new List<UICommand>(com.UICommandElements);
         this.CommandsSet = new List<Command>(com.CommandsSet);
     }
-<<<<<<< HEAD
-
-=======
     public override void Copy(UIComplexCommand com)
     {
         this.CommandsSet = new List<Command>(com.CommandsSet);
         this.CommandName = com.CommandName;
         this.GetComponentInChildren<Text>().text = com.CommandName;
     }
->>>>>>> temporary-artem
     // Use this for initialization
     override public void Start()
     {
@@ -95,15 +91,6 @@ public class UIComplexCommand :UICommand
     {
         return CommandsSet.Count;
     }
-
-<<<<<<< HEAD
-    public Command GetCommandFromSet(int index)
-    {
-        return CommandsSet[index];
-    }
-=======
-   
->>>>>>> temporary-artem
     
     public override void Add()
     {

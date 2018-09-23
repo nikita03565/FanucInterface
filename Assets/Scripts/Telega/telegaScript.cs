@@ -15,7 +15,7 @@ public class telegaScript : MonoBehaviour {
     public float WheelAngleSpeed;
     public float WheelRadius;
     public float telegaRadius;
-    public NetConnection net = SceneManager.Net;
+    //public NetConnection net = SceneManager.Net;
 
     public bool ToSend = true;
 

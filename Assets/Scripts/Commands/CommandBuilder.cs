@@ -5,11 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //rename
-<<<<<<< HEAD:Assets/Scripts/Commands/SlotScript.cs
-public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPointerEnterHandler{
-=======
+
 public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IPointerEnterHandler{
->>>>>>> temporary-artem:Assets/Scripts/Commands/CommandBuilder.cs
     public List<UICommand> UICommandElements = new List<UICommand>();
     //[SerializeField]
     public List<Command> CommandsSet = new List<Command>();
@@ -36,11 +33,7 @@ public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IP
             {
                 for (int i = 0; i < UIelement.GetNumberofCommands(); ++i)
                 {
-<<<<<<< HEAD:Assets/Scripts/Commands/SlotScript.cs
-                    CommandsSet.Add(UIelement.GetComponent<UIComplexCommand>().GetCommandFromSet(i));
-=======
                     CommandsSet.Add(UIelement.GetComponent<UIComplexCommand>().CommandsSet[i]);
->>>>>>> temporary-artem:Assets/Scripts/Commands/CommandBuilder.cs
                 }
             }
             else CommandsSet.Add(UIelement.command);
@@ -121,13 +114,8 @@ public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IP
     }
 
     public void OnDrop(PointerEventData eventData)
-    {
-       
-<<<<<<< HEAD:Assets/Scripts/Commands/SlotScript.cs
-        if (DragDrop.itemBeingDragged && DragDrop.itemBeingDragged.GetComponent<DragDrop>().CommandBuilder == this)
-=======
+    {   
         if (DragDrop.itemBeingDragged && DragDrop.itemBeingDragged.GetComponent<DragDrop>().сommandBuilder == this)
->>>>>>> temporary-artem:Assets/Scripts/Commands/CommandBuilder.cs
         { 
             AddUIElementToGroup(DragDrop.itemBeingDragged.GetComponent<UICommand>(), DragDrop.itemBeingDragged.transform.GetSiblingIndex());
             DragDrop.itemBeingDragged.transform.localPosition = new Vector3(DragDrop.itemBeingDragged.transform.localPosition.x,- (DragDrop.itemBeingDragged.transform.GetSiblingIndex() - (float)(UICommandElements.Count-1) / 2)  * UICommandHeight,0);

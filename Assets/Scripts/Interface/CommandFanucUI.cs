@@ -79,12 +79,9 @@ public class CommandFanucUI : MonoBehaviour
     public void DoCommand()
     {
         SceneManager.fanuc.mode = command.mode;
-<<<<<<< HEAD
-        //SceneManager.fanuc.newCoord = coord;
-        SceneManager.fanuc.StartCoroutine("Move", coord);
-=======
+
+        //SceneManager.fanuc.StartCoroutine("Move", coord);
         StartCoroutine(SceneManager.fanuc.Move(coord));
->>>>>>> temporary-artem
         //throw new System.NotImplementedException();
     }
 

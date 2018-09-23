@@ -6,10 +6,7 @@ public class CommandTelega : Command
 {
     public int mode; //0 - directional, 1 - parallel
     public float[] coord; // x, y, yaw
-<<<<<<< HEAD
-=======
 
->>>>>>> temporary-artem
     //private Command command;
 
     public CommandTelega()
@@ -28,10 +25,6 @@ public class CommandTelega : Command
 
     public override void GetWindow()
     {
-<<<<<<< HEAD
-=======
-       
->>>>>>> temporary-artem
         SceneManager.TelegaSettingsPanel.command = this;
         SceneManager.TelegaSettingsPanel.show();
     }

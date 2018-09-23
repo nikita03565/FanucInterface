@@ -6,19 +6,13 @@ using UnityEngine.UI;
 [System.Serializable]
 public class UICommand : MonoBehaviour
 {
-<<<<<<< HEAD
-    protected SlotScript CommandBuilder;
-=======
     protected CommandBuilder CommandBuilder;
->>>>>>> temporary-artem
     public  Button SettingsButton;
     public  Button DeleteButton;
     public Command command;
     public string CommandName;
-<<<<<<< HEAD
     public UICommand Original;
-=======
->>>>>>> temporary-artem
+
 
     public static int UISize = 0;
     public static float UIScale = 0;
@@ -30,11 +24,7 @@ public class UICommand : MonoBehaviour
     {
         //Debug.Log("Staaart "+this.gameObject.name);
         CommandName = this.GetComponentInChildren<Text>().text;
-<<<<<<< HEAD
-        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
-=======
         CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
->>>>>>> temporary-artem
         if (isOriginal)
         {
             this.GetComponent<Button>().onClick.AddListener(() => Add());
@@ -100,13 +90,9 @@ public class UICommand : MonoBehaviour
         NewCommand.SettingsButton.interactable = true;
         NewCommand.DeleteButton.interactable = true;
         CommandBuilder.AddUIElementToGroup(NewCommand.GetComponent<UICommand>());
-<<<<<<< HEAD
-=======
     }
     public virtual void Copy(UIComplexCommand com)
     {
-
->>>>>>> temporary-artem
     }
 
     public virtual void Delete()

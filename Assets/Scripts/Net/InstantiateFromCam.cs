@@ -34,20 +34,7 @@ public class InstantiateFromCam : MonoBehaviour
         }
        
 
-        //-------------------------------------Here he ends------------------------------------------------------------------
-
-        // 10 is stub
-<<<<<<< HEAD
-        Pull.ResetScene();
-        int NumberofObjects=10; //what's the magic number???
-        string[] Names = new string[10]; //IDs
-        Vector3[] PositionCoords = new Vector3[10];
-        Quaternion[] RotationCoords = new Quaternion[10];
-=======
-        //SceneManager.Pull.ResetScene();
-       
->>>>>>> temporary-artem
-        
+        //-------------------------------------Here he ends------------------------------------------------------------------      
       
         for (int i=0;i<NumberofObjects;++i)
         {

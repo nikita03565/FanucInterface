@@ -7,24 +7,15 @@ public class DragDrop: MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHand
 {
     public static GameObject itemBeingDragged;
     public static bool inSlot=true;
-<<<<<<< HEAD
-    public SlotScript CommandBuilder;
-=======
     public CommandBuilder сommandBuilder;
->>>>>>> temporary-artem
 
     public void OnBeginDrag(PointerEventData eventData)
     {     
         inSlot = true;
       
         itemBeingDragged = gameObject;
-<<<<<<< HEAD
-        itemBeingDragged.transform.SetParent(CommandBuilder.transform);
-        CommandBuilder.UIElementRemoveFromGroup(this.GetComponent<UICommand>());
-=======
         itemBeingDragged.transform.SetParent(сommandBuilder.transform);
         сommandBuilder.UIElementRemoveFromGroup(this.GetComponent<UICommand>());
->>>>>>> temporary-artem
                    
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
@@ -43,21 +34,13 @@ public class DragDrop: MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHand
         GetComponent<CanvasGroup>().blocksRaycasts = true;
             if (!inSlot)
             {
-<<<<<<< HEAD
-                CommandBuilder.OnDrop(eventData);
-=======
                 сommandBuilder.OnDrop(eventData);
->>>>>>> temporary-artem
             }
     }
     
     // Use this for initialization
     void Start()
     {
-<<<<<<< HEAD
-        CommandBuilder= GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
-=======
         сommandBuilder= GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
->>>>>>> temporary-artem
     }
 }

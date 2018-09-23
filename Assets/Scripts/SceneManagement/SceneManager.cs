@@ -13,11 +13,9 @@ public class SceneManager : MonoBehaviour {
     public static AvailableCommands avaibleCommands;
     public static DropdownSceneObjects dropdownSceneObjects;
     public static FanucScript fanuc;
-<<<<<<< HEAD
-=======
     public static TelegaManager telega;
     public static bool UserControlLock=false;
->>>>>>> temporary-artem
+
     //add SlotScript
 
     // Use this for initialization
@@ -37,6 +35,7 @@ public class SceneManager : MonoBehaviour {
         avaibleCommands = FindObjectOfType<AvailableCommands>();
 
         Net = FindObjectOfType<NetConnection>();
+        Debug.Log(Net);
         //Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
         // Net.Sender("ARRRRRRR");
         //Net.gameObject.SetActive(true);
