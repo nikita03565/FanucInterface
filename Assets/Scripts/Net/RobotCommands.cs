@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public  class RobotCommands:MonoBehaviour{
+public static class RobotCommands{
 
     // Use this for initialization
 
@@ -27,7 +27,7 @@ public  class RobotCommands:MonoBehaviour{
     //WIP
     static public string TelegaMoving()
     {
-        TelegaManager Telega = FindObjectOfType<TelegaManager>();
+        TelegaManager Telega = SceneManager.telega;
         //telegaScript Telega = FindObjectOfType<telegaScript>();
         //string MessageToServer = "{'flag':0;'name':'t';'command':'m";
         string MessageToServer = "{\"flag\": \"0\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"telega\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"m";

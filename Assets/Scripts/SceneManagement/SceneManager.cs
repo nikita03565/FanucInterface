@@ -10,14 +10,21 @@ public class SceneManager : MonoBehaviour {
     public static GameObject ScenarioEditor;
     public static NetConnection Net;
     public static PullManager Pull;
-    public static AvaibleCommands avaibleCommands;
+    public static AvailableCommands avaibleCommands;
     public static DropdownSceneObjects dropdownSceneObjects;
     public static FanucScript fanuc;
+<<<<<<< HEAD
+=======
+    public static TelegaManager telega;
+    public static bool UserControlLock=false;
+>>>>>>> temporary-artem
     //add SlotScript
 
     // Use this for initialization
     void Start ()
     {
+        telega = FindObjectOfType<TelegaManager>();
+
         FanucSettingsPanel = FindObjectOfType<CommandFanucUI>();
         FanucSettingsPanel.gameObject.SetActive(false);
 
@@ -27,10 +34,11 @@ public class SceneManager : MonoBehaviour {
         TelegaSettingsPanel = FindObjectOfType<CommandTelegaUI>();
         TelegaSettingsPanel.gameObject.SetActive(false);
 
-        avaibleCommands = FindObjectOfType<AvaibleCommands>();
+        avaibleCommands = FindObjectOfType<AvailableCommands>();
 
         Net = FindObjectOfType<NetConnection>();
-       // Net.Sender("ARRRRRRR");
+        //Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
+        // Net.Sender("ARRRRRRR");
         //Net.gameObject.SetActive(true);
 
         Pull = FindObjectOfType<PullManager>();
@@ -47,5 +55,8 @@ public class SceneManager : MonoBehaviour {
 	public void ShowScenarioEditor()
     {      
         ScenarioEditor.SetActive(!ScenarioEditor.activeInHierarchy);
+        UserControlLock = !UserControlLock;
     }
+
+
 }

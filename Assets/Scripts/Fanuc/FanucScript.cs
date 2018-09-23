@@ -178,6 +178,15 @@ public class FanucScript : MonoBehaviour
                                 throw new System.Exception();
                             }
                         }
+<<<<<<< HEAD
+=======
+                        //for (int i = 0; i < 6; ++i)
+                        //{
+                        //    diff[i] = newCoord[i] - jointAngles[i];
+                        //}
+                        //normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                        //    diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+>>>>>>> temporary-artem
 
                         StartCoroutine(Move(newCoord));
                     } else
@@ -186,6 +195,17 @@ public class FanucScript : MonoBehaviour
                         {
                             newCoord[i] = float.Parse(arr[i]);
                         }
+<<<<<<< HEAD
+=======
+                        //float[] newCoordTmp = FanucModel.chooseNearestPose(model.InverseTask(ref newCoord), ref jointAngles);
+                        //newCoord = newCoordTmp;
+                        //for (int i = 0; i < 6; ++i)
+                        //{
+                        //    diff[i] = newCoord[i] - jointAngles[i];
+                        //}
+                        //normCoef = Mathf.Sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2] +
+                        //    diff[3] * diff[3] + diff[4] * diff[4] + diff[5] * diff[5]);
+>>>>>>> temporary-artem
 
                         StartCoroutine(Move(newCoord));
                     }
@@ -212,13 +232,20 @@ public class FanucScript : MonoBehaviour
     IEnumerator CoordtoServer()
     {
         yield return new WaitForSeconds(0.1f);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> temporary-artem
         if (mode == 0) net.Sender(RobotCommands.FanucMoving());
         else net.Sender(RobotCommands.FanucMoving(false));
         ReadytoSend = true;
     }
 
+<<<<<<< HEAD
     //move to another class? make an newCoord argument
+=======
+>>>>>>> temporary-artem
     public IEnumerator Move(float[] newCoord)
     {
         Debug.Log(newCoord[0] + " " + newCoord[1] + " " + newCoord[2] + " " +
@@ -334,7 +361,7 @@ public class FanucScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.anyKey)
+        if (Input.anyKey&&!Input.GetMouseButton(0)&&!SceneManager.UserControlLock)
         {
 
             for (int i = 0; i < 6; ++i)
@@ -346,7 +373,28 @@ public class FanucScript : MonoBehaviour
                 if (mode == 2)
                     worldPos[i] += worldPosInc[i];
             }
+<<<<<<< HEAD
            
+=======
+
+            RotateFanuc(FanucColliders, jointAngles);
+            if (NoCollisions)
+            {
+                RotateFanuc(Fanuc, jointAngles);
+                
+            }
+            else StopCoroutine("Move");
+
+            if (ReadytoSend)
+            {
+                
+                StartCoroutine(CoordtoServer());
+                ReadytoSend = false;
+            }
+        
+            NoCollisions = true;
+
+>>>>>>> temporary-artem
             if (mode == 2)
             {
                 try

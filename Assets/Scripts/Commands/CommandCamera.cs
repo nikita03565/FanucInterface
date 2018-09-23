@@ -6,7 +6,13 @@ public class CommandCamera : Command
 {
     public int mode; //0 - all scene, 1 - specific object
     public string id;
+<<<<<<< HEAD
    
+=======
+    
+    
+
+>>>>>>> temporary-artem
     public CommandCamera()
     {
     }
@@ -27,6 +33,10 @@ public class CommandCamera : Command
 
     public override void GetWindow()
     {
+<<<<<<< HEAD
+=======
+
+>>>>>>> temporary-artem
         SceneManager.CameraSettingsPanel.command = this;
         SceneManager.CameraSettingsPanel.show();
     }

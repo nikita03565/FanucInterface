@@ -7,6 +7,10 @@ public class CommandFanuc : Command
     public int mode; // 0 - joint, 2 - world
     public float[] coord;
     public int grasp; // 1 - grasp, 0 - do nothing, -1 - ungrasp
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> temporary-artem
 
     public CommandFanuc(Command parent)
     {

@@ -5,38 +5,62 @@ using Newtonsoft.Json;
 
 public class InstantiateFromCam : MonoBehaviour
 {
-    PullManager Pull;
+  
 
     // Use this for initialization
-    void Start()
-    {
-        //SceneSynchro();
-    }
-   void SceneSynchro()
+   
+   public  void SceneSynchro()//string ObjectList)
     {
         //-------------------------------------Here should be parser--------------------------------------------------------
-        string message = "{\"fanuc\":\"12 32 1 34 65 -90\",\"telega\":\"100 200 300 -1 -2 -3\"}";
+        string message = "{\"fanuc\":\"12 32 1 34 65 -90\",\"telega\":\"100 -2000 300 -1 -2 -3\"}";
+
         var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
+        int NumberofObjects =dict.Count; //what's the magic number???
+        string[] Names = new string[NumberofObjects]; //IDs
+        Vector3[] PositionCoords = new Vector3[NumberofObjects];
+        Quaternion[] RotationCoords = new Quaternion[NumberofObjects];
+        int index = 0;
         foreach (var i in dict.Keys)
         {
-            Debug.Log(i + ": " + dict[i][0]);
+            
+            Debug.Log(i + ": " + dict[i]);
+            Names[index] = i;
+            var arr = dict[i].Split();
+            PositionCoords[index]=CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(arr[0]), float.Parse(arr[1]), float.Parse(arr[2]),0));
+            Debug.Log(Names[index]);
+            Debug.Log("Position: "+PositionCoords[index]);
+            
+            ++index;
         }
+       
+
         //-------------------------------------Here he ends------------------------------------------------------------------
 
         // 10 is stub
+<<<<<<< HEAD
         Pull.ResetScene();
         int NumberofObjects=10; //what's the magic number???
         string[] Names = new string[10]; //IDs
         Vector3[] PositionCoords = new Vector3[10];
         Quaternion[] RotationCoords = new Quaternion[10];
+=======
+        //SceneManager.Pull.ResetScene();
+       
+>>>>>>> temporary-artem
         
       
         for (int i=0;i<NumberofObjects;++i)
         {
-            GameObject obj= Pull.Find(Names[i]); 
-            obj.transform.rotation = RotationCoords[i];
-            obj.transform.position = PositionCoords[i];
-            obj.SetActive(true);
+            
+            GameObject obj= SceneManager.Pull.Find(Names[i]);
+            // obj.transform.rotation = RotationCoords[i];
+            if (obj)
+            {
+                obj.transform.position = PositionCoords[i];
+                obj.SetActive(true);
+                Debug.Log(Names[i] + " found");
+            }
+            else Debug.Log(i+"   "+ Names[i] + "Not Found");
         }
     }
     // Update is called once per frame

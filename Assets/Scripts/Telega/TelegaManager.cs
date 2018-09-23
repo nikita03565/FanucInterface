@@ -64,7 +64,11 @@ public class TelegaManager : MonoBehaviour
     }
 
     //need to be fixed
+<<<<<<< HEAD
     IEnumerator ParallelMoving()
+=======
+    IEnumerator doThisShit()
+>>>>>>> temporary-artem
     {
 
         rc.aims.Insert(0, telega.PointA.transform.position);

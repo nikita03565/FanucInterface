@@ -10,8 +10,10 @@ public class BuilderInterface : MonoBehaviour
 {
     public static UIComplexCommand ActiveCommand;
     public UIComplexCommand SavedCommand;
-    SlotScript CommandBuilder;
+    CommandBuilder CommandBuilder;
     public static Button RewriteButton;
+    //3 here is number of standart default childs(text, sett, del)
+    const int DefaulChilds = 3;
 
     // Use this for initialization
 
@@ -19,6 +21,14 @@ public class BuilderInterface : MonoBehaviour
     {
         if (CommandBuilder.UICommandElements.Count == 0)
             return;
+<<<<<<< HEAD:Assets/Scripts/Interface/BuilderInterface.cs
+=======
+        if (CommandBuilder.CommandName.text == "")
+        {
+            CommandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
+            return;
+        }
+>>>>>>> temporary-artem:Assets/Scripts/Interface/BuilderInterface.cs
         UIComplexCommand newCommand = Instantiate(CommandBuilder.ComplexCommandPrefab, SceneManager.avaibleCommands.transform).GetComponent<UIComplexCommand>();
         
         for (int i = 0; i < CommandBuilder.UICommandElements.Count; ++i)
@@ -48,15 +58,26 @@ public class BuilderInterface : MonoBehaviour
         SavedCommand = newCommand;
         SerializeToJson(SavedCommand);
         CommandBuilder.ResetBuilder();
-        SceneManager.avaibleCommands.AvaibleCommandsSet.Add(SavedCommand);
+        SceneManager.avaibleCommands.AvailableCommandsSet.Add(SavedCommand);
 
     }
 
     public void Rewrite()
     {
+        if (CommandBuilder.UICommandElements.Count == 0)
+            return;
+        if (CommandBuilder.CommandName.text == "")
+        {
+            CommandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
+            return;
+        }
         SaveNewComplexCommand();
         CommandBuilder.ResetBuilder();
         SceneManager.avaibleCommands.RewriteAllrefs(ActiveCommand, SavedCommand);
+<<<<<<< HEAD:Assets/Scripts/Interface/BuilderInterface.cs
+=======
+        SavedCommand.localSaveIndex = ActiveCommand.localSaveIndex;
+>>>>>>> temporary-artem:Assets/Scripts/Interface/BuilderInterface.cs
         RewriteButton.gameObject.SetActive(false);
     }
 
@@ -77,7 +98,7 @@ public class BuilderInterface : MonoBehaviour
     void Start()
     {
         RewriteButton = GameObject.Find("RewriteButton").GetComponent<Button>();
-        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
+        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
         RewriteButton.gameObject.SetActive(false);
         string[] Files= Directory.GetFiles(Application.persistentDataPath,"*.json");
 
@@ -94,10 +115,17 @@ public class BuilderInterface : MonoBehaviour
         Debug.Log("ss-s-s-s-s-SAVED");
         com.IndexUp();
         File.WriteAllText(Application.persistentDataPath+"/" +com.GetComponentInChildren<Text>().text+".json", JsonUtility.ToJson(com));
+<<<<<<< HEAD:Assets/Scripts/Interface/BuilderInterface.cs
         //3 here is number of standart default childs(text, sett, del)
         for (int i = 0; i < com.transform.childCount-3; ++i)
         {
             File.WriteAllText(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text + "/" + i+ ".json", JsonUtility.ToJson(com.transform.GetChild(i+3).GetComponent<UICommand>()));
+=======
+        
+        for (int i = 0; i < com.transform.childCount-DefaulChilds; ++i)
+        {
+            File.WriteAllText(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text + "/" + i+ ".json", JsonUtility.ToJson(com.transform.GetChild(i+DefaulChilds).GetComponent<UICommand>()));
+>>>>>>> temporary-artem:Assets/Scripts/Interface/BuilderInterface.cs
         }
     }
    
@@ -128,10 +156,17 @@ public class BuilderInterface : MonoBehaviour
             newCommand.UICommandElements[i].GetComponentInChildren<Text>().text= newCommand.UICommandElements[i].CommandName;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
+<<<<<<< HEAD:Assets/Scripts/Interface/BuilderInterface.cs
         if(newCommand.localSaveIndex>SceneManager.avaibleCommands.AvaibleCommandsSet.Count)
             SceneManager.avaibleCommands.AvaibleCommandsSet.Insert(SceneManager.avaibleCommands.AvaibleCommandsSet.Count, newCommand);
         else
             SceneManager.avaibleCommands.AvaibleCommandsSet.Insert(newCommand.localSaveIndex, newCommand);
+=======
+        if(newCommand.localSaveIndex>SceneManager.avaibleCommands.AvailableCommandsSet.Count)
+            SceneManager.avaibleCommands.AvailableCommandsSet.Insert(SceneManager.avaibleCommands.AvailableCommandsSet.Count, newCommand);
+        else
+            SceneManager.avaibleCommands.AvailableCommandsSet.Insert(newCommand.localSaveIndex, newCommand);
+>>>>>>> temporary-artem:Assets/Scripts/Interface/BuilderInterface.cs
 
         SceneManager.avaibleCommands.SetSavedOrderIndex(newCommand);
     }

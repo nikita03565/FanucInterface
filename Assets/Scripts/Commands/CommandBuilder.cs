@@ -5,7 +5,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //rename
+<<<<<<< HEAD:Assets/Scripts/Commands/SlotScript.cs
 public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPointerEnterHandler{
+=======
+public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IPointerEnterHandler{
+>>>>>>> temporary-artem:Assets/Scripts/Commands/CommandBuilder.cs
     public List<UICommand> UICommandElements = new List<UICommand>();
     //[SerializeField]
     public List<Command> CommandsSet = new List<Command>();
@@ -32,7 +36,11 @@ public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPoint
             {
                 for (int i = 0; i < UIelement.GetNumberofCommands(); ++i)
                 {
+<<<<<<< HEAD:Assets/Scripts/Commands/SlotScript.cs
                     CommandsSet.Add(UIelement.GetComponent<UIComplexCommand>().GetCommandFromSet(i));
+=======
+                    CommandsSet.Add(UIelement.GetComponent<UIComplexCommand>().CommandsSet[i]);
+>>>>>>> temporary-artem:Assets/Scripts/Commands/CommandBuilder.cs
                 }
             }
             else CommandsSet.Add(UIelement.command);
@@ -49,7 +57,7 @@ public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPoint
                
                 for (int i = 0;  i < UIelement.GetNumberofCommands(); ++i)
                 {
-                    CommandsSet.Insert(CommandIndex + i, UIelement.GetComponent<UIComplexCommand>().GetCommandFromSet(i));
+                    CommandsSet.Insert(CommandIndex + i, UIelement.GetComponent<UIComplexCommand>().CommandsSet[i]);
                 }
             }
         else CommandsSet.Insert(CommandIndex, UIelement.command);
@@ -115,7 +123,11 @@ public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPoint
     public void OnDrop(PointerEventData eventData)
     {
        
+<<<<<<< HEAD:Assets/Scripts/Commands/SlotScript.cs
         if (DragDrop.itemBeingDragged && DragDrop.itemBeingDragged.GetComponent<DragDrop>().CommandBuilder == this)
+=======
+        if (DragDrop.itemBeingDragged && DragDrop.itemBeingDragged.GetComponent<DragDrop>().сommandBuilder == this)
+>>>>>>> temporary-artem:Assets/Scripts/Commands/CommandBuilder.cs
         { 
             AddUIElementToGroup(DragDrop.itemBeingDragged.GetComponent<UICommand>(), DragDrop.itemBeingDragged.transform.GetSiblingIndex());
             DragDrop.itemBeingDragged.transform.localPosition = new Vector3(DragDrop.itemBeingDragged.transform.localPosition.x,- (DragDrop.itemBeingDragged.transform.GetSiblingIndex() - (float)(UICommandElements.Count-1) / 2)  * UICommandHeight,0);
@@ -127,6 +139,7 @@ public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPoint
     public void ResetBuilder()
     {
         CommandsSet.Clear();
+        CommandName.GetComponentInChildren<Text>().text = "Enter the name";
         UICommandElements.Clear();
         CommandName.text = null;
         foreach (UICommand child in GetComponentsInChildren<UICommand>())
