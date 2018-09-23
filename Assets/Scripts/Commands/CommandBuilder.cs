@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //rename
-public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPointerEnterHandler{
+public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IPointerEnterHandler{
     public List<UICommand> UICommandElements = new List<UICommand>();
     //[SerializeField]
     public List<Command> CommandsSet = new List<Command>();
@@ -32,7 +32,7 @@ public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPoint
             {
                 for (int i = 0; i < UIelement.GetNumberofCommands(); ++i)
                 {
-                    CommandsSet.Add(UIelement.GetComponent<UIComplexCommand>().GetCommandFromSet(i));
+                    CommandsSet.Add(UIelement.GetComponent<UIComplexCommand>().CommandsSet[i]);
                 }
             }
             else CommandsSet.Add(UIelement.command);
@@ -49,7 +49,7 @@ public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPoint
                
                 for (int i = 0;  i < UIelement.GetNumberofCommands(); ++i)
                 {
-                    CommandsSet.Insert(CommandIndex + i, UIelement.GetComponent<UIComplexCommand>().GetCommandFromSet(i));
+                    CommandsSet.Insert(CommandIndex + i, UIelement.GetComponent<UIComplexCommand>().CommandsSet[i]);
                 }
             }
         else CommandsSet.Insert(CommandIndex, UIelement.command);
@@ -127,6 +127,7 @@ public class SlotScript : MonoBehaviour,IDropHandler,IPointerExitHandler, IPoint
     public void ResetBuilder()
     {
         CommandsSet.Clear();
+        CommandName.GetComponentInChildren<Text>().text = "Enter the name";
         UICommandElements.Clear();
         CommandName.text = null;
         foreach (UICommand child in GetComponentsInChildren<UICommand>())
