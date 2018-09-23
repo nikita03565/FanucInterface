@@ -10,6 +10,7 @@ public class InstantiateFromCam : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Pull = SceneManager.Pull;
         //SceneSynchro();
     }
    void SceneSynchro()

@@ -13,11 +13,15 @@ public class SceneManager : MonoBehaviour {
     public static AvaibleCommands avaibleCommands;
     public static DropdownSceneObjects dropdownSceneObjects;
     public static FanucScript fanuc;
+    public static TelegaManager telega;
+    public static bool UserControlLock=false;
     //add SlotScript
 
     // Use this for initialization
     void Start ()
     {
+        telega = FindObjectOfType<TelegaManager>();
+
         FanucSettingsPanel = FindObjectOfType<CommandFanucUI>();
         FanucSettingsPanel.gameObject.SetActive(false);
 
@@ -47,5 +51,8 @@ public class SceneManager : MonoBehaviour {
 	public void ShowScenarioEditor()
     {      
         ScenarioEditor.SetActive(!ScenarioEditor.activeInHierarchy);
+        UserControlLock = !UserControlLock;
     }
+
+
 }

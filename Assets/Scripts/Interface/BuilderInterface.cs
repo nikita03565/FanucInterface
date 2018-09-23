@@ -10,8 +10,10 @@ public class BuilderInterface : MonoBehaviour
 {
     public static UIComplexCommand ActiveCommand;
     public UIComplexCommand SavedCommand;
-    SlotScript CommandBuilder;
+    CommandBuilder CommandBuilder;
     public static Button RewriteButton;
+    //3 here is number of standart default childs(text, sett, del)
+    const int DefaulChilds = 3;
 
     // Use this for initialization
 
@@ -19,6 +21,11 @@ public class BuilderInterface : MonoBehaviour
     {
         if (CommandBuilder.UICommandElements.Count == 0)
             return;
+        if (CommandBuilder.CommandName.text == "")
+        {
+            CommandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
+            return;
+        }
         UIComplexCommand newCommand = Instantiate(CommandBuilder.ComplexCommandPrefab, SceneManager.avaibleCommands.transform).GetComponent<UIComplexCommand>();
         
         for (int i = 0; i < CommandBuilder.UICommandElements.Count; ++i)
@@ -54,9 +61,17 @@ public class BuilderInterface : MonoBehaviour
 
     public void Rewrite()
     {
+        if (CommandBuilder.UICommandElements.Count == 0)
+            return;
+        if (CommandBuilder.CommandName.text == "")
+        {
+            CommandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
+            return;
+        }
         SaveNewComplexCommand();
         CommandBuilder.ResetBuilder();
         SceneManager.avaibleCommands.RewriteAllrefs(ActiveCommand, SavedCommand);
+        SavedCommand.localSaveIndex = ActiveCommand.localSaveIndex;
         RewriteButton.gameObject.SetActive(false);
     }
 
@@ -77,7 +92,7 @@ public class BuilderInterface : MonoBehaviour
     void Start()
     {
         RewriteButton = GameObject.Find("RewriteButton").GetComponent<Button>();
-        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<SlotScript>();
+        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
         RewriteButton.gameObject.SetActive(false);
         string[] Files= Directory.GetFiles(Application.persistentDataPath,"*.json");
 
@@ -94,10 +109,10 @@ public class BuilderInterface : MonoBehaviour
         Debug.Log("ss-s-s-s-s-SAVED");
         com.IndexUp();
         File.WriteAllText(Application.persistentDataPath+"/" +com.GetComponentInChildren<Text>().text+".json", JsonUtility.ToJson(com));
-        //3 here is number of standart default childs(text, sett, del)
-        for (int i = 0; i < com.transform.childCount-3; ++i)
+        
+        for (int i = 0; i < com.transform.childCount-DefaulChilds; ++i)
         {
-            File.WriteAllText(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text + "/" + i+ ".json", JsonUtility.ToJson(com.transform.GetChild(i+3).GetComponent<UICommand>()));
+            File.WriteAllText(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text + "/" + i+ ".json", JsonUtility.ToJson(com.transform.GetChild(i+DefaulChilds).GetComponent<UICommand>()));
         }
     }
    
