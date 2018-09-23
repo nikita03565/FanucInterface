@@ -1,114 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="BuilderInterface" Collapsed="true">
-    <Position X="91.75" Y="24.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAIAAACCAAABQAABBAAAAIAQEAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Commands\BuilderInterface.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ComplexScenario" Collapsed="true">
-    <Position X="93.5" Y="24.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
-      <FileName>Assets\Scripts\Commands\BuilderInterface.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Command" Collapsed="true">
-    <Position X="87" Y="24" Width="1.5" />
+  <Class Name="Command">
+    <Position X="10.25" Y="22.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAABgMAAAAAAACQAAAAAABAAAgAAAAAAIAAAAACAAAA=</HashCode>
       <FileName>Assets\Scripts\Commands\Command.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CommandCamera" Collapsed="true">
-    <Position X="89.25" Y="25.5" Width="1.5" />
+  <Class Name="CommandCamera">
+    <Position X="10.5" Y="27.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAgIAAAAAAAACAAAAAABAAAAAAAAAIAAAAAACAAgA=</HashCode>
+      <HashCode>AAAAgIAAAAAAAACAAAAAABAAAAAAAAAAAAAAAACAAgA=</HashCode>
       <FileName>Assets\Scripts\Commands\CommandCamera.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CommandFanuc" Collapsed="true">
-    <Position X="84.75" Y="25.5" Width="1.5" />
+  <Class Name="CommandFanuc">
+    <Position X="13.75" Y="27.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>ABAAgIAAAAAAAACAAAAAABAAAABAAAAIAAAAAACAAAA=</HashCode>
+      <HashCode>ABAAgIAAAAAAAACAAAAAABAAAABAAAAAAAAAAACAAAA=</HashCode>
       <FileName>Assets\Scripts\Commands\CommandFanuc.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CommandTelega" Collapsed="true">
-    <Position X="87" Y="25.5" Width="1.5" />
+  <Class Name="CommandTelega">
+    <Position X="7.25" Y="27.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAgIAAAAAAAACAAAAAABAAAABAAAAIAAAAAACAAAA=</HashCode>
+      <HashCode>AAAAgIAAAAAAAACAAAAAABAAAABAAAAAAAAAAACAAAA=</HashCode>
       <FileName>Assets\Scripts\Commands\CommandTelega.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DragDrop" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="91.75" Y="25.25" Width="1.5" />
+  <Class Name="DragDrop">
+    <Position X="18.25" Y="23.75" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>ABQAAAAAACAAAAAAAABAEAAAAAAAAiAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABAAAAAAACAAAAAAAABAEAAAAAAAAiAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Commands\DragDrop.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="SlotScript" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="93.5" Y="25.25" Width="1.5" />
+  <Class Name="SlotScript">
+    <Position X="23" Y="23.75" Width="6" />
     <TypeIdentifier>
-      <HashCode>IAQAAAAAACYCAAAIAAAAQBAgAgAgAECAAAgQAQAAAAA=</HashCode>
+      <HashCode>IAQAAIAAACQCAAAIAAAAQBAgAgAgCECAAAgQAQAAAAA=</HashCode>
       <FileName>Assets\Scripts\Commands\SlotScript.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="UICommand" Collapsed="true">
-    <Position X="84.5" Y="27.25" Width="1.5" />
+  <Class Name="UICommand">
+    <Position X="1.5" Y="22.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAYBAAAAACCAAAAAIABACAAAAAUAAICAgAAAAAAAAAA=</HashCode>
+      <HashCode>AAYBAAAAACCAAAAAIABASAAAAAUAAICAgAAAAAAAAAQ=</HashCode>
       <FileName>Assets\Scripts\Commands\UICommand.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="UIComplexCommand" Collapsed="true">
-    <Position X="84.5" Y="28.75" Width="1.75" />
+  <Class Name="UIComplexCommand">
+    <Position X="1" Y="28" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AAaAAAAAACQAAAAAAAAACAAAAAEAAAAAgAgAAAAAAAA=</HashCode>
+      <HashCode>CAKAgQAAACQAAAAAAAAACAAAAAEAAAAAgAgAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Commands\UIComplexCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CoordTransformation" Collapsed="true">
-    <Position X="81.25" Y="23.25" Width="1.75" />
+  <Class Name="CoordTransformation">
+    <Position X="5" Y="10.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AIAAAAAIAAAAAAAAAAAAAAAAAAAAABAAgAgAAABAAAA=</HashCode>
       <FileName>Assets\Scripts\Fanuc\CoordTransformation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FanucCollision" Collapsed="true">
-    <Position X="83.25" Y="23.25" Width="1.5" />
+  <Class Name="FanucCollision">
+    <Position X="14" Y="10.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAACAAABAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Fanuc\FanucCollision.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FanucModel" Collapsed="true">
-    <Position X="79" Y="24.5" Width="1.5" />
+  <Class Name="FanucModel">
+    <Position X="0.5" Y="15.25" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAEAIAIQAAAEgQAAAAAIAEAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Fanuc\FanucModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FanucScript" Collapsed="true">
-    <Position X="81.25" Y="24.25" Width="1.5" />
+  <Class Name="FanucScript">
+    <Position X="9.25" Y="10.75" Width="3.75" />
     <TypeIdentifier>
-      <HashCode>AECAAACEAqABCQCKgIAiiAQAAigAgQQFAAGAAwJIBHA=</HashCode>
+      <HashCode>AECAAACEAqABCQCIgIAiiAQAAggAgQQFAAGAAwJIBHA=</HashCode>
       <FileName>Assets\Scripts\Fanuc\FanucScript.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Poly34" Collapsed="true">
-    <Position X="83.25" Y="24.25" Width="1.5" />
+  <Class Name="Poly34">
+    <Position X="17.25" Y="10.75" Width="4.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAQCABAAAAIAAAAAAAAAADgAQIAAAgIAAA=</HashCode>
       <FileName>Assets\Scripts\Fanuc\Poly34.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RoboModel" Collapsed="true">
-    <Position X="79" Y="23.25" Width="1.5" />
+  <Class Name="RoboModel">
+    <Position X="1" Y="10.75" Width="3" />
     <NestedTypes>
       <Struct Name="RoboModel.DhParameters" Collapsed="true">
         <TypeIdentifier>
@@ -121,121 +107,145 @@
       <FileName>Assets\Scripts\Fanuc\RoboModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AvaibleCommands" Collapsed="true">
-    <Position X="87.5" Y="21" Width="1.75" />
+  <Class Name="AvaibleCommands">
+    <Position X="16.25" Y="0.5" Width="6.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAABAACAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAABAACAAAAAAAACAAAAAEAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interface\AvaibleCommands.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CameraOrbit" Collapsed="true">
-    <Position X="89.25" Y="21" Width="1.5" />
+  <Class Name="BuilderInterface">
+    <Position X="1" Y="32.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAACCAAABQAABBAAAAIAQEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interface\BuilderInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ComplexScenario">
+    <Position X="16.5" Y="32.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\Interface\BuilderInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraOrbit">
+    <Position X="10.75" Y="32.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAQQCBEAACAAAACAAAAAIAEgAAAAAAAAAATEAAAAABA=</HashCode>
       <FileName>Assets\Scripts\Interface\CameraOrbit.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CommandCameraUI" Collapsed="true">
-    <Position X="91" Y="21" Width="1.75" />
+  <Class Name="CommandCameraUI">
+    <Position X="4.75" Y="5.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAgIAEACABAAAAAAAAABAAAAQAAAAARQAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interface\CommandCameraUI.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CommandFanucUI" Collapsed="true">
-    <Position X="87.5" Y="22" Width="1.5" />
+  <Class Name="CommandFanucUI">
+    <Position X="12" Y="5.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>IAAAgIAEACABAAAAAAAAABAAAARAAAAARQAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interface\CommandFanucUI.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CommandTelegaUI" Collapsed="true">
-    <Position X="89.25" Y="22" Width="1.75" />
+  <Class Name="CommandTelegaUI">
+    <Position X="15.25" Y="4.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAgIAEACABAAAAAAAAABAAAAQAAAAARQAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interface\CommandTelegaUI.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DropdownSceneObjects" Collapsed="true">
-    <Position X="91" Y="22" Width="2" />
+  <Class Name="DropdownSceneObjects">
+    <Position X="0.5" Y="0.5" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAEAAAAAAAAAAAAAAAAgABAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAEAAAAAAAAAAAAAAAAgABAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interface\DropdownSceneObjects.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LongPressedButton" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="87.5" Y="23" Width="1.75" />
+  <Class Name="LongPressedButton" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="35.25" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AASAAAAAAAAIAAAAAAAAAAAAAAAAAABAAAAAAAAEAAA=</HashCode>
       <FileName>Assets\Scripts\Interface\LongPressedButton.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="ToggleGroupExt" Collapsed="true">
-    <Position X="89.25" Y="23" Width="1.5" />
+  <Class Name="ToggleGroupExt">
+    <Position X="19.5" Y="32.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAIAAAAA=</HashCode>
       <FileName>Assets\Scripts\Interface\ToggleGroupExt.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="InstantiateFromCam" Collapsed="true">
-    <Position X="79" Y="27.5" Width="1.75" />
+  <Class Name="InstantiateFromCam">
+    <Position X="13.75" Y="32.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBA=</HashCode>
       <FileName>Assets\Scripts\Net\InstantiateFromCam.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NetConnection" Collapsed="true">
-    <Position X="80.75" Y="27.5" Width="1.5" />
+  <Class Name="NetConnection">
+    <Position X="1.5" Y="3.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAACAAAAACgAAAAgAACAAAAACECAAAAAAIICA=</HashCode>
+      <HashCode>AAAAABAAACAAAAACAAAAAgAACAAAAACECAAAAAAIACA=</HashCode>
       <FileName>Assets\Scripts\Net\NetConnection.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RobotCommands" Collapsed="true">
-    <Position X="79" Y="28.5" Width="1.5" />
+  <Class Name="RobotCommands">
+    <Position X="7.25" Y="32.75" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAACAAAgA=</HashCode>
       <FileName>Assets\Scripts\Net\RobotCommands.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PullManager" Collapsed="true">
-    <Position X="90.25" Y="27" Width="1.5" />
+  <Class Name="PullManager">
+    <Position X="19.25" Y="4" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAACAAAAAAAAAAAAAAAAAIAAAAAAIQAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\SceneManagement\PullManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="SceneManager" Collapsed="true">
-    <Position X="92" Y="27" Width="1.5" />
+  <Class Name="SceneManager">
+    <Position X="8.75" Y="0.5" Width="3.5" />
     <TypeIdentifier>
       <HashCode>CAAAAgAAACKAACAAAAACAAAAAAACAAAAAEAAAAAAggA=</HashCode>
       <FileName>Assets\Scripts\SceneManagement\SceneManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AddPoint" Collapsed="true">
-    <Position X="87" Y="28" Width="1.5" />
+  <Class Name="AddPoint">
+    <Position X="24.5" Y="11" Width="2" />
     <TypeIdentifier>
       <HashCode>AAYCAAAAACAAAAAAACAAAAAAAAEAQBAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Telega\AddPoint.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="raycast" Collapsed="true">
-    <Position X="88.75" Y="28" Width="1.5" />
+  <Class Name="raycast">
+    <Position X="35.25" Y="11" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAQABACIACAAggAAACACAAQAAAAAAggAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Telega\raycast.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TelegaManager" Collapsed="true">
-    <Position X="87" Y="29" Width="1.5" />
+  <Class Name="TelegaManager">
+    <Position X="27.25" Y="11" Width="2" />
     <TypeIdentifier>
       <HashCode>AAwCAAAAAiAAAAAAAACAEAAAAAAAAAAgIQQAIRFAAkA=</HashCode>
       <FileName>Assets\Scripts\Telega\TelegaManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="telegaScript" Collapsed="true">
-    <Position X="88.75" Y="29" Width="1.5" />
+  <Class Name="telegaScript">
+    <Position X="30" Y="11" Width="4" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="telegaScript.MoveType">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Telega\telegaScript.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
       <HashCode>gEVCAAcAAiBAgAQAAICggAMCAgQwAAAiBQIAsGEHAAA=</HashCode>
       <FileName>Assets\Scripts\Telega\telegaScript.cs</FileName>

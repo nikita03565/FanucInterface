@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class NetConnection : MonoBehaviour {
 
     public string message;
-    public FanucScript Fanuc;
     NetworkStream stream;
     //const string Hostname="192.168.1.5";
     const string Hostname = "192.168.1.106";
@@ -17,10 +16,6 @@ public class NetConnection : MonoBehaviour {
     //const int Port = 9090;
     TcpClient SocketConnection;
     Thread ReceiveThread;
- 
-   
-    Mutex mutex = new Mutex();
-    // Use this for initialization
    
     void Start () {
         try

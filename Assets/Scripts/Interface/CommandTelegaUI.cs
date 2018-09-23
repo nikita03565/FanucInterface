@@ -95,4 +95,9 @@ public class CommandTelegaUI : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
+
+    public void CloseWindow()
+    {
+        SceneManager.TelegaSettingsPanel.gameObject.SetActive(false);
+    }
 }

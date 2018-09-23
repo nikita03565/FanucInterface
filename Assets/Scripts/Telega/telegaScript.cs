@@ -23,12 +23,12 @@ public class telegaScript : MonoBehaviour {
 
     public GameObject PointA, PointB, PointC, APointBar1, BPointBar1, APointBar2, BPointBar2, APointBar3, BPointBar3;
 
-    enum MoveType
+    public enum MoveType
     {
         RotateTeleguAndMove,
         RotateBarsAndMove
     }
-    MoveType Type;
+    public MoveType Type;
 
     private float rotationwheel = 0;
     private float rot;

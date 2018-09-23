@@ -70,4 +70,9 @@ public class CommandCameraUI : MonoBehaviour
         //throw new System.NotImplementedException();
     }
 
+    public void CloseWindow()
+    {
+        SceneManager.CameraSettingsPanel.gameObject.SetActive(false);
+    }
+
 }
