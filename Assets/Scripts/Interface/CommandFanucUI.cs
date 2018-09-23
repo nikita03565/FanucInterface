@@ -128,5 +128,6 @@ public class CommandFanucUI : MonoBehaviour
     public void CloseWindow()
     {
         SceneManager.FanucSettingsPanel.gameObject.SetActive(false);
+        SceneManager.dropdownSceneObjects.gameObject.SetActive(false);
     }
 }

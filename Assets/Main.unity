@@ -4426,13 +4426,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1518637944508002, guid: e250ce8cbc73a324cba09a27d2d4ecd8,
-          type: 2}
-        m_MethodName: 
+      - m_Target: {fileID: 415296406}
+        m_MethodName: CloseWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -8394,7 +8393,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1061751582}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114701847388858770, guid: ae18775cffc78234aaada3b765cbe152,
+          type: 2}
+        m_MethodName: CloseWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1061751582
@@ -8818,7 +8829,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1164005480}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114891096258255268, guid: bb1a1d53cfaf6154b994886b6e237264,
+          type: 2}
+        m_MethodName: CloseWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1164005480
@@ -10405,7 +10428,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -624.899
+      value: -625.038
       objectReference: {fileID: 0}
     - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
       propertyPath: m_LocalPosition.y
@@ -10413,7 +10436,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.579
+      value: -0.266
       objectReference: {fileID: 0}
     - target: {fileID: 4536469125764332, guid: c65d184c267cc474085f74997bc61749, type: 2}
       propertyPath: m_LocalRotation.x
