@@ -28,6 +28,7 @@ public class CommandFanucUI : MonoBehaviour
         GraspGroup.SetActive(2);
         inputField = this.transform.Find("SetCoordField").GetComponent<InputField>();
         inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });
+        
     }
 
     internal void show()

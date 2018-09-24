@@ -12,7 +12,7 @@ public class AddPoint : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        //input = this.transform.Find("InputTelegaCoordField").GetComponent<InputField>();
 	}
 	
 	// Update is called once per frame

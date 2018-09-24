@@ -8,6 +8,7 @@ public class FanucScript : MonoBehaviour
 {
     FanucModel model = new FanucModel();
     public NetConnection net;
+    public AddPoint addPoint;
 
     //need to be changed for cartesian coords
     float speed = 30.0f;
@@ -58,6 +59,7 @@ public class FanucScript : MonoBehaviour
         Fanuc[4].transform.localRotation = Quaternion.Euler(0, jointAngles[4], 0);
         inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });
         CoordDisplayAndSave();
+        addPoint = FindObjectOfType<AddPoint>();
     }
 
     public void ChangeMode()
@@ -218,6 +220,7 @@ public class FanucScript : MonoBehaviour
 
     public IEnumerator Move(float[] newCoord)
     {
+        SceneManager.UserControlLock = true;
         Debug.Log(newCoord[0] + " " + newCoord[1] + " " + newCoord[2] + " " +
             newCoord[3] + " " + newCoord[4] + " " + newCoord[5] + " " + mode + "--------------------------------------------------------");
         //Debug.Log(jointAngles[0] - newCoord[0]);
@@ -279,6 +282,7 @@ public class FanucScript : MonoBehaviour
             }
             CoordDisplayAndSave();
         }
+        SceneManager.UserControlLock = false;
     }
 
     public void CollisionLimiter()
@@ -331,7 +335,8 @@ public class FanucScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.anyKey&&!SceneManager.UserControlLock)
+        Debug.Log(addPoint.input.text.Length);
+        if (Input.anyKey && !SceneManager.UserControlLock && !inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
         {
 
             for (int i = 0; i < 6; ++i)

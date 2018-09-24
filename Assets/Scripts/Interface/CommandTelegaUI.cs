@@ -20,6 +20,7 @@ public class CommandTelegaUI : MonoBehaviour
         ModeGroup.SetActive(0);
         inputField = this.transform.Find("SetCoordField").GetComponent<InputField>();
         inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });
+        command.RobotName = "t";
     }
 
     public void LockInput(InputField input)
@@ -89,7 +90,7 @@ public class CommandTelegaUI : MonoBehaviour
             command.mode = 1;
         if (inputField.text != "Wrong string" && inputField.text.Length != 0)
         {
-            //command.CommandToSend = RobotCommands.TelegaMoving(inputField.text);
+            command.CommandToSend = RobotCommands.TelegaMoving(inputField.text);
             ModeGroup.SetActive(0);
             inputField.text = "";
             this.gameObject.SetActive(false);

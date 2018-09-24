@@ -79,6 +79,9 @@ public class BuilderInterface : MonoBehaviour
     {
         ComplexScenario ListToSend = new ComplexScenario();
         ListToSend.Scenario = new List<Command>(CommandBuilder.CommandsSet);
+        ListToSend.flag = "0";
+        ListToSend.name = CommandBuilder.CommandName.text;
+
         Debug.Log(JsonUtility.ToJson(ListToSend));
         
         SceneManager.Net.Sender(JsonUtility.ToJson(ListToSend)) ;
@@ -156,5 +159,7 @@ public class BuilderInterface : MonoBehaviour
 [System.Serializable]
 public  class ComplexScenario
 {
+    public string flag;
+    public string name;
     public List<Command> Scenario;
 }

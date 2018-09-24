@@ -8,14 +8,16 @@ public class CommandFanuc : Command
     public float[] coord;
     public int grasp; // 1 - grasp, 0 - do nothing, -1 - ungrasp
 
+    public CommandFanuc()
+    {
+        RobotName = "f";
+    }
     public CommandFanuc(Command parent)
     {
         Command.Copy(this, parent);        
     }
 
-    public CommandFanuc()
-    {
-    }
+   
 
     public override void GetWindow()
     {

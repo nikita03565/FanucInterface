@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CameraOrbit : MonoBehaviour
 {
@@ -19,12 +20,13 @@ public class CameraOrbit : MonoBehaviour
 
     public bool CameraDisabled = true;
 
+    public InputField addPointField;
     // Use this for initialization
     void Start()
     {
         this._XForm_Camera = this.transform;
         this._XForm_Parent = this.transform.parent;
-        
+        addPointField = FindObjectOfType<AddPoint>().input;
     }
 
     public void SwitchMode()
@@ -34,31 +36,34 @@ public class CameraOrbit : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-            GetComponent<Camera>().orthographic = !GetComponent<Camera>().orthographic;
-        if (Input.GetMouseButton(1))
+        if (!SceneManager.fanuc.inputField.isFocused && !SceneManager.fanuc.InputSpeedField.isFocused && !addPointField.isFocused)
         {
-            CameraDisabled = false;
-        }
-        else CameraDisabled = true;
+            if (Input.GetKeyDown(KeyCode.Tab))
+                GetComponent<Camera>().orthographic = !GetComponent<Camera>().orthographic;
+            if (Input.GetMouseButton(1))
+            {
+                CameraDisabled = false;
+            }
+            else CameraDisabled = true;
 
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            num2 += 0.02f;
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            num2 -= 0.02f;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            num1 += 0.02f;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            num1 -= 0.02f;
-        }
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                num2 += 0.02f;
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                num2 -= 0.02f;
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                num1 += 0.02f;
+            }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                num1 -= 0.02f;
+            }
+        } 
     }
 
     void LateUpdate()

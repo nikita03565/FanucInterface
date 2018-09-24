@@ -5,9 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public  class Command
 {
+    public bool parallel;
+    public string RobotName;
     public int energy;
     public int time;
-    public  bool parallel;
+    
     public string CommandToSend="";
 
     public Command()
@@ -18,6 +20,7 @@ public  class Command
     public Command(Command com)
     {
         energy = com.energy;
+        RobotName = com.RobotName;
         time = com.time;
         parallel = com.parallel;
         CommandToSend = com.CommandToSend;
@@ -47,7 +50,7 @@ public  class Command
 
     public static bool IsEQ(Command com1, Command com2)
     {
-        if ((com1.parallel == com2.parallel) && 
+        if ((com1.parallel == com2.parallel) && (com1.RobotName == com2.RobotName)&&
             (com1.time == com2.time) && 
             (com1.CommandToSend==com2.CommandToSend) && 
             (com1.energy == com2.energy))
@@ -57,6 +60,7 @@ public  class Command
 
     public static void Copy(Command com1, Command com2)
     {
+        com1.RobotName = com2.RobotName;
         com1.energy = com2.energy;
         com1.time = com2.time;
         com1.parallel = com2.parallel;

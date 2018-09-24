@@ -11,6 +11,7 @@ public class CommandTelega : Command
 
     public CommandTelega()
     {
+         RobotName = "t";
     }
 
     public CommandTelega(Command parent)
