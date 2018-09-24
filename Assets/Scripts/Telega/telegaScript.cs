@@ -40,8 +40,10 @@ public class telegaScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-       isMoved = false;
+        isMoved = false;
         rotstep = WheelAngleSpeed * WheelRadius / telegaRadius;
+        Debug.Log(rotstep);
+        //rotstep = 1e-3f;
         step = WheelAngleSpeed * WheelRadius * Mathf.Deg2Rad;
 
         C = PointA.transform.position;
@@ -59,12 +61,11 @@ public class telegaScript : MonoBehaviour {
         {
             if (isMoved)
             {
-
                 if (Vector3.Angle(a, b) > rotstep)
-
                     TurnToDirection();
                 else
                 {
+                    transform.Rotate(0, 0, Vector3.SignedAngle(a, b, Vector3.up));
                     TurningBars(0, 0, 0);
                     if (!isWaited)
                     {
@@ -81,11 +82,10 @@ public class telegaScript : MonoBehaviour {
 
     void TurnToDirection()
     {
-     
         TurningBars(90.0f, 320f, 40.0f);
         if (isWaited) return;
         
-        if (Vector3.Cross(a, b).y > 0)
+        if (Vector3.Cross(a, b).y >= 0)
         {
             transform.Rotate(0, 0, rotstep);
 
@@ -111,7 +111,7 @@ public class telegaScript : MonoBehaviour {
 
         if (Vector3.Angle(a, b) < rotstep)
         {
-            transform.localEulerAngles = new Vector3(-90, 0, Vector3.Angle(Vector3.left, b) * Vector3.Cross(Vector3.left, b).normalized.y);
+            transform.localEulerAngles = new Vector3(-90, 0, Vector3.SignedAngle(Vector3.left, b, Vector3.up));
         }
     }
 
@@ -201,8 +201,7 @@ public class telegaScript : MonoBehaviour {
                 {
                     C = Camera.GetComponent<raycast>().aims[0];
                     C.y = teleg.transform.position.y;
-                }
-                    
+                }  
             }
             else isMoved = false;
         }   
@@ -220,7 +219,7 @@ public class telegaScript : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.CapsLock))
+        if (Input.GetKeyDown(KeyCode.CapsLock) && !isMoved)
         {
             switch (Type)
             {

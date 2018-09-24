@@ -22,47 +22,51 @@ public class AddPoint : MonoBehaviour {
 
     public void Add()
     { 
-        try
+        if (!SceneManager.telega.telega.isMoved)
         {
-            if (input.text.Contains(","))
+            try
             {
-                throw new System.Exception();
-            }
-            if (input.text.Length > 0)
-            {
-                var arr = input.text.Split();
-
-                if (arr.Length == 2)
+                if (input.text.Contains(","))
                 {
-                    raycast cam = GameObject.FindObjectOfType<raycast>();
-                    cam.aims.Add(new Vector3(float.Parse(arr[0]), 0.28f, float.Parse(arr[1])));
-                    cam.balls.Add(Instantiate(cam.GetComponent<raycast>().BallPr));
-                    cam.balls[cam.GetComponent<raycast>().balls.Count - 1].transform.position = cam.GetComponent<raycast>().aims[cam.GetComponent<raycast>().balls.Count - 1];
-                    input.text = "";
+                    throw new System.Exception();
+                }
+                if (input.text.Length > 0)
+                {
+                    var arr = input.text.Split();
 
-                    if (Camera.GetComponent<raycast>().balls.Count >= 10)
+                    if (arr.Length == 2)
                     {
-                        PointList.GetComponent<ContentSizeFitter>().enabled = true;
-                        // GameObject.Find("PointList").transform.position = new Vector3(GameObject.Find("PointList").transform.position.x, GameObject.Find("RectObject").transform.position.y, GameObject.Find("PointList").transform.position.z);
-                        ScrollBar.GetComponent<Scrollbar>().value = 0.00000f;
+                        raycast cam = GameObject.FindObjectOfType<raycast>();
+                        cam.aims.Add(new Vector3(float.Parse(arr[0]), 0.28f, float.Parse(arr[1])));
+                        cam.balls.Add(Instantiate(cam.GetComponent<raycast>().BallPr));
+                        cam.balls[cam.GetComponent<raycast>().balls.Count - 1].transform.position = cam.GetComponent<raycast>().aims[cam.GetComponent<raycast>().balls.Count - 1];
+                        input.text = "";
+
+                        if (Camera.GetComponent<raycast>().balls.Count >= 10)
+                        {
+                            PointList.GetComponent<ContentSizeFitter>().enabled = true;
+                            // GameObject.Find("PointList").transform.position = new Vector3(GameObject.Find("PointList").transform.position.x, GameObject.Find("RectObject").transform.position.y, GameObject.Find("PointList").transform.position.z);
+                            ScrollBar.GetComponent<Scrollbar>().value = 0.00000f;
+                        }
+                    }
+                    else
+                    {
+                        throw new System.Exception();
                     }
                 }
                 else
                 {
                     throw new System.Exception();
-                }
-            }
-            else
-            {
-                throw new System.Exception();
-            };
+                };
 
+            }
+            catch (System.Exception)
+            {
+                Debug.Log("Wrong string");
+                input.text = "Wrong string. Try again";
+            }
         }
-        catch (System.Exception)
-        {
-            Debug.Log("Wrong string");
-            input.text = "Wrong string. Try again";
-        }
+        
     }
 
     public void Delete()

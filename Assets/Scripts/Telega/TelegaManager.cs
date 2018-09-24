@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TelegaManager : MonoBehaviour
 {
-    telegaScript telega;
+    public telegaScript telega;
     raycast rc;
     public Text textOnButton;
     public GameObject panel;
@@ -33,6 +33,8 @@ public class TelegaManager : MonoBehaviour
         rc = GameObject.Find("Camera").GetComponent<raycast>();
         telega = GameObject.Find("telega").GetComponent<telegaScript>();
         camera = GameObject.Find("Camera");
+        isTelegaMode = false;
+        camera.GetComponent<raycast>().enabled = false;
     }
 
     // Update is called once per frame

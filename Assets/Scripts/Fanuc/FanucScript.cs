@@ -335,7 +335,6 @@ public class FanucScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(addPoint.input.text.Length);
         if (Input.anyKey && !SceneManager.UserControlLock && !inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
         {
 
