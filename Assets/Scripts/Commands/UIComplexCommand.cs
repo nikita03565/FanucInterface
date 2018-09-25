@@ -11,6 +11,7 @@ public class UIComplexCommand :UICommand
     public int localSaveIndex = 0;
     public List<UICommand> UICommandElements = new List<UICommand>();
     public List<Command> CommandsSet = new List<Command>();
+    public UIComplexCommand original;
     
     public int IndexUp()
     {
@@ -38,9 +39,11 @@ public class UIComplexCommand :UICommand
             this.GetComponent<Button>().onClick.AddListener(() => Add());
         }
         DeleteButton = this.transform.Find("DeleteButton").GetComponent<Button>();
+        DeleteButton.onClick.RemoveAllListeners();
         if(this.isOriginal) DeleteButton.onClick.AddListener(() => Destroy());
         else DeleteButton.onClick.AddListener(() => Delete());
         SettingsButton = this.transform.Find("Settings").GetComponent<Button>();
+        SettingsButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.AddListener(() => Settings());        
         isComplex = true;
     }
@@ -91,11 +94,13 @@ public class UIComplexCommand :UICommand
     {
         return CommandsSet.Count;
     }
+
+   
     
     public override void Add()
     {
         UIComplexCommand NewCommand = Instantiate(CommandBuilder.ComplexCommandPrefab, CommandBuilder.transform).GetComponent<UIComplexCommand>();
-        NewCommand.CommandsSet = this.CommandsSet;        
+        NewCommand.CommandsSet = new List<Command>(this.CommandsSet);        
         NewCommand.transform.SetParent(CommandBuilder.transform);
         NewCommand.transform.localScale = new Vector3(UIScale, UIScale);
         CommandBuilder.AddUIElementToGroup(NewCommand.GetComponent<UICommand>());

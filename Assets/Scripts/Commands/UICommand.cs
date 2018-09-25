@@ -11,8 +11,6 @@ public class UICommand : MonoBehaviour
     public  Button DeleteButton;
     public Command command;
     public string CommandName;
-    public UICommand Original;
-
 
     public static int UISize = 0;
     public static float UIScale = 0;
@@ -40,8 +38,11 @@ public class UICommand : MonoBehaviour
         }
 
         DeleteButton = this.transform.Find("DeleteButton").GetComponent<Button>();
+        DeleteButton.onClick.RemoveAllListeners();
         DeleteButton.onClick.AddListener(()=>Delete());
+        
         SettingsButton = this.transform.Find("Settings").GetComponent<Button>();
+        SettingsButton.onClick.RemoveAllListeners();
         SettingsButton.onClick.AddListener(() => Settings()); 
     }
 
@@ -93,8 +94,8 @@ public class UICommand : MonoBehaviour
     }
     public virtual void Copy(UIComplexCommand com)
     {
+        Debug.Log("there is NO copy");
     }
-
     public virtual void Delete()
     {
         CommandBuilder.UIElementRemoveFromGroup(this);
