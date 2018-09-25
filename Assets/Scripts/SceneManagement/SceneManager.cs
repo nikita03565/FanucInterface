@@ -14,13 +14,16 @@ public class SceneManager : MonoBehaviour {
     public static DropdownSceneObjects dropdownSceneObjects;
     public static FanucScript fanuc;
     public static TelegaManager telega;
+    public static BuilderInterface builderInterface;
     public static bool UserControlLock=false;
-
     //add SlotScript
 
     // Use this for initialization
     void Start ()
     {
+        builderInterface = FindObjectOfType<BuilderInterface>();
+
+
         telega = FindObjectOfType<TelegaManager>();
 
         FanucSettingsPanel = FindObjectOfType<CommandFanucUI>();
@@ -35,7 +38,6 @@ public class SceneManager : MonoBehaviour {
         avaibleCommands = FindObjectOfType<AvailableCommands>();
 
         Net = FindObjectOfType<NetConnection>();
-        Debug.Log(Net);
         //Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
         // Net.Sender("ARRRRRRR");
         //Net.gameObject.SetActive(true);
