@@ -62,7 +62,7 @@ public class CommandCameraUI : MonoBehaviour
         SceneManager.Pull.Add(new GameObject("CamResult"));
         if (inputField.text != "Wrong string" && (!(toggle.name == "Mode2") || inputField.text.Length != 0))
         {
-            //command.CommandToSend = RobotCommands.TelegaMoving(inputField.text);
+            //command.сommand = RobotCommands.TelegaMoving(inputField.text);
             ModeGroup.SetActive(0);
             inputField.text = "";
             this.gameObject.SetActive(false);
@@ -74,5 +74,4 @@ public class CommandCameraUI : MonoBehaviour
     {
         SceneManager.CameraSettingsPanel.gameObject.SetActive(false);
     }
-
 }

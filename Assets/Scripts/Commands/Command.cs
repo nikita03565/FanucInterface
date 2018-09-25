@@ -6,11 +6,10 @@ using UnityEngine;
 public  class Command
 {
     public bool parallel;
-    public string RobotName;
-    public int energy;
+    public string name;
     public int time;
-    
-    public string CommandToSend="";
+    public int energy;
+    public string сommand="";
 
     public Command()
     {
@@ -19,11 +18,11 @@ public  class Command
 
     public Command(Command com)
     {
+        name = com.name;
         energy = com.energy;
-        RobotName = com.RobotName;
         time = com.time;
         parallel = com.parallel;
-        CommandToSend = com.CommandToSend;
+        сommand = com.сommand;
     }
 
     public virtual void DoCommand()
@@ -50,9 +49,9 @@ public  class Command
 
     public static bool IsEQ(Command com1, Command com2)
     {
-        if ((com1.parallel == com2.parallel) && (com1.RobotName == com2.RobotName)&&
-            (com1.time == com2.time) && 
-            (com1.CommandToSend==com2.CommandToSend) && 
+        if ((com1.parallel == com2.parallel) && (com1.name == com2.name)&&
+        (com1.time == com2.time) && 
+            (com1.сommand==com2.сommand) && 
             (com1.energy == com2.energy))
             return true;
         else return false;
@@ -60,10 +59,10 @@ public  class Command
 
     public static void Copy(Command com1, Command com2)
     {
-        com1.RobotName = com2.RobotName;
+        com1.name = com2.name;
         com1.energy = com2.energy;
         com1.time = com2.time;
         com1.parallel = com2.parallel;
-        com1.CommandToSend = com2.CommandToSend;
+        com1.сommand = com2.сommand;
     }
 }

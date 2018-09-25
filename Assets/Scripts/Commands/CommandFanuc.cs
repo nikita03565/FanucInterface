@@ -10,7 +10,7 @@ public class CommandFanuc : Command
 
     public CommandFanuc()
     {
-        RobotName = "f";
+        name = "f";
     }
     public CommandFanuc(Command parent)
     {

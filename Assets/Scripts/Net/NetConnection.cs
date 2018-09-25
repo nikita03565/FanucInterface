@@ -107,19 +107,15 @@ public class NetConnection : MonoBehaviour {
         //}  
     }
 
-    //public void OnQuit()
-    //{
-    //    string MessageToServer = "{\"flag\": \"e\",\"Scenario\": [{\"parallel\":\"False\", \"name\": \"\",\"time\":\"0\",\"energy\":\"0\", \"command\": \"\"}]}";
+    public void OnQuit()
+    {
+        string MessageToServer = "\"flag\": \"e\",\"name\": \"\",\"Scenario\": []}";
 
-    //    Debug.Log(MessageToServer);
-    //    byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(MessageToServer);
-    //    stream.
-    //        Write(
-    //        ByteMessageToServer,
-    //        0, 
-    //        ByteMessageToServer.Length);
-    //    Debug.Log("sended Exit message");
-    //}
+        Debug.Log(MessageToServer);
+        byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(MessageToServer);
+        stream.Write(ByteMessageToServer, 0, ByteMessageToServer.Length);
+        Debug.Log("sended Exit message");
+    }
 
     void OnApplicationQuit()
     {

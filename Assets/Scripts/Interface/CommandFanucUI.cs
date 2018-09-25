@@ -28,7 +28,6 @@ public class CommandFanucUI : MonoBehaviour
         GraspGroup.SetActive(2);
         inputField = this.transform.Find("SetCoordField").GetComponent<InputField>();
         inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });
-        
     }
 
     internal void show()
@@ -80,8 +79,6 @@ public class CommandFanucUI : MonoBehaviour
     public void DoCommand()
     {
         SceneManager.fanuc.mode = command.mode;
-
-        //SceneManager.fanuc.StartCoroutine("Move", coord);
         StartCoroutine(SceneManager.fanuc.Move(coord));
         //throw new System.NotImplementedException();
     }
@@ -103,7 +100,7 @@ public class CommandFanucUI : MonoBehaviour
             command.grasp = -1;
         if (inputField.text != "Wrong string" && inputField.text.Length != 0)
         {
-            command.CommandToSend = RobotCommands.FanucMoving(inputField.text);
+            command.сommand = RobotCommands.FanucMoving(inputField.text);
 
             ModeGroup.SetActive(0);
             inputField.text = "";
@@ -126,10 +123,10 @@ public class CommandFanucUI : MonoBehaviour
     {
         throw new System.NotImplementedException();
     }
-
     public void CloseWindow()
     {
         SceneManager.FanucSettingsPanel.gameObject.SetActive(false);
         SceneManager.dropdownSceneObjects.gameObject.SetActive(false);
     }
+
 }
