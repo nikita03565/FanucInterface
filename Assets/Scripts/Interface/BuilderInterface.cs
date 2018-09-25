@@ -79,11 +79,9 @@ public class BuilderInterface : MonoBehaviour
     {
         ComplexScenario ListToSend = new ComplexScenario();
         ListToSend.Scenario = new List<Command>(CommandBuilder.CommandsSet);
+        Debug.Log(JsonUtility.ToJson(ListToSend));
         ListToSend.flag = "0";
         ListToSend.name = CommandBuilder.CommandName.text;
-
-        Debug.Log(JsonUtility.ToJson(ListToSend));
-        
         SceneManager.Net.Sender(JsonUtility.ToJson(ListToSend)) ;
         
         for (int i = 0; i < CommandBuilder.CommandsSet.Count; ++i)
@@ -105,7 +103,21 @@ public class BuilderInterface : MonoBehaviour
             DeserializeJson(Files[i]);
         }
     }
-    
+    public void RewritetoJson(UIComplexCommand com)
+    {
+        Directory.Delete(Application.persistentDataPath + "/" + com.CommandName, true);
+        File.Delete(Application.persistentDataPath + "/" + com.CommandName + ".json");
+        System.IO.Directory.CreateDirectory(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text);
+        Debug.Log("ss-s-s-s-s-SAVED");
+        File.WriteAllText(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text + ".json", JsonUtility.ToJson(com));
+
+        for (int i = 0; i < com.transform.childCount - DefaulChilds; ++i)
+        {
+            File.WriteAllText(Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text + "/" + i + ".json", JsonUtility.ToJson(com.transform.GetChild(i + DefaulChilds).GetComponent<UICommand>()));
+        }
+
+
+    }
     public void SerializeToJson(UIComplexCommand com)
     {
         System.IO.Directory.CreateDirectory( Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text);
@@ -146,7 +158,6 @@ public class BuilderInterface : MonoBehaviour
             newCommand.UICommandElements[i].GetComponentInChildren<Text>().text= newCommand.UICommandElements[i].CommandName;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
-
         if(newCommand.localSaveIndex>SceneManager.avaibleCommands.AvailableCommandsSet.Count)
             SceneManager.avaibleCommands.AvailableCommandsSet.Insert(SceneManager.avaibleCommands.AvailableCommandsSet.Count, newCommand);
         else
