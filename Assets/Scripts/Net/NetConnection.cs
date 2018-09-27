@@ -11,15 +11,18 @@ public class NetConnection : MonoBehaviour {
     public string message;
     NetworkStream stream;
     //const string Hostname="192.168.1.5";
-    const string Hostname = "192.168.1.106";
-    const int Port = 8882;
-    //const int Port = 9090;
+    const string Hostname = "192.168.0.177";
+    //const int Port = 8882;
+    const int Port = 9090;
     TcpClient SocketConnection;
     Thread ReceiveThread;
    
     void Start () {
         try
+           
         {
+            this.gameObject.GetComponent<Button>().onClick.AddListener(()=>Getscene());
+           
             Debug.Log("NET STARTED");
             ReceiveThread = new Thread(new ThreadStart(Listener));
             ReceiveThread.IsBackground = true;
@@ -31,7 +34,10 @@ public class NetConnection : MonoBehaviour {
             Debug.Log("Thread init exception: " + Error);
         }
 	}
-
+    void Getscene()
+    {
+        Sender(RobotCommands.GetSceneInf());
+    }
     void Listener()
     {
         try
@@ -109,7 +115,7 @@ public class NetConnection : MonoBehaviour {
 
     public void OnQuit()
     {
-        string MessageToServer = "\"flag\": \"e\",\"name\": \"\",\"Scenario\": []}";
+        string MessageToServer = "{\"flag\": \"e\",\"name\": \"\",\"Scenario\": []}";
 
         Debug.Log(MessageToServer);
         byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(MessageToServer);
@@ -119,7 +125,7 @@ public class NetConnection : MonoBehaviour {
 
     void OnApplicationQuit()
     {
-        //OnQuit();
+        OnQuit();
 
         stream.Close();
         SocketConnection.Close();
