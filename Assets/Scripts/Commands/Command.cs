@@ -9,7 +9,7 @@ public  class Command
     public string name;
     public int time;
     public int energy;
-    public string сommand="";
+    public string command="";
 
     public Command()
     {
@@ -22,7 +22,7 @@ public  class Command
         energy = com.energy;
         time = com.time;
         parallel = com.parallel;
-        сommand = com.сommand;
+        command = com.command;
     }
 
     public virtual void DoCommand()
@@ -51,7 +51,7 @@ public  class Command
     {
         if ((com1.parallel == com2.parallel) && (com1.name == com2.name)&&
         (com1.time == com2.time) && 
-            (com1.сommand==com2.сommand) && 
+            (com1.command==com2.command) && 
             (com1.energy == com2.energy))
             return true;
         else return false;
@@ -63,6 +63,6 @@ public  class Command
         com1.energy = com2.energy;
         com1.time = com2.time;
         com1.parallel = com2.parallel;
-        com1.сommand = com2.сommand;
+        com1.command = com2.command;
     }
 }

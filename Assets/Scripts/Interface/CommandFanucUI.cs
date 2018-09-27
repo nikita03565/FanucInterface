@@ -100,7 +100,7 @@ public class CommandFanucUI : MonoBehaviour
             command.grasp = -1;
         if (inputField.text != "Wrong string" && inputField.text.Length != 0)
         {
-            command.сommand = RobotCommands.FanucMoving(inputField.text);
+            command.command = RobotCommands.FanucMoving(inputField.text);
 
             ModeGroup.SetActive(0);
             inputField.text = "";
