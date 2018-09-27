@@ -8,37 +8,51 @@ using System.IO;
 
 public class BuilderInterface : MonoBehaviour
 {
-    public static UIComplexCommand ActiveCommand;
-    public UIComplexCommand SavedCommand;
-    CommandBuilder CommandBuilder;
-    public static Button RewriteButton;
+    public static UIComplexCommand activeCommand;
+    public UIComplexCommand savedCommand;
+    CommandBuilder commandBuilder;
+    static Button rewriteButton;
+    static Button cancelButton;
     //3 here is number of standart default childs(text, sett, del)
     const int DefaulChilds = 3;
 
     // Use this for initialization
-
+    public void ReturnColor()
+    {
+        commandBuilder.CommandName.GetComponent<Image>().color = Color.white;
+    }
+    bool CheckName(InputField name)
+    {
+        if (commandBuilder.UICommandElements.Count == 0)
+            return false;
+        if (commandBuilder.CommandName.text == "")
+        {
+            commandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
+            commandBuilder.CommandName.GetComponent<Image>().color = new Color(1f, 0, 0, 0.5f);
+           
+            return false;
+        }
+        if (SceneManager.avalaibleCommands.Names.IndexOf(name.text) != -1)
+            return false;
+        return true;
+    }
     public void SaveNewComplexCommand()
     {
-        if (CommandBuilder.UICommandElements.Count == 0)
+        if (!CheckName(commandBuilder.CommandName))
             return;
-        if (CommandBuilder.CommandName.text == "")
-        {
-            CommandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
-            return;
-        }
-        UIComplexCommand newCommand = Instantiate(CommandBuilder.ComplexCommandPrefab, SceneManager.avaibleCommands.transform).GetComponent<UIComplexCommand>();
+        UIComplexCommand newCommand = Instantiate(commandBuilder.ComplexCommandPrefab, SceneManager.avalaibleCommands.transform).GetComponent<UIComplexCommand>();
         
-        for (int i = 0; i < CommandBuilder.UICommandElements.Count; ++i)
+        for (int i = 0; i < commandBuilder.UICommandElements.Count; ++i)
         {
-            newCommand.UICommandElements.Add(Instantiate<UICommand>(CommandBuilder.UICommandElements[i], newCommand.transform) as UICommand);
+            newCommand.UICommandElements.Add(Instantiate<UICommand>(commandBuilder.UICommandElements[i], newCommand.transform) as UICommand);
             if (newCommand.UICommandElements[i].isComplex)
             {
-                newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().UICommandElements = CommandBuilder.UICommandElements[i].GetComponent<UIComplexCommand>().UICommandElements;
-                newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet = CommandBuilder.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet;
+                newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().UICommandElements = commandBuilder.UICommandElements[i].GetComponent<UIComplexCommand>().UICommandElements;
+                newCommand.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet = commandBuilder.UICommandElements[i].GetComponent<UIComplexCommand>().CommandsSet;
             }
-            else newCommand.UICommandElements[i].command = CommandBuilder.UICommandElements[i].command;
-            newCommand.UICommandElements[i].name = CommandBuilder.UICommandElements[i].name;
-            newCommand.UICommandElements[i].CommandName = CommandBuilder.UICommandElements[i].CommandName;
+            else newCommand.UICommandElements[i].command = commandBuilder.UICommandElements[i].command;
+            newCommand.UICommandElements[i].name = commandBuilder.UICommandElements[i].name;
+            newCommand.UICommandElements[i].CommandName = commandBuilder.UICommandElements[i].CommandName;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
         for (int i = 0; i < newCommand.UICommandElements.Count; ++i)
@@ -49,52 +63,65 @@ public class BuilderInterface : MonoBehaviour
 
             }
             else newCommand.CommandsSet.Add(newCommand.UICommandElements[i].command);
-        newCommand.GetComponentInChildren<Text>().text = CommandBuilder.CommandName.text;
-        newCommand.CommandName = CommandBuilder.CommandName.text;
+        newCommand.GetComponentInChildren<Text>().text = commandBuilder.CommandName.text;
+        newCommand.CommandName = commandBuilder.CommandName.text;
         
-        SavedCommand = newCommand;
-        SerializeToJson(SavedCommand);
-        CommandBuilder.ResetBuilder();
-        SceneManager.avaibleCommands.AvailableCommandsSet.Add(SavedCommand);
+        savedCommand = newCommand;
+        SerializeToJson(savedCommand);
+        commandBuilder.ResetBuilder();
+        SceneManager.avalaibleCommands.AvailableCommandsSet.Add(savedCommand);
+        SceneManager.avalaibleCommands.Names.Add(savedCommand.CommandName);
 
     }
-
+    public static void RewriteMode()
+    {
+        cancelButton.gameObject.SetActive(true);
+        rewriteButton.gameObject.SetActive(true);
+    }
+    public void cancelRewriting()
+    {
+        cancelButton.gameObject.SetActive(false);
+        rewriteButton.gameObject.SetActive(false);
+        commandBuilder.ResetBuilder();
+    }
     public void Rewrite()
     {
-        if (CommandBuilder.UICommandElements.Count == 0)
+        if (!CheckName(commandBuilder.CommandName))
             return;
-        if (CommandBuilder.CommandName.text == "")
-        {
-            CommandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
-            return;
-        }
         SaveNewComplexCommand();
-        CommandBuilder.ResetBuilder();
-        SceneManager.avaibleCommands.RewriteAllrefs(ActiveCommand, SavedCommand);
-        SavedCommand.localSaveIndex = ActiveCommand.localSaveIndex;
-        RewriteButton.gameObject.SetActive(false);
+        commandBuilder.ResetBuilder();
+        SceneManager.avalaibleCommands.RewriteAllrefs(activeCommand, savedCommand);
+        savedCommand.localSaveIndex = activeCommand.localSaveIndex;
+        rewriteButton.gameObject.SetActive(false);
     }
 
     public void Execute()
     {
+        
+        if(!CheckName(commandBuilder.CommandName))
+            return;
         ComplexScenario ListToSend = new ComplexScenario();
-        ListToSend.Scenario = new List<Command>(CommandBuilder.CommandsSet);
+        ListToSend.Scenario = new List<Command>(commandBuilder.CommandsSet);
         Debug.Log(JsonUtility.ToJson(ListToSend));
         ListToSend.flag = "0";
-        ListToSend.name = CommandBuilder.CommandName.text;
+        ListToSend.name = commandBuilder.CommandName.text;
         SceneManager.Net.Sender(JsonUtility.ToJson(ListToSend)) ;
         
-        for (int i = 0; i < CommandBuilder.CommandsSet.Count; ++i)
+        for (int i = 0; i < commandBuilder.CommandsSet.Count; ++i)
         {     
-            CommandBuilder.CommandsSet[i].DoCommand();
+            commandBuilder.CommandsSet[i].DoCommand();
         }
     }
 
     void Start()
     {
-        RewriteButton = GameObject.Find("RewriteButton").GetComponent<Button>();
-        CommandBuilder = GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
-        RewriteButton.gameObject.SetActive(false);
+        cancelButton = GameObject.Find("CancelButton").GetComponent<Button>();
+        rewriteButton = GameObject.Find("RewriteButton").GetComponent<Button>();
+        commandBuilder = GameObject.Find("CommandBuilder").GetComponent<CommandBuilder>();
+
+
+        rewriteButton.gameObject.SetActive(false);
+        cancelButton.gameObject.SetActive(false);
         string[] Files= Directory.GetFiles(Application.persistentDataPath,"*.json");
 
         for (int i = 0;i < Files.Length; ++i)
@@ -133,7 +160,7 @@ public class BuilderInterface : MonoBehaviour
    
     public void DeserializeJson(string JsonPath)
     { 
-        UIComplexCommand newCommand = Instantiate(CommandBuilder.ComplexCommandPrefab.gameObject, GameObject.Find("AvailableCommandsField").transform).GetComponent<UIComplexCommand>();
+        UIComplexCommand newCommand = Instantiate(commandBuilder.ComplexCommandPrefab.gameObject, GameObject.Find("AvailableCommandsField").transform).GetComponent<UIComplexCommand>();
         string str = File.ReadAllText(JsonPath);
         //Debug.Log(str);
         JsonUtility.FromJsonOverwrite(str, newCommand);
@@ -141,6 +168,7 @@ public class BuilderInterface : MonoBehaviour
         name = name.Remove(name.Length - 5, 5);
         newCommand.GetComponentInChildren<Text>().text = name;
         string[] SubFiles = Directory.GetFiles(Application.persistentDataPath+"/"+name, "*.json");
+        Debug.Log("    " + "Saveindex: " + newCommand.localSaveIndex);
        
         for (int i = 0; i < SubFiles.Length; ++i)
         {
@@ -148,9 +176,9 @@ public class BuilderInterface : MonoBehaviour
             string CommandinJson = File.ReadAllText(SubFiles[i]);
           
             if(CommandinJson.Substring(CommandinJson.IndexOf("isComplex")+11, 4) == "true")
-                newCommand.UICommandElements[i] = Instantiate(CommandBuilder.ComplexCommandPrefab.gameObject, newCommand.transform).GetComponent<UIComplexCommand>();
+                newCommand.UICommandElements[i] = Instantiate(commandBuilder.ComplexCommandPrefab.gameObject, newCommand.transform).GetComponent<UIComplexCommand>();
             else
-                newCommand.UICommandElements[i] = Instantiate(CommandBuilder.CommandPrefab.gameObject, newCommand.transform).GetComponent<UICommand>();
+                newCommand.UICommandElements[i] = Instantiate(commandBuilder.CommandPrefab.gameObject, newCommand.transform).GetComponent<UICommand>();
 
 
             JsonUtility.FromJsonOverwrite(File.ReadAllText(SubFiles[i]), newCommand.UICommandElements[i]);
@@ -158,12 +186,17 @@ public class BuilderInterface : MonoBehaviour
             newCommand.UICommandElements[i].GetComponentInChildren<Text>().text= newCommand.UICommandElements[i].CommandName;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
-        if(newCommand.localSaveIndex>SceneManager.avaibleCommands.AvailableCommandsSet.Count)
-            SceneManager.avaibleCommands.AvailableCommandsSet.Insert(SceneManager.avaibleCommands.AvailableCommandsSet.Count, newCommand);
-        else
-            SceneManager.avaibleCommands.AvailableCommandsSet.Insert(newCommand.localSaveIndex, newCommand);
 
-        SceneManager.avaibleCommands.SetSavedOrderIndex(newCommand);
+        //for (int i = SceneManager.avalaibleCommands.AvailableCommandsSet.Count - 1; i >= 0; --i)
+        //    if(SceneManager.avalaibleCommands.AvailableCommandsSet[i].localSaveIndex<=newCommand.localSaveIndex)
+        //    {
+        //        SceneManager.avalaibleCommands.AvailableCommandsSet.Insert(i, newCommand);
+        //        SceneManager.avalaibleCommands.SetSavedOrderIndex(newCommand);
+        //        break;  
+        //    }
+
+      
+       
     }
 }
 

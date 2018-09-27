@@ -5,12 +5,14 @@ using UnityEngine;
 public class AvailableCommands : MonoBehaviour
 {
     public List<UIComplexCommand> AvailableCommandsSet = new List<UIComplexCommand>();
+    public List<string> Names = new List<string>();
     int BasicCommandsNumber;
 
 	// Use this for initialization
 	void Start ()
     {
         BasicCommandsNumber = this.transform.childCount;
+       
 	}
 
     //public void RewriteAllrefs(UIComplexCommand RWCommand, UIComplexCommand NewCommand)
@@ -148,6 +150,7 @@ public class AvailableCommands : MonoBehaviour
             }
         }
         AvailableCommandsSet[AvailableCommandsSet.IndexOf(RWCommand)] = AvailableCommandsSet[AvailableCommandsSet.Count - 1];
+        Names[Names.IndexOf(RWCommand.CommandName)] = NewCom.CommandName;
        
         RWCommand.Destroy();
         AvailableCommandsSet.RemoveAt(AvailableCommandsSet.Count - 1);
@@ -159,7 +162,8 @@ public class AvailableCommands : MonoBehaviour
 
     public void SetSavedOrderIndex(UIComplexCommand comp)
     {
-        comp.transform.SetSiblingIndex(BasicCommandsNumber + comp.localSaveIndex);
+        comp.transform.SetSiblingIndex(BasicCommandsNumber + AvailableCommandsSet.IndexOf(comp));
+        
     }
 
 }

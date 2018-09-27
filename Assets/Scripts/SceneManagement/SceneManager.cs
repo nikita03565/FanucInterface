@@ -10,7 +10,7 @@ public class SceneManager : MonoBehaviour {
     public static GameObject ScenarioEditor;
     public static NetConnection Net;
     public static PullManager Pull;
-    public static AvailableCommands avaibleCommands;
+    public static AvailableCommands avalaibleCommands;
     public static DropdownSceneObjects dropdownSceneObjects;
     public static FanucScript fanuc;
     public static TelegaManager telega;
@@ -35,7 +35,7 @@ public class SceneManager : MonoBehaviour {
         TelegaSettingsPanel = FindObjectOfType<CommandTelegaUI>();
         TelegaSettingsPanel.gameObject.SetActive(false);
 
-        avaibleCommands = FindObjectOfType<AvailableCommands>();
+        avalaibleCommands = FindObjectOfType<AvailableCommands>();
 
         Net = FindObjectOfType<NetConnection>();
         //Net.transform.SetParent(FindObjectOfType<Canvas>().transform);

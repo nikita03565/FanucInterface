@@ -51,7 +51,7 @@ public class UIComplexCommand :UICommand
     protected override void Settings()
     {
         //CommandBuilder.ResetBuilder();
-        BuilderInterface.ActiveCommand = this;
+        BuilderInterface.activeCommand = this;
       
         UICommand[] newObjs = new UICommand[UICommandElements.Count];
         for (int i = 0; i < UICommandElements.Count; ++i)
@@ -86,7 +86,7 @@ public class UIComplexCommand :UICommand
             newObjs[i].transform.localScale = new Vector3(UICommand.UIScale, UICommand.UIScale);
             CommandBuilder.AddUIElementToGroup(newObjs[i]);
         }
-        BuilderInterface.RewriteButton.gameObject.SetActive(true);
+        BuilderInterface.RewriteMode();
 
     }
 
@@ -121,6 +121,6 @@ public class UIComplexCommand :UICommand
         Directory.Delete(Application.persistentDataPath + "/" + this.CommandName,true);
         File.Delete(Application.persistentDataPath + "/" + this.CommandName+".json");
         Destroy(this.gameObject);
-        SceneManager.avaibleCommands.AvailableCommandsSet.Remove(this);
+        SceneManager.avalaibleCommands.AvailableCommandsSet.Remove(this);
     }
 }

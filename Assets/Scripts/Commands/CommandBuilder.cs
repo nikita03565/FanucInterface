@@ -69,6 +69,7 @@ public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IP
             if (UIelement.isComplex)
             {
                 CommandsSet.RemoveRange(GetCommandIndexbyUIElement(UIelement), UIelement.GetComponent<UIComplexCommand>().GetNumberofCommands());
+                Debug.Log("Number of commands in commandsSet of " + UIelement.CommandName + " is " + UIelement.GetComponent<UIComplexCommand>().GetNumberofCommands());
             }
             else CommandsSet.Remove(UIelement.command);
         }
@@ -128,6 +129,7 @@ public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IP
     {
         CommandsSet.Clear();
         CommandName.GetComponentInChildren<Text>().text = "Enter the name";
+        CommandName.GetComponent<Image>().color = Color.white;
         UICommandElements.Clear();
         CommandName.text = null;
         foreach (UICommand child in GetComponentsInChildren<UICommand>())
