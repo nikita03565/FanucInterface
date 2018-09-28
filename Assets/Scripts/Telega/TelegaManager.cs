@@ -166,13 +166,16 @@ public class TelegaManager : MonoBehaviour
 
     public void Synchronize()
     {
-        if (telega.Type == telegaScript.MoveType.RotateBarsAndMove)
+        if(!telega.isMoved)
         {
-            StartCoroutine("ParallelMoving");
-        } else
-        {
-            StartCoroutine("DirectionalMoving");
+            if (telega.Type == telegaScript.MoveType.RotateBarsAndMove)
+            {
+                StartCoroutine("ParallelMoving");
+            }
+            else
+            {
+                StartCoroutine("DirectionalMoving");
+            }
         }
-        
     }
 }

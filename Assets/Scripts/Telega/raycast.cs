@@ -76,9 +76,11 @@ public class raycast : MonoBehaviour {
             }
         }
         PointList.text = "";
-        for (int j = 0; j <= aims.Count - 1; j++)
+        for (int j = 0; j <= aims.Count - 1; ++j)
         {
-            PointList.text += aims[j].x.ToString("N2") + "  " + aims[j].z.ToString("N2") + "\r\n";
+            var aimsRobot = CoordTransformation.UnityToRobotPosOnly(new Vector4(aims[j].x, aims[j].y, aims[j].z, 1));
+            Debug.Log(aimsRobot);
+            PointList.text += aimsRobot[0].ToString("0.00") + "  " + aimsRobot[1].ToString("0.00") + "\r\n";
         }        
     }
 }
