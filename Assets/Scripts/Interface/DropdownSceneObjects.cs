@@ -36,7 +36,7 @@ public class DropdownSceneObjects : MonoBehaviour {
         var outCoords = FanucModel.GetCoordsFromMat(coords);
         outCoordsStr = outCoords[0] + " " + outCoords[1] + " " + (outCoords[2] + 190f) + " " + outCoords[3] + " "
             + outCoords[4] + " " + outCoords[5];
-        SceneManager.FanucSettingsPanel.inputField.text = outCoordsStr;
+        SceneManager.FanucSettingsPanel.coordField.text = outCoordsStr;
         
         //coordText.text = coordTrans.UnityToRobotPosOnly(coordsPos).ToString();
     }

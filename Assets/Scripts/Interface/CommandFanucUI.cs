@@ -12,7 +12,9 @@ public class CommandFanucUI : MonoBehaviour
     //public int grasp; // 1 - grasp, 0 - do nothing, -1 - ungrasp
     public ToggleGroup ModeGroup;
     public ToggleGroup GraspGroup;
-    public InputField inputField;
+    public InputField coordField;
+    public InputField timeField;
+    public InputField energyField;
     float[] coord = new float[6];
 
     public void Start()
@@ -26,8 +28,10 @@ public class CommandFanucUI : MonoBehaviour
 
         GraspGroup = this.transform.Find("Grasp Toggle Group").GetComponent<ToggleGroup>();
         GraspGroup.SetActive(2);
-        inputField = this.transform.Find("SetCoordField").GetComponent<InputField>();
-        inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });
+        coordField = this.transform.Find("SetCoordField").GetComponent<InputField>();
+        timeField = this.transform.Find("SetTimeField").GetComponent<InputField>();
+        energyField = this.transform.Find("SetEnergyField").GetComponent<InputField>();
+        coordField.onEndEdit.AddListener(delegate { LockInput(coordField); });
     }
 
     internal void show()
@@ -98,12 +102,20 @@ public class CommandFanucUI : MonoBehaviour
             command.grasp = 1;
         else if (GraspToggle.name == "Grasp-")
             command.grasp = -1;
-        if (inputField.text != "Wrong string" && inputField.text.Length != 0)
+        if (timeField.text.Length != 0)
         {
-            command.command = RobotCommands.FanucMoving(inputField.text);
+            command.time = int.Parse(timeField.text);
+        }
+        if (energyField.text.Length != 0)
+        {
+            command.energy = int.Parse(energyField.text);
+        }
+        if (coordField.text != "Wrong string" && coordField.text.Length != 0)
+        {
+            command.command = RobotCommands.FanucMoving(coordField.text);
 
             ModeGroup.SetActive(0);
-            inputField.text = "";
+            coordField.text = "";
             GraspGroup.SetActive(2);
             DoCommand();
             this.gameObject.SetActive(false);
@@ -119,10 +131,12 @@ public class CommandFanucUI : MonoBehaviour
         Destroy(this.gameObject);
         //throw new System.NotImplementedException();
     }
+
     public void Load()
     {
         throw new System.NotImplementedException();
     }
+
     public void CloseWindow()
     {
         SceneManager.FanucSettingsPanel.gameObject.SetActive(false);

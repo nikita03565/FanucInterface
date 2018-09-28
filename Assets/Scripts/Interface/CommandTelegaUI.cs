@@ -10,7 +10,9 @@ public class CommandTelegaUI : MonoBehaviour
     //public int mode; //0 - directional, 1 - parallel
     //public float[] coord; // x, y, yaw
     public ToggleGroup ModeGroup;
-    public InputField inputField;
+    public InputField coordField;
+    public InputField timeField;
+    public InputField energyField;
 
     public void Start()
     {
@@ -18,8 +20,10 @@ public class CommandTelegaUI : MonoBehaviour
         ConfirmButton.onClick.AddListener(() => OnConfirm());
         ModeGroup = this.transform.Find("Mode Toggle Group").GetComponent<ToggleGroup>();
         ModeGroup.SetActive(0);
-        inputField = this.transform.Find("SetCoordField").GetComponent<InputField>();
-        inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });
+        coordField = this.transform.Find("SetCoordField").GetComponent<InputField>();
+        timeField = this.transform.Find("SetTimeField").GetComponent<InputField>();
+        energyField = this.transform.Find("SetEnergyField").GetComponent<InputField>();
+        coordField.onEndEdit.AddListener(delegate { LockInput(coordField); });
        // command.RobotName = "t";
     }
 
@@ -88,14 +92,23 @@ public class CommandTelegaUI : MonoBehaviour
             command.mode = 0;
         else if (toggle.name == "Mode2")
             command.mode = 1;
-        if (inputField.text != "Wrong string" && inputField.text.Length != 0)
+        if (timeField.text.Length != 0)
+        {
+            command.time = int.Parse(timeField.text);
+        }
+        if (energyField.text.Length != 0)
+        {
+            command.energy = int.Parse(energyField.text);
+        }
+        if (coordField.text != "Wrong string" && coordField.text.Length != 0)
         {
             //command.command = RobotCommands.TelegaMoving(inputField.text);
             ModeGroup.SetActive(0);
-            inputField.text = "";
+            coordField.text = "";
             this.gameObject.SetActive(false);
         }
     }
+
     public void CloseWindow()
     {
         SceneManager.TelegaSettingsPanel.gameObject.SetActive(false);
