@@ -18,7 +18,7 @@ public class InstantiateFromCam : MonoBehaviour
         int NumberofObjects =dict.Count; //what's the magic number???
         string[] Names = new string[NumberofObjects]; //IDs
         Vector3[] PositionCoords = new Vector3[NumberofObjects];
-        Quaternion[] RotationCoords = new Quaternion[NumberofObjects];
+        //Quaternion[] RotationCoords = new Quaternion[NumberofObjects];
         int index = 0;
         foreach (var i in dict.Keys)
         {

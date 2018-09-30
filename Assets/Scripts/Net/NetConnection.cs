@@ -84,7 +84,7 @@ public class NetConnection : MonoBehaviour {
     public void Sender(string Command)
     {
         Debug.Log("trying to send");
-        Debug.Log(Command);
+        //Debug.Log(Command);
         if (SocketConnection==null)
         {
             return;
