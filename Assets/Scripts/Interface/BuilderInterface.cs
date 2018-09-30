@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -17,14 +18,16 @@ public class BuilderInterface : MonoBehaviour
     const int DefaulChilds = 3;
 
     // Use this for initialization
-    public void ReturnColor()
-    {
-        commandBuilder.CommandName.GetComponent<Image>().color = Color.white;
-    }
+    
     bool CheckName(InputField name)
     {
+        
         if (commandBuilder.UICommandElements.Count == 0)
+        {
+            commandBuilder.CommandName.GetComponentInChildren<Text>().text = "List is empty!";
+            commandBuilder.CommandName.GetComponent<Image>().color = new Color(1f, 0, 0, 0.5f);
             return false;
+        }
         if (commandBuilder.CommandName.text == "")
         {
             commandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name is empty!";
@@ -33,7 +36,20 @@ public class BuilderInterface : MonoBehaviour
             return false;
         }
         if (SceneManager.avalaibleCommands.Names.IndexOf(name.text) != -1)
+        {
+            commandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name already exist!";
+            commandBuilder.CommandName.GetComponent<Image>().color = new Color(1f, 0, 0, 0.5f);
             return false;
+        }
+        Regex nameRegExp = new Regex("[^A-Za-z0-9_-]+");
+        if (nameRegExp.IsMatch(name.text)||name.text.IndexOf("flag")!=-1)
+        {
+            commandBuilder.CommandName.GetComponentInChildren<Text>().text = "Uncorrect symbol in the name!";
+            commandBuilder.CommandName.GetComponent<Image>().color = new Color(1f, 0, 0, 0.5f);
+
+            return false;
+        }
+            
         return true;
     }
     public void SaveNewComplexCommand()
@@ -86,13 +102,10 @@ public class BuilderInterface : MonoBehaviour
     }
     public void Rewrite()
     {
-        if (!CheckName(commandBuilder.CommandName))
-            return;
         SaveNewComplexCommand();
-        commandBuilder.ResetBuilder();
         SceneManager.avalaibleCommands.RewriteAllrefs(activeCommand, savedCommand);
         savedCommand.localSaveIndex = activeCommand.localSaveIndex;
-        rewriteButton.gameObject.SetActive(false);
+        cancelRewriting();
     }
 
     public void Execute()
@@ -106,6 +119,7 @@ public class BuilderInterface : MonoBehaviour
         ListToSend.flag = "0";
         ListToSend.name = commandBuilder.CommandName.text;
         SceneManager.Net.Sender(JsonUtility.ToJson(ListToSend)) ;
+       // File.WriteAllText("C:/Users/virri/Desktop/1.json", JsonUtility.ToJson(ListToSend));
         
         for (int i = 0; i < commandBuilder.CommandsSet.Count; ++i)
         {     
@@ -186,14 +200,6 @@ public class BuilderInterface : MonoBehaviour
             newCommand.UICommandElements[i].GetComponentInChildren<Text>().text= newCommand.UICommandElements[i].CommandName;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
-
-        //for (int i = SceneManager.avalaibleCommands.AvailableCommandsSet.Count - 1; i >= 0; --i)
-        //    if(SceneManager.avalaibleCommands.AvailableCommandsSet[i].localSaveIndex<=newCommand.localSaveIndex)
-        //    {
-        //        SceneManager.avalaibleCommands.AvailableCommandsSet.Insert(i, newCommand);
-        //        SceneManager.avalaibleCommands.SetSavedOrderIndex(newCommand);
-        //        break;  
-        //    }
 
       
        

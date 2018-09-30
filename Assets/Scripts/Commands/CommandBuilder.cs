@@ -21,8 +21,14 @@ public class CommandBuilder : MonoBehaviour,IDropHandler,IPointerExitHandler, IP
     void Start ()
     {
         UICommandHeight = UICommand.UISize;
-	}
-   
+        CommandName.onValueChanged.AddListener(delegate { ReturnColor(); });
+
+    }
+    public void ReturnColor()
+    {
+        CommandName.GetComponent<Image>().color = Color.white;
+    }
+
     public void AddUIElementToGroup(UICommand UIelement,  bool withCommand = true)
     {
         UICommandElements.Add(UIelement);
