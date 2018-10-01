@@ -25,6 +25,12 @@ public static class RobotCommands{
     {
         return "m " + coord + " 0";
     }
+
+    static public string FanucMoving(string coord, string objName)
+    {
+        return "m $" + objName + "$ + " + coord + " 0";
+    }
+
     //WIP
     static public string TelegaMoving()
     {

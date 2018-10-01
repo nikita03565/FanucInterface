@@ -32,10 +32,22 @@ public class NetConnection : MonoBehaviour {
 	}
     IEnumerator WaitingForConnect()
     {
-        if (isConnected)
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
-        else
-            yield return new WaitForSeconds(1f);
+        int sec = 0;
+        while (sec < 5)
+        {
+            if (isConnected)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+                break;
+            }
+            else
+            {
+                yield return new WaitForSeconds(1f);
+                ++sec;
+                Debug.Log(sec);
+            }
+        }
+        
 
     }
     public void Connect()

@@ -102,6 +102,8 @@ public class BuilderInterface : MonoBehaviour
     }
     public void Rewrite()
     {
+        if (!CheckName(commandBuilder.CommandName))
+            return;
         SaveNewComplexCommand();
         SceneManager.avalaibleCommands.RewriteAllrefs(activeCommand, savedCommand);
         savedCommand.localSaveIndex = activeCommand.localSaveIndex;
@@ -200,9 +202,14 @@ public class BuilderInterface : MonoBehaviour
             newCommand.UICommandElements[i].GetComponentInChildren<Text>().text= newCommand.UICommandElements[i].CommandName;
             newCommand.UICommandElements[i].gameObject.SetActive(false);
         }
-
-      
-       
+        SceneManager.avalaibleCommands.AvailableCommandsSet.Add(newCommand);
+       // for (int i = SceneManager.avalaibleCommands.AvailableCommandsSet.Count - 1; i >= 0; --i)
+       // if (SceneManager.avalaibleCommands.AvailableCommandsSet[i].localSaveIndex <= newCommand.localSaveIndex) 
+       // { 
+       //  SceneManager.avalaibleCommands.AvailableCommandsSet.Insert(i, newCommand); 
+       // SceneManager.avalaibleCommands.SetSavedOrderIndex(newCommand); 
+       // break; 
+       // }
     }
 }
 
