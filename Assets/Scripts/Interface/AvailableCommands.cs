@@ -12,6 +12,10 @@ public class AvailableCommands : MonoBehaviour
 	void Start ()
     {
         BasicCommandsNumber = this.transform.childCount;
+        foreach (var com in this.transform.GetComponentsInChildren<UICommand>())
+        {
+            Names.Add(com.CommandName);
+        }
        
 	}
 

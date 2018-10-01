@@ -11,29 +11,53 @@ public class NetConnection : MonoBehaviour {
     public string message;
     NetworkStream stream;
     //const string Hostname="192.168.1.5";
-    const string Hostname = "192.168.0.177";
+    string Hostname = "192.168.0.177";
     //const int Port = 8882;
-    const int Port = 9090;
+    int Port = 9090;
     TcpClient SocketConnection;
     Thread ReceiveThread;
+    bool isConnected = false;
    
     void Start () {
         try
            
         {
-            this.gameObject.GetComponent<Button>().onClick.AddListener(()=>Getscene());
-           
-            Debug.Log("NET STARTED");
-            ReceiveThread = new Thread(new ThreadStart(Listener));
-            ReceiveThread.IsBackground = true;
-            
-            ReceiveThread.Start();
+            //DontDestroyOnLoad(this.gameObject);
+            //this.gameObject.GetComponent<Button>().onClick.AddListener(()=>Connect());
         }
         catch(UnityException Error)
         {
             Debug.Log("Thread init exception: " + Error);
         }
 	}
+    IEnumerator WaitingForConnect()
+    {
+        if (isConnected)
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+        else
+            yield return new WaitForSeconds(1f);
+
+    }
+    public void Connect()
+    {
+        try
+        {
+            Hostname = FindObjectsOfType<InputField>()[0].text;
+            Port = int.Parse(FindObjectsOfType<InputField>()[1].text);
+            Debug.Log("NET STARTED");
+            ReceiveThread = new Thread(new ThreadStart(Listener));
+            ReceiveThread.IsBackground = true;
+            ReceiveThread.Start();
+           
+            StartCoroutine(WaitingForConnect());
+           
+              
+        }
+        catch (UnityException Error)
+        {
+            Debug.Log("Thread init exception: " + Error);
+        }
+    }
     void Getscene()
     {
         Sender(RobotCommands.GetSceneInf());
@@ -42,11 +66,15 @@ public class NetConnection : MonoBehaviour {
     {
         try
         {
+
             SocketConnection = new TcpClient(Hostname, Port);
             
             stream = SocketConnection.GetStream();
-            if(stream.CanRead)
-                 Debug.Log("success");
+            if (stream.CanRead)
+            {
+                isConnected = true;
+                Debug.Log("success");
+            }
             byte[] buffer = new byte[4096];
             // using (NetworkStream stream = SocketConnection.GetStream())
             {

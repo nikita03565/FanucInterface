@@ -54,7 +54,7 @@ public class FanucScript : MonoBehaviour
         //move to FanucScriptUI
         modeName.text = "Mode: Joints";
         speedText.text = speed.ToString();
-
+        net = SceneManager.Net;
         mode = 0;
         Fanuc[4].transform.localRotation = Quaternion.Euler(0, jointAngles[4], 0);
         inputField.onEndEdit.AddListener(delegate { LockInput(inputField); });
@@ -213,8 +213,8 @@ public class FanucScript : MonoBehaviour
     IEnumerator CoordtoServer()
     {
         yield return new WaitForSeconds(0.1f);
-        if (mode == 0) net.Sender(RobotCommands.FanucMoving());
-        else net.Sender(RobotCommands.FanucMoving(false));
+        if (mode == 0) SceneManager.Net.Sender(RobotCommands.FanucMoving());
+        else SceneManager.Net.Sender(RobotCommands.FanucMoving(false));
         ReadytoSend = true;
     }
 
