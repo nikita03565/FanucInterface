@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class NetConnection : MonoBehaviour {
 
+    public bool observerMode;
     public string message;
     NetworkStream stream;
     //const string Hostname="192.168.1.5";
@@ -22,8 +23,9 @@ public class NetConnection : MonoBehaviour {
         try
            
         {
-            //DontDestroyOnLoad(this.gameObject);
-            //this.gameObject.GetComponent<Button>().onClick.AddListener(()=>Connect());
+            DontDestroyOnLoad(this.gameObject);
+           // FindObjectsOfType<Button>()[0].onClick.RemoveAllListeners();
+            //FindObjectsOfType<Button>()[0].onClick.AddListener(()=>Connect());
         }
         catch(UnityException Error)
         {
@@ -32,10 +34,22 @@ public class NetConnection : MonoBehaviour {
 	}
     IEnumerator WaitingForConnect()
     {
-        if (isConnected)
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
-        else
-            yield return new WaitForSeconds(1f);
+        int sec = 0;
+        while (sec < 5)
+        {
+            if (isConnected)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+                break;
+            }
+            else
+            {
+                yield return new WaitForSeconds(1f);
+                ++sec;
+                Debug.Log(sec);
+            }
+        }
+        
 
     }
     public void Connect()
@@ -81,6 +95,7 @@ public class NetConnection : MonoBehaviour {
                 int length;
                 while (true)
                 {
+                    message = null;
                     if (!stream.CanRead)
                         Debug.Log("im  dead");
                     while ((length = stream.Read(buffer, 0, buffer.Length)) != 0)
@@ -93,8 +108,12 @@ public class NetConnection : MonoBehaviour {
 
                         message += ASCIIEncoding.ASCII.GetString(ByteMessage);
                         Debug.Log(message);
+                       
+
                         //Message in string here!\
                     }
+                    if (message != null)
+                        InstantiateFromCam.SceneSynchro(message);
                 }
             }
         }
@@ -115,12 +134,16 @@ public class NetConnection : MonoBehaviour {
         Debug.Log(Command);
         if (SocketConnection==null)
         {
+            Debug.Log("NULL");
             return;
         }
         try
         {
             if (!SocketConnection.Connected)
+            {
+                Debug.Log("UNCONNECT");
                 return;
+            }
             
             if (stream.CanWrite)
             {                
