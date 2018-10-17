@@ -86,7 +86,7 @@ public class UIComplexCommand :UICommand
             newObjs[i].transform.localScale = new Vector3(UICommand.UIScale, UICommand.UIScale);
             CommandBuilder.AddUIElementToGroup(newObjs[i]);
         }
-        BuilderInterface.RewriteMode();
+        SceneManager.builderInterface.RewriteMode();
 
     }
 
