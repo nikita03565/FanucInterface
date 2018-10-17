@@ -89,6 +89,16 @@ public class FanucModel : RoboModel
         return mz * my * mx;
     }
 
+    public static Matrix4x4 coordMatrixDegrees(Vector3 pos, Vector3 rot)
+    {
+        Matrix4x4 res = rotMatrixDegrees(rot[0], rot[1], rot[2]);
+        res[0, 3] = pos[0];
+        res[1, 3] = pos[1];
+        res[2, 3] = pos[2];
+        res[3, 3] = 1;
+        return res;
+    }
+
     public static Matrix4x4 qi(float alpha, float q)
     {
         Matrix4x4 result = new Matrix4x4();
@@ -258,7 +268,7 @@ public class FanucModel : RoboModel
             }
         }
         
-        Debug.Log("ind.Count = " + ind.Count.ToString());
+        //Debug.Log("ind.Count = " + ind.Count.ToString());
         
         for (int it = 0; it < ind.Count; ++it)
         {
