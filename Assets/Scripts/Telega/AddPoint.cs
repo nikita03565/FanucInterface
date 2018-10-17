@@ -37,7 +37,8 @@ public class AddPoint : MonoBehaviour {
                     if (arr.Length == 2)
                     {
                         raycast cam = GameObject.FindObjectOfType<raycast>();
-                        cam.aims.Add(new Vector3(float.Parse(arr[0]), 0.28f, float.Parse(arr[1])));
+                        //var aimsRobot = CoordTransformation.UnityToRobotPosOnly(new Vector4(aims[j].x, aims[j].y, aims[j].z, 1));
+                        cam.aims.Add(CoordTransformation.RobotToUnityPosOnly(new Vector3(float.Parse(arr[0]), float.Parse(arr[1]), 381f)));
                         cam.balls.Add(Instantiate(cam.GetComponent<raycast>().BallPr));
                         cam.balls[cam.GetComponent<raycast>().balls.Count - 1].transform.position = cam.GetComponent<raycast>().aims[cam.GetComponent<raycast>().balls.Count - 1];
                         input.text = "";
@@ -80,7 +81,9 @@ public class AddPoint : MonoBehaviour {
 
             if (Camera.GetComponent<raycast>().balls.Count < 9)
             {
-                PointList.GetComponent<ContentSizeFitter>().enabled = false; 
+                PointList.GetComponent<ContentSizeFitter>().enabled = false;
+                PointList.transform.position = PointList.transform.parent.position;
+                PointList.GetComponent<RectTransform>().sizeDelta = PointList.transform.parent.GetComponent<RectTransform>().sizeDelta; //new Vector2(150, 166);
             }
         }
     }

@@ -47,6 +47,7 @@ public class TelegaManager : MonoBehaviour
         if (!isTelegaMode)
         {
             isTelegaMode = true;
+            SceneManager.UserControlLock = true;
             camera.GetComponent<raycast>().enabled = true;
             camera.GetComponent<CameraOrbit>().SwitchMode();
 
@@ -58,6 +59,7 @@ public class TelegaManager : MonoBehaviour
         else
         {
             isTelegaMode = false;
+            SceneManager.UserControlLock = false;
             camera.GetComponent<raycast>().enabled = false;
             camera.GetComponent<Camera>().orthographic = false;
             textOnButton.text = "Telega Mode";
@@ -76,7 +78,7 @@ public class TelegaManager : MonoBehaviour
         {
             rc.aims[i] = new Vector3(rc.aims[i].x, telega.transform.position.y, rc.aims[i].z);
         }
-
+        
         for (int j = 1; j < rc.aims.Count - 1; ++j)
         {
             a = rc.aims[j] - rc.aims[j - 1];
@@ -106,13 +108,15 @@ public class TelegaManager : MonoBehaviour
                     (rc.aims[j + 1].z - rc.aims[j].z) * (rc.aims[j + 1].z - rc.aims[j].z)) * 1000f;
             }
 
-            SceneManager.Net.Sender(RobotCommands.TelegaMoving());
+            //SceneManager.Net.Sender(RobotCommands.TelegaMoving());
+            var aimsRobot = CoordTransformation.UnityToRobotPosOnly(new Vector4(rc.aims[j].x, rc.aims[j].y, rc.aims[j].z, 1));
+            SceneManager.Net.Sender(RobotCommands.TelegaMoving(aimsRobot[0].ToString("0.00"), aimsRobot[1].ToString("0.00")));
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
         }
         rc.aims.RemoveAt(0);
         rc.aims.RemoveAt(0);
-        SceneManager.Net.Sender("end");
+
     }
 
     IEnumerator DirectionalMoving()
@@ -125,7 +129,7 @@ public class TelegaManager : MonoBehaviour
         {
             rc.aims[i] = new Vector3(rc.aims[i].x, telega.transform.position.y, rc.aims[i].z);
         }
-
+        
         for (int j = 1; j < rc.aims.Count - 1; ++j)
         {
             a = rc.aims[j] - rc.aims[j - 1];
@@ -144,7 +148,9 @@ public class TelegaManager : MonoBehaviour
                 isReversed = new float[3] { 1, 1, -1 };
             }
 
-            SceneManager.Net.Sender(RobotCommands.TelegaMoving());
+            //SceneManager.Net.Sender(RobotCommands.TelegaMoving());
+            var aimsRobot = CoordTransformation.UnityToRobotPosOnly(new Vector4(rc.aims[j].x, rc.aims[j].y, rc.aims[j].z, 1));
+            SceneManager.Net.Sender(RobotCommands.TelegaMoving(aimsRobot[0].ToString("0.00"), aimsRobot[1].ToString("0.00")));
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
 
@@ -155,24 +161,26 @@ public class TelegaManager : MonoBehaviour
             dist = new float[3] {dst, dst, dst};
             isReversed[0] = isReversed[1] = isReversed[2] = 1;
             angle[0] = angle[1] = angle[2] = 0;
-            SceneManager.Net.Sender(RobotCommands.TelegaMoving());
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
         }
         rc.aims.RemoveAt(0);
         rc.aims.RemoveAt(0);
-        SceneManager.Net.Sender("end");
+
     }
 
     public void Synchronize()
     {
-        if (telega.Type == telegaScript.MoveType.RotateBarsAndMove)
+        if(!telega.isMoved)
         {
-            StartCoroutine("ParallelMoving");
-        } else
-        {
-            StartCoroutine("DirectionalMoving");
+            if (telega.Type == telegaScript.MoveType.RotateBarsAndMove)
+            {
+                StartCoroutine("ParallelMoving");
+            }
+            else
+            {
+                StartCoroutine("DirectionalMoving");
+            }
         }
-        
     }
 }

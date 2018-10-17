@@ -20,6 +20,7 @@ public class telegaScript : MonoBehaviour {
     public bool ToSend = true;
 
     Text modeText;
+    Text curPosText;
 
     public GameObject PointA, PointB, PointC, APointBar1, BPointBar1, APointBar2, BPointBar2, APointBar3, BPointBar3;
 
@@ -30,7 +31,7 @@ public class telegaScript : MonoBehaviour {
     }
     public MoveType Type;
 
-    private float rotationwheel = 0;
+    //private float rotationwheel = 0;
     private float rot;
     public Vector3 A, B, C, a, b;
     public bool isMoved;
@@ -51,6 +52,10 @@ public class telegaScript : MonoBehaviour {
         //Net.gameObject.SetActive(true);
         Camera = GameObject.Find("Camera");
         modeText = GameObject.Find("Telega Mode Text").GetComponent<Text>();
+        curPosText = GameObject.Find("Telega currnet position").GetComponent<Text>();
+        Debug.Log(teleg.transform.position + " " + teleg.transform.eulerAngles);
+        var res = FanucModel.GetCoordsFromMat(CoordTransformation.UnityToRobot(FanucModel.coordMatrixDegrees(teleg.transform.position, teleg.transform.eulerAngles)));
+        Debug.Log(res[0] + " " + res[1] + " " + res[2] + " " + res[3] + " " + res[4] + " " + res[5]);
         modeText.text = "Directional";
     }
 
@@ -132,11 +137,11 @@ public class telegaScript : MonoBehaviour {
 
     void Parallel()
     {
-         Vector3 a1, a2, a3;
+        Vector3 a1;//, a2, a3;
 
          a1 = BPointBar1.transform.position - APointBar1.transform.position;
-         a2 = BPointBar2.transform.position - APointBar2.transform.position;
-         a3 = BPointBar3.transform.position - APointBar3.transform.position;
+         //a2 = BPointBar2.transform.position - APointBar2.transform.position;
+         //a3 = BPointBar3.transform.position - APointBar3.transform.position;
 
          if (!isWaited)
             if (isMoved)
@@ -215,6 +220,8 @@ public class telegaScript : MonoBehaviour {
                 Parallel();
                 break;
         }
+        float[] coord = FanucModel.GetCoordsFromMat(CoordTransformation.UnityToRobot(FanucModel.coordMatrixDegrees(teleg.transform.position, teleg.transform.eulerAngles)));
+        curPosText.text = coord[0].ToString("0.00") + " " + coord[1].ToString("0.00") + " " + coord[5].ToString("0.00");
     }
 
     void Update()
