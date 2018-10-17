@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PullManager : MonoBehaviour {
     public List<GameObject> PullObjects=new List<GameObject>();
+    public List<string> PullObjectsNames = new List<string>();
 	// Use this for initialization
 	void Start ()
     {
         foreach (Transform child in transform)
         { 
             PullObjects.Add(child.gameObject);
+            PullObjectsNames.Add(child.gameObject.name);
+
         }
 	}
 	
@@ -31,7 +34,7 @@ public class PullManager : MonoBehaviour {
     {
         for (int i = 0; i < PullObjects.Count; ++i)
         {
-            if (PullObjects[i].name == Name)
+            if (PullObjectsNames[i] == Name)
                 return PullObjects[i];
             
         }

@@ -89,31 +89,39 @@ public class NetConnection : MonoBehaviour {
                 isConnected = true;
                 Debug.Log("success");
             }
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[50000];
             // using (NetworkStream stream = SocketConnection.GetStream())
             {
                 int length;
                 while (true)
                 {
-                    message = null;
+                    message = "";
                     if (!stream.CanRead)
                         Debug.Log("im  dead");
-                    while ((length = stream.Read(buffer, 0, buffer.Length)) != 0)
-                    {
+                   
+                    if((length = stream.Read(buffer, 0, buffer.Length)) != 0)
+                    { 
+                        Debug.Log("Length of message= " + length);
                         var ByteMessage = new byte[length];
                       //  mutex.WaitOne();
                         System.Array.Copy(buffer, ByteMessage, length);
                       //  mutex.ReleaseMutex();
                         //any convert of message here!
 
-                        message += ASCIIEncoding.ASCII.GetString(ByteMessage);
+                        message = ASCIIEncoding.ASCII.GetString(ByteMessage);
                         Debug.Log(message);
-                       
+                        if (message != "")
+                        {
+
+                            
+                            SceneManager.SceneSynchronization.Syncronization(message);
+                            //StartCoroutine(InstantiateFromCam.Syncronization(message));
+                            Debug.Log("sended to instantiate");
+                        }
 
                         //Message in string here!\
                     }
-                    if (message != null)
-                        InstantiateFromCam.SceneSynchro(message);
+                   
                 }
             }
         }
