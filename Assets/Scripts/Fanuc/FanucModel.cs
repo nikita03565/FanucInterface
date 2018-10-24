@@ -268,7 +268,7 @@ public class FanucModel : RoboModel
             }
         }
         
-        Debug.Log("ind.Count = " + ind.Count.ToString());
+        //Debug.Log("ind.Count = " + ind.Count.ToString());
         
         for (int it = 0; it < ind.Count; ++it)
         {

@@ -102,7 +102,7 @@ public class CommandTelegaUI : MonoBehaviour
         }
         if (coordField.text != "Wrong string" && coordField.text.Length != 0)
         {
-            //command.command = RobotCommands.TelegaMoving(inputField.text);
+            command.command = RobotCommands.TelegaMoving(coordField.text);
             ModeGroup.SetActive(0);
             coordField.text = "";
             this.gameObject.SetActive(false);

@@ -18,8 +18,8 @@ public class BuilderInterface : MonoBehaviour
     const int DefaulChilds = 3;
 
     // Use this for initialization
-    
-    bool CheckName(InputField name)
+
+    bool CheckName(InputField name, bool Rewrite=false)
     {
         
         if (commandBuilder.UICommandElements.Count == 0)
@@ -37,9 +37,16 @@ public class BuilderInterface : MonoBehaviour
         }
         if (SceneManager.avalaibleCommands.Names.IndexOf(name.text) != -1)
         {
-            commandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name already exist!";
-            commandBuilder.CommandName.GetComponent<Image>().color = new Color(1f, 0, 0, 0.5f);
-            return false;
+            if (activeCommand==null||activeCommand.CommandName != name.text)
+            {
+                commandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name already exist!";
+                commandBuilder.CommandName.GetComponent<Image>().color = new Color(1f, 0, 0, 0.5f);
+                return false;
+            }
+            else
+            {
+
+            }
         }
         Regex nameRegExp = new Regex("[^A-Za-z0-9_-]+");
         if (nameRegExp.IsMatch(name.text)||name.text.IndexOf("flag")!=-1)
@@ -89,16 +96,18 @@ public class BuilderInterface : MonoBehaviour
         SceneManager.avalaibleCommands.Names.Add(savedCommand.CommandName);
 
     }
-    public static void RewriteMode()
+    public void RewriteMode()
     {
         cancelButton.gameObject.SetActive(true);
         rewriteButton.gameObject.SetActive(true);
+        commandBuilder.CommandName.text = activeCommand.CommandName;
     }
     public void cancelRewriting()
     {
         cancelButton.gameObject.SetActive(false);
         rewriteButton.gameObject.SetActive(false);
         commandBuilder.ResetBuilder();
+        //activeCommand = null;
     }
     public void Rewrite()
     {
@@ -184,25 +193,31 @@ public class BuilderInterface : MonoBehaviour
         name = name.Remove(name.Length - 5, 5);
         newCommand.GetComponentInChildren<Text>().text = name;
         string[] SubFiles = Directory.GetFiles(Application.persistentDataPath+"/"+name, "*.json");
+        
         Debug.Log("    " + "Saveindex: " + newCommand.localSaveIndex);
-       
+        Regex lastNum = new Regex(@"[0-9]{1,}",RegexOptions.RightToLeft);//, RegexOptions.RightToLeft);
         for (int i = 0; i < SubFiles.Length; ++i)
         {
             //Read from json string which prefab will be used
-            string CommandinJson = File.ReadAllText(SubFiles[i]);
+            string CommandInJson = File.ReadAllText(SubFiles[i]);
+            int SerialNumber = int.Parse(lastNum.Match(SubFiles[i]).Value);
+            //Debug.Log("i: " + i + " match: "+lastNum.Match(SubFiles[i]).Value+" in subfiles "+SubFiles[i]);
+            //Debug.Log(SerialNumber);
           
-            if(CommandinJson.Substring(CommandinJson.IndexOf("isComplex")+11, 4) == "true")
-                newCommand.UICommandElements[i] = Instantiate(commandBuilder.ComplexCommandPrefab.gameObject, newCommand.transform).GetComponent<UIComplexCommand>();
+            if(CommandInJson.Substring(CommandInJson.IndexOf("isComplex")+11, 4) == "true")
+                newCommand.UICommandElements[SerialNumber] = Instantiate(commandBuilder.ComplexCommandPrefab.gameObject, newCommand.transform).GetComponent<UIComplexCommand>();
             else
-                newCommand.UICommandElements[i] = Instantiate(commandBuilder.CommandPrefab.gameObject, newCommand.transform).GetComponent<UICommand>();
+                newCommand.UICommandElements[SerialNumber] = Instantiate(commandBuilder.CommandPrefab.gameObject, newCommand.transform).GetComponent<UICommand>();
 
 
-            JsonUtility.FromJsonOverwrite(File.ReadAllText(SubFiles[i]), newCommand.UICommandElements[i]);
-            newCommand.UICommandElements[i].gameObject.name = newCommand.UICommandElements[i].CommandName;
-            newCommand.UICommandElements[i].GetComponentInChildren<Text>().text= newCommand.UICommandElements[i].CommandName;
-            newCommand.UICommandElements[i].gameObject.SetActive(false);
+            JsonUtility.FromJsonOverwrite(File.ReadAllText(SubFiles[i]), newCommand.UICommandElements[SerialNumber]);
+            newCommand.UICommandElements[SerialNumber].gameObject.name = newCommand.UICommandElements[SerialNumber].CommandName;
+            newCommand.UICommandElements[SerialNumber].GetComponentInChildren<Text>().text= newCommand.UICommandElements[SerialNumber].CommandName;
+            newCommand.UICommandElements[SerialNumber].gameObject.SetActive(false);
+            
         }
         SceneManager.avalaibleCommands.AvailableCommandsSet.Add(newCommand);
+        SceneManager.avalaibleCommands.Names.Add(newCommand.CommandName);
        // for (int i = SceneManager.avalaibleCommands.AvailableCommandsSet.Count - 1; i >= 0; --i)
        // if (SceneManager.avalaibleCommands.AvailableCommandsSet[i].localSaveIndex <= newCommand.localSaveIndex) 
        // { 

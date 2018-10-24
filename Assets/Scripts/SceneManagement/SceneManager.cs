@@ -15,49 +15,61 @@ public class SceneManager : MonoBehaviour {
     public static FanucScript fanuc;
     public static TelegaManager telega;
     public static BuilderInterface builderInterface;
+    public static InstantiateFromCam SceneSynchronization;
     public static bool UserControlLock=false;
+    bool ObserverMode;
     //add SlotScript
 
     // Use this for initialization
     void Start ()
     {
+        Net = FindObjectOfType<NetConnection>();
+        Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
+        // Net.Sender("ARRRRRRR");
+        Net.gameObject.SetActive(true);
+        //Debug.Log(Net);
+        ObserverMode = Net.observerMode;
         builderInterface = FindObjectOfType<BuilderInterface>();
-
-
         telega = FindObjectOfType<TelegaManager>();
-
         FanucSettingsPanel = FindObjectOfType<CommandFanucUI>();
         FanucSettingsPanel.gameObject.SetActive(false);
-
         CameraSettingsPanel = FindObjectOfType<CommandCameraUI>();
         CameraSettingsPanel.gameObject.SetActive(false);
-
         TelegaSettingsPanel = FindObjectOfType<CommandTelegaUI>();
         TelegaSettingsPanel.gameObject.SetActive(false);
-
         avalaibleCommands = FindObjectOfType<AvailableCommands>();
-
-        Net = FindObjectOfType<NetConnection>();
-        //Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
-        // Net.Sender("ARRRRRRR");
-        //Net.gameObject.SetActive(true);
-
-        Pull = FindObjectOfType<PullManager>();
-        
+        Pull = FindObjectOfType<PullManager>();        
         ScenarioEditor = GameObject.Find("ScenarioEditor");
         ScenarioEditor.SetActive(false);
-
         dropdownSceneObjects = FindObjectOfType<DropdownSceneObjects>();
         dropdownSceneObjects.gameObject.SetActive(false);
-
         fanuc = FindObjectOfType<FanucScript>();
+        SceneSynchronization = FindObjectOfType<InstantiateFromCam>();
+        if (ObserverMode)
+            CloseAllUI();
+
     }
 	
+    public void CloseAllUI()
+    {
+        foreach (Image UI in  GameObject.FindObjectsOfType<Image>())
+        {
+            UI.gameObject.SetActive(false);
+        }
+    }
 	public void ShowScenarioEditor()
     {      
         ScenarioEditor.SetActive(!ScenarioEditor.activeInHierarchy);
         UserControlLock = !UserControlLock;
     }
+    void Update()
+    {
+        if (ObserverMode)
+        {
+            Net.Sender(RobotCommands.GetSceneInf());
+           
+        }
 
+    }
 
 }

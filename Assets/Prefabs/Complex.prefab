@@ -387,13 +387,18 @@ MonoBehaviour:
   SettingsButton: {fileID: 114069953449628886}
   DeleteButton: {fileID: 114675454432969638}
   command:
-    time: 0
     parallel: 0
-    CommandToSend: 
+    name: 
+    time: 0
+    energy: 0
+    command: 
+  CommandName: 
   isOriginal: 1
   isComplex: 1
+  localSaveIndex: 0
   UICommandElements: []
   CommandsSet: []
+  original: {fileID: 0}
 --- !u!114 &114828342101641652
 MonoBehaviour:
   m_ObjectHideFlags: 1

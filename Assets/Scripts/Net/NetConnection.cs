@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class NetConnection : MonoBehaviour {
 
+    public bool observerMode;
     public string message;
     NetworkStream stream;
     //const string Hostname="192.168.1.5";
@@ -22,8 +23,9 @@ public class NetConnection : MonoBehaviour {
         try
            
         {
-            //DontDestroyOnLoad(this.gameObject);
-            //this.gameObject.GetComponent<Button>().onClick.AddListener(()=>Connect());
+            DontDestroyOnLoad(this.gameObject);
+           // FindObjectsOfType<Button>()[0].onClick.RemoveAllListeners();
+            //FindObjectsOfType<Button>()[0].onClick.AddListener(()=>Connect());
         }
         catch(UnityException Error)
         {
@@ -87,26 +89,39 @@ public class NetConnection : MonoBehaviour {
                 isConnected = true;
                 Debug.Log("success");
             }
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[50000];
             // using (NetworkStream stream = SocketConnection.GetStream())
             {
                 int length;
                 while (true)
                 {
+                    message = "";
                     if (!stream.CanRead)
                         Debug.Log("im  dead");
-                    while ((length = stream.Read(buffer, 0, buffer.Length)) != 0)
-                    {
+                   
+                    if((length = stream.Read(buffer, 0, buffer.Length)) != 0)
+                    { 
+                        Debug.Log("Length of message= " + length);
                         var ByteMessage = new byte[length];
                       //  mutex.WaitOne();
                         System.Array.Copy(buffer, ByteMessage, length);
                       //  mutex.ReleaseMutex();
                         //any convert of message here!
 
-                        message += ASCIIEncoding.ASCII.GetString(ByteMessage);
+                        message = ASCIIEncoding.ASCII.GetString(ByteMessage);
                         Debug.Log(message);
+                        if (message != "")
+                        {
+
+                            
+                            SceneManager.SceneSynchronization.Syncronization(message);
+                            //StartCoroutine(InstantiateFromCam.Syncronization(message));
+                            Debug.Log("sended to instantiate");
+                        }
+
                         //Message in string here!\
                     }
+                   
                 }
             }
         }
@@ -127,12 +142,16 @@ public class NetConnection : MonoBehaviour {
         //Debug.Log(Command);
         if (SocketConnection==null)
         {
+            Debug.Log("NULL");
             return;
         }
         try
         {
             if (!SocketConnection.Connected)
+            {
+                Debug.Log("UNCONNECT");
                 return;
+            }
             
             if (stream.CanWrite)
             {                

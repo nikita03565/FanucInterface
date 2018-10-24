@@ -47,6 +47,7 @@ public class TelegaManager : MonoBehaviour
         if (!isTelegaMode)
         {
             isTelegaMode = true;
+            SceneManager.UserControlLock = true;
             camera.GetComponent<raycast>().enabled = true;
             camera.GetComponent<CameraOrbit>().SwitchMode();
 
@@ -58,6 +59,7 @@ public class TelegaManager : MonoBehaviour
         else
         {
             isTelegaMode = false;
+            SceneManager.UserControlLock = false;
             camera.GetComponent<raycast>().enabled = false;
             camera.GetComponent<Camera>().orthographic = false;
             textOnButton.text = "Telega Mode";
@@ -76,8 +78,7 @@ public class TelegaManager : MonoBehaviour
         {
             rc.aims[i] = new Vector3(rc.aims[i].x, telega.transform.position.y, rc.aims[i].z);
         }
-        rc.aims.RemoveAt(0);
-        rc.aims.RemoveAt(0);
+
         for (int j = 1; j < rc.aims.Count - 1; ++j)
         {
             a = rc.aims[j] - rc.aims[j - 1];
@@ -113,8 +114,8 @@ public class TelegaManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
         }
-        
-        SceneManager.Net.Sender("end");
+        rc.aims.RemoveAt(0);
+        rc.aims.RemoveAt(0);
     }
 
     IEnumerator DirectionalMoving()
@@ -127,8 +128,7 @@ public class TelegaManager : MonoBehaviour
         {
             rc.aims[i] = new Vector3(rc.aims[i].x, telega.transform.position.y, rc.aims[i].z);
         }
-        rc.aims.RemoveAt(0);
-        rc.aims.RemoveAt(0);
+
         for (int j = 1; j < rc.aims.Count - 1; ++j)
         {
             a = rc.aims[j] - rc.aims[j - 1];
@@ -163,8 +163,8 @@ public class TelegaManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             GameObject.Find("telega").GetComponent<telegaScript>().isMoved = true;
         }
-        
-        SceneManager.Net.Sender("end");
+        rc.aims.RemoveAt(0);
+        rc.aims.RemoveAt(0);
     }
 
     public void Synchronize()
