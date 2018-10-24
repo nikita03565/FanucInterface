@@ -7,6 +7,8 @@ public class InstantiateFromCam : MonoBehaviour
 {
     int NumberofObjects;
     string[] Names;
+    string[] StringCoordArr;
+    float[] floatCoordArr;
     Vector3[] PositionCoords;
     bool Synchro = false;
     // Use this for initialization
@@ -29,10 +31,15 @@ public class InstantiateFromCam : MonoBehaviour
             
             Debug.Log(i + ": " + dict[i]);
             Names[index] = i;
-            var arr = dict[i].Split();
-            PositionCoords[index]=CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(arr[0]), float.Parse(arr[1]), float.Parse(arr[2]),0));
+            StringCoordArr = dict[i].Split();
+            floatCoordArr = new float[StringCoordArr.Length];
+            Debug.Log("length of parsed array " + StringCoordArr.Length);
+            for (int j = 0; j < StringCoordArr.Length; ++j)
+                floatCoordArr[j] = float.Parse(StringCoordArr[j]);
+            PositionCoords[index]=CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(StringCoordArr[0]), float.Parse(StringCoordArr[1]), float.Parse(StringCoordArr[2]),0));
             Debug.Log(Names[index]);
-            Debug.Log("Position: "+PositionCoords[index]);            
+            //Debug.Log("Position: "+PositionCoords[index]); 
+            Debug.Log(floatCoordArr);
             ++index;
         }
         //-------------------------------------Here he ends------------------------------------------------------------------      
@@ -49,8 +56,18 @@ public class InstantiateFromCam : MonoBehaviour
                 // obj.transform.rotation = RotationCoords[i];
                 if (obj)
                 {
-                    obj.transform.position = PositionCoords[i];
-                    obj.SetActive(true);
+                    if (obj.name == "fanuc")
+                    {
+                        Debug.Log("FANUUUUC");
+                        StopAllCoroutines();
+                        StartCoroutine(SceneManager.fanuc.Move(floatCoordArr));
+                        
+                    }
+                    else
+                    {
+                        obj.transform.position = PositionCoords[i];
+                        obj.SetActive(true);
+                    }
                     Debug.Log(Names[i] + " found");
                 }
                 else Debug.Log(i + "   " + Names[i] + "Not Found");

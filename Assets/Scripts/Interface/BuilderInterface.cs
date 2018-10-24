@@ -16,10 +16,11 @@ public class BuilderInterface : MonoBehaviour
     static Button cancelButton;
     //3 here is number of standart default childs(text, sett, del)
     const int DefaulChilds = 3;
+    bool isRewriteMode;
 
     // Use this for initialization
 
-    bool CheckName(InputField name, bool Rewrite=false)
+    bool CheckName(InputField name, bool save=false)
     {
         
         if (commandBuilder.UICommandElements.Count == 0)
@@ -35,10 +36,11 @@ public class BuilderInterface : MonoBehaviour
            
             return false;
         }
-        if (SceneManager.avalaibleCommands.Names.IndexOf(name.text) != -1)
+        if (SceneManager.avalaibleCommands.Names.IndexOf(name.text) != -1&&!isRewriteMode)
         {
             if (activeCommand==null||activeCommand.CommandName != name.text)
             {
+
                 commandBuilder.CommandName.GetComponentInChildren<Text>().text = "Name already exist!";
                 commandBuilder.CommandName.GetComponent<Image>().color = new Color(1f, 0, 0, 0.5f);
                 return false;
@@ -61,8 +63,12 @@ public class BuilderInterface : MonoBehaviour
     }
     public void SaveNewComplexCommand()
     {
-        if (!CheckName(commandBuilder.CommandName))
-            return;
+        if (!CheckName(commandBuilder.CommandName,true))//&&!rewriteButton.IsActive())
+        {
+            Debug.Log("NOOO SAVE");
+                return;
+        }
+            
         UIComplexCommand newCommand = Instantiate(commandBuilder.ComplexCommandPrefab, SceneManager.avalaibleCommands.transform).GetComponent<UIComplexCommand>();
         
         for (int i = 0; i < commandBuilder.UICommandElements.Count; ++i)
@@ -91,7 +97,7 @@ public class BuilderInterface : MonoBehaviour
         
         savedCommand = newCommand;
         SerializeToJson(savedCommand);
-        commandBuilder.ResetBuilder();
+        cancelRewriting();
         SceneManager.avalaibleCommands.AvailableCommandsSet.Add(savedCommand);
         SceneManager.avalaibleCommands.Names.Add(savedCommand.CommandName);
 
@@ -101,12 +107,14 @@ public class BuilderInterface : MonoBehaviour
         cancelButton.gameObject.SetActive(true);
         rewriteButton.gameObject.SetActive(true);
         commandBuilder.CommandName.text = activeCommand.CommandName;
+        isRewriteMode = true;
     }
     public void cancelRewriting()
     {
         cancelButton.gameObject.SetActive(false);
         rewriteButton.gameObject.SetActive(false);
         commandBuilder.ResetBuilder();
+        isRewriteMode = false;
         //activeCommand = null;
     }
     public void Rewrite()
@@ -216,16 +224,27 @@ public class BuilderInterface : MonoBehaviour
             newCommand.UICommandElements[SerialNumber].gameObject.SetActive(false);
             
         }
-        SceneManager.avalaibleCommands.AvailableCommandsSet.Add(newCommand);
-        SceneManager.avalaibleCommands.Names.Add(newCommand.CommandName);
-       // for (int i = SceneManager.avalaibleCommands.AvailableCommandsSet.Count - 1; i >= 0; --i)
-       // if (SceneManager.avalaibleCommands.AvailableCommandsSet[i].localSaveIndex <= newCommand.localSaveIndex) 
-       // { 
-       //  SceneManager.avalaibleCommands.AvailableCommandsSet.Insert(i, newCommand); 
-       // SceneManager.avalaibleCommands.SetSavedOrderIndex(newCommand); 
-       // break; 
-       // }
-    }
+         SceneManager.avalaibleCommands.Names.Add(newCommand.CommandName);
+        int count = SceneManager.avalaibleCommands.AvailableCommandsSet.Count;
+        for (int i = 0; i < SceneManager.avalaibleCommands.AvailableCommandsSet.Count; ++i)
+        {
+           
+            if (SceneManager.avalaibleCommands.AvailableCommandsSet[i].localSaveIndex >= newCommand.localSaveIndex)
+            {
+                SceneManager.avalaibleCommands.AvailableCommandsSet.Insert(i, newCommand);
+                SceneManager.avalaibleCommands.SetSavedOrderIndex(newCommand);
+                break;
+            }
+            
+        }
+
+        if (SceneManager.avalaibleCommands.AvailableCommandsSet.Count == count)
+        {
+            SceneManager.avalaibleCommands.AvailableCommandsSet.Add(newCommand);
+            SceneManager.avalaibleCommands.SetSavedOrderIndex(newCommand);
+        }
+
+        }
 }
 
 [System.Serializable]

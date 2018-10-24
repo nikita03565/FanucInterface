@@ -34,7 +34,7 @@ public class CommandFanucUI : MonoBehaviour
         timeField = this.transform.Find("SetTimeField").GetComponent<InputField>();
         energyField = this.transform.Find("SetEnergyField").GetComponent<InputField>();
         nameField = this.transform.Find("ObjNameField").GetComponent<InputField>();
-        coordField.onEndEdit.AddListener(delegate { LockInput(coordField); });
+        //coordField.onEndEdit.AddListener(delegate { LockInput(coordField); });
     }
 
     internal void show()
@@ -43,7 +43,7 @@ public class CommandFanucUI : MonoBehaviour
         SceneManager.dropdownSceneObjects.gameObject.SetActive(true);
     }
 
-    public void LockInput(InputField input)
+    public bool LockInput(InputField input)
     {
         try
         {
@@ -63,6 +63,7 @@ public class CommandFanucUI : MonoBehaviour
                     {
                         coord[i] = float.Parse(arr[i]);
                     }
+                    return true;
                 }
                 else
                 {
@@ -78,9 +79,10 @@ public class CommandFanucUI : MonoBehaviour
         }
         catch (System.Exception)
         {
-            Debug.Log("Wrong string");
-            //input.text = "Wrong string. Try again";
+
+            return false;
         }
+        
     }
 
     public void DoCommand()
@@ -116,7 +118,7 @@ public class CommandFanucUI : MonoBehaviour
         if (nameField.text.Length != 0)
         {
             objName = nameField.text;
-            if (coordField.text != "Wrong string" && coordField.text.Length != 0)
+            if (LockInput(coordField) && (coordField.text.Length != 0))
             {
                 command.command = RobotCommands.FanucMoving(coordField.text, objName);
                 Debug.Log(RobotCommands.FanucMoving(coordField.text, objName));
@@ -124,13 +126,13 @@ public class CommandFanucUI : MonoBehaviour
                 coordField.text = "";
                 nameField.text = "";
                 GraspGroup.SetActive(2);
-                DoCommand();
+                //DoCommand();
                 this.gameObject.SetActive(false);
                 SceneManager.dropdownSceneObjects.gameObject.SetActive(false);
             }
         }
 
-        if (coordField.text != "Wrong string" && coordField.text.Length != 0)
+        if (LockInput(coordField) && coordField.text.Length != 0)
         {
             command.command = RobotCommands.FanucMoving(coordField.text);
 
