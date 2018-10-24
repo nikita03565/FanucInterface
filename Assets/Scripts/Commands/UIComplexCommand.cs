@@ -121,6 +121,7 @@ public class UIComplexCommand :UICommand
         Directory.Delete(Application.persistentDataPath + "/" + this.CommandName,true);
         File.Delete(Application.persistentDataPath + "/" + this.CommandName+".json");
         Destroy(this.gameObject);
-        SceneManager.avalaibleCommands.AvailableCommandsSet.Remove(this);
+        SceneManager.avalaibleCommands.Remove(this);
+
     }
 }

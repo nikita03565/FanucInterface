@@ -155,17 +155,35 @@ public class AvailableCommands : MonoBehaviour
         }
         AvailableCommandsSet[AvailableCommandsSet.IndexOf(RWCommand)] = AvailableCommandsSet[AvailableCommandsSet.Count - 1];
         Names[Names.IndexOf(RWCommand.CommandName)] = NewCom.CommandName;
-       
-        RWCommand.Destroy();
-        AvailableCommandsSet.RemoveAt(AvailableCommandsSet.Count - 1);
+
+        if (RWCommand.CommandName != NewCom.CommandName)
+        {
+            RWCommand.Destroy();
+        }
+
+        else
+        {
+            Destroy(RWCommand.gameObject);
+            AvailableCommandsSet.RemoveAt(AvailableCommandsSet.Count - 1);
+            Names.RemoveAt(Names.Count - 1);
+
+        }
+
+
+       // Names.RemoveAt(Names.Count - 1);
         for (int i = 0; i < ComToRW.Count; ++i)
             Destroy(ComToRW[i].gameObject);
     }
 
 
-
+    public void Remove(UIComplexCommand com)
+    {
+        AvailableCommandsSet.Remove(com);
+        Names.Remove(com.CommandName);
+    }
     public void SetSavedOrderIndex(UIComplexCommand comp)
     {
+        Debug.Log("added to "+(BasicCommandsNumber + AvailableCommandsSet.IndexOf(comp)) +" " + AvailableCommandsSet.IndexOf(comp));
         comp.transform.SetSiblingIndex(BasicCommandsNumber + AvailableCommandsSet.IndexOf(comp));
         
     }
