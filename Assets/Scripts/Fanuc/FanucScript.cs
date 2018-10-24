@@ -212,7 +212,7 @@ public class FanucScript : MonoBehaviour
 
     IEnumerator CoordtoServer()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         if (mode == 0) SceneManager.Net.Sender(RobotCommands.FanucMoving());
         else SceneManager.Net.Sender(RobotCommands.FanucMoving(false));
         ReadytoSend = true;
@@ -335,7 +335,7 @@ public class FanucScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.anyKey && !SceneManager.UserControlLock && !inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
+        if (Input.anyKey && !Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&!SceneManager.UserControlLock && !inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
         {
 
             for (int i = 0; i < 6; ++i)

@@ -18,17 +18,18 @@ public class SceneManager : MonoBehaviour {
     public static InstantiateFromCam SceneSynchronization;
     public static bool UserControlLock=false;
     bool ObserverMode;
+    bool Timer = true;
     //add SlotScript
 
     // Use this for initialization
     void Start ()
     {
-        Net = FindObjectOfType<NetConnection>();
-        Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
+        //Net = FindObjectOfType<NetConnection>();
+        //Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
         // Net.Sender("ARRRRRRR");
-        Net.gameObject.SetActive(true);
+        //Net.gameObject.SetActive(true);
         //Debug.Log(Net);
-        ObserverMode = Net.observerMode;
+        //ObserverMode = Net.observerMode;
         builderInterface = FindObjectOfType<BuilderInterface>();
         telega = FindObjectOfType<TelegaManager>();
         FanucSettingsPanel = FindObjectOfType<CommandFanucUI>();
@@ -62,11 +63,19 @@ public class SceneManager : MonoBehaviour {
         ScenarioEditor.SetActive(!ScenarioEditor.activeInHierarchy);
         UserControlLock = !UserControlLock;
     }
+    public IEnumerator SendingLimiter(string Message, float Delay)
+    {
+        Timer = false;
+        Net.Sender(Message);
+        yield return new WaitForSeconds(Delay);
+        Timer = true;
+    }
     void Update()
     {
-        if (ObserverMode)
+        
+        if (ObserverMode&&Timer)
         {
-            Net.Sender(RobotCommands.GetSceneInf());
+            StartCoroutine(SendingLimiter(RobotCommands.GetSceneInf(), 1f));
            
         }
 

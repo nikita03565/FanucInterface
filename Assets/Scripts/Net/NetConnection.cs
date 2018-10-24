@@ -24,8 +24,12 @@ public class NetConnection : MonoBehaviour {
            
         {
             DontDestroyOnLoad(this.gameObject);
-           // FindObjectsOfType<Button>()[0].onClick.RemoveAllListeners();
-            //FindObjectsOfType<Button>()[0].onClick.AddListener(()=>Connect());
+            FindObjectsOfType<Button>()[0].onClick.RemoveAllListeners();
+            FindObjectsOfType<Button>()[0].onClick.AddListener(()=>Connect());
+            FindObjectsOfType<Button>()[1].onClick.RemoveAllListeners();
+            FindObjectsOfType<Button>()[1].onClick.AddListener(() => Connect(true));
+
+
         }
         catch(UnityException Error)
         {
@@ -52,10 +56,11 @@ public class NetConnection : MonoBehaviour {
         
 
     }
-    public void Connect()
+    public void Connect(bool ObsMode = false)
     {
         try
         {
+            observerMode = ObsMode;
             Hostname = FindObjectsOfType<InputField>()[0].text;
             Port = int.Parse(FindObjectsOfType<InputField>()[1].text);
             Debug.Log("NET STARTED");
@@ -76,6 +81,7 @@ public class NetConnection : MonoBehaviour {
     {
         Sender(RobotCommands.GetSceneInf());
     }
+    
     void Listener()
     {
         try
@@ -110,7 +116,7 @@ public class NetConnection : MonoBehaviour {
 
                         message = ASCIIEncoding.ASCII.GetString(ByteMessage);
                         Debug.Log(message);
-                        if (message != "")
+                        if (message != ""||message!="{}")
                         {
 
                             
@@ -138,8 +144,8 @@ public class NetConnection : MonoBehaviour {
   
     public void Sender(string Command)
     {
-        Debug.Log("trying to send");
-        Debug.Log(Command);
+        //Debug.Log("trying to send");
+        //Debug.Log(Command);
         if (SocketConnection==null)
         {
             Debug.Log("NULL");
@@ -157,7 +163,7 @@ public class NetConnection : MonoBehaviour {
             {                
                 byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(Command);
                 stream.Write(ByteMessageToServer, 0, ByteMessageToServer.Length);
-                Debug.Log("sended");
+                //Debug.Log("sended");
             }        
             else Debug.Log("stream cant write");
         }
