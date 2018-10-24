@@ -10,7 +10,7 @@ public class CommandFanuc : Command
 
     public CommandFanuc()
     {
-        name = "f";
+        //name = "f";
     }
     public CommandFanuc(Command parent)
     {

@@ -65,6 +65,8 @@ public class UICommand : MonoBehaviour
     public virtual void Add()
     {
         UICommand NewCommand= Instantiate (this.gameObject,this.transform.parent).GetComponent<UICommand>();
+        
+
         NewCommand.name = this.name;
         switch (this.gameObject.name)
         {
@@ -84,6 +86,7 @@ public class UICommand : MonoBehaviour
                     break;
                 }
         }
+        Command.Copy(NewCommand.command, this.command);
         NewCommand.transform.SetParent(CommandBuilder.transform);
         NewCommand.gameObject.AddComponent<DragDrop>();
         NewCommand.isOriginal = false;
