@@ -36,7 +36,7 @@ public static class CoordTransformation
         tmp[0] *= 1000f;
         tmp[1] *= 1000f;
         tmp[2] *= 1000f;
-        Debug.Log(tmp);
+        //Debug.Log(tmp);
         return tmp;
     }
 
