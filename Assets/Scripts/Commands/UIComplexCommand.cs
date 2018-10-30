@@ -83,6 +83,7 @@ public class UIComplexCommand :UICommand
         for (int i = 0; i < UICommandElements.Count; ++i)
         {
             newObjs[i].transform.SetParent(CommandBuilder.transform);
+            newObjs[i].gameObject.AddComponent<DragDrop>();
             newObjs[i].transform.localScale = new Vector3(UICommand.UIScale, UICommand.UIScale);
             CommandBuilder.AddUIElementToGroup(newObjs[i]);
         }

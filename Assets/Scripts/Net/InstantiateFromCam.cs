@@ -18,32 +18,39 @@ public class InstantiateFromCam : MonoBehaviour
         //-------------------------------------Here should be parser--------------------------------------------------------
         //string message = "{\"fanuc\":\"12 32 1 34 65 -90\",\"telega\":\"100 -2000 300 -1 -2 -3\"}";
         Debug.Log("synchro...");
-        var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
-        Debug.Log(dict);
-        NumberofObjects =dict.Count; //what's the magic number???
-        Debug.Log(NumberofObjects);
-        Names = new string[NumberofObjects]; //IDs
-        PositionCoords = new Vector3[NumberofObjects];
-        //Quaternion[] RotationCoords = new Quaternion[NumberofObjects];
-        int index = 0;
-        foreach (var i in dict.Keys)
+        try
         {
-            
-            Debug.Log(i + ": " + dict[i]);
-            Names[index] = i;
-            StringCoordArr = dict[i].Split();
-            floatCoordArr = new float[StringCoordArr.Length];
-            Debug.Log("length of parsed array " + StringCoordArr.Length);
-            for (int j = 0; j < StringCoordArr.Length; ++j)
-                floatCoordArr[j] = float.Parse(StringCoordArr[j]);
-            PositionCoords[index]=CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(StringCoordArr[0]), float.Parse(StringCoordArr[1]), float.Parse(StringCoordArr[2]),0));
-            Debug.Log(Names[index]);
-            //Debug.Log("Position: "+PositionCoords[index]); 
-            Debug.Log(floatCoordArr);
-            ++index;
+            var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
+            Debug.Log(dict);
+            NumberofObjects = dict.Count; //what's the magic number???
+            Debug.Log(NumberofObjects);
+            Names = new string[NumberofObjects]; //IDs
+            PositionCoords = new Vector3[NumberofObjects];
+            //Quaternion[] RotationCoords = new Quaternion[NumberofObjects];
+            int index = 0;
+            foreach (var i in dict.Keys)
+            {
+
+                Debug.Log(i + ": " + dict[i]);
+                Names[index] = i;
+                StringCoordArr = dict[i].Split();
+                floatCoordArr = new float[StringCoordArr.Length];
+                Debug.Log("length of parsed array " + StringCoordArr.Length);
+                for (int j = 0; j < StringCoordArr.Length; ++j)
+                    floatCoordArr[j] = float.Parse(StringCoordArr[j]);
+                PositionCoords[index] = CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(StringCoordArr[0]), float.Parse(StringCoordArr[1]), float.Parse(StringCoordArr[2]), 0));
+                Debug.Log(Names[index]);
+                //Debug.Log("Position: "+PositionCoords[index]); 
+                Debug.Log(floatCoordArr);
+                ++index;
+            }
+            //-------------------------------------Here he ends------------------------------------------------------------------      
+            Synchro = true;
         }
-        //-------------------------------------Here he ends------------------------------------------------------------------      
-        Synchro = true;
+        catch(UnityException ex)
+        {
+            Debug.Log(ex);
+        }
     }
     // Update is called once per frame
     void Update () {

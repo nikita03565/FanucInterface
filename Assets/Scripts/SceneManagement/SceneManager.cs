@@ -24,12 +24,14 @@ public class SceneManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        //Net = FindObjectOfType<NetConnection>();
-        //Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
-        // Net.Sender("ARRRRRRR");
-        //Net.gameObject.SetActive(true);
-        //Debug.Log(Net);
-        //ObserverMode = Net.observerMode;
+        if (Net = FindObjectOfType<NetConnection>())
+        {
+            Net.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            ////Net.Sender("ARRRRRRR");
+            Net.gameObject.SetActive(true);
+            Debug.Log(Net);
+            ObserverMode = Net.observerMode;
+        }
         builderInterface = FindObjectOfType<BuilderInterface>();
         telega = FindObjectOfType<TelegaManager>();
         FanucSettingsPanel = FindObjectOfType<CommandFanucUI>();
@@ -47,7 +49,10 @@ public class SceneManager : MonoBehaviour {
         fanuc = FindObjectOfType<FanucScript>();
         SceneSynchronization = FindObjectOfType<InstantiateFromCam>();
         if (ObserverMode)
+        {
             CloseAllUI();
+            UserControlLock = true;
+        }
 
     }
 	
@@ -82,3 +87,4 @@ public class SceneManager : MonoBehaviour {
     }
 
 }
+

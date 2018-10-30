@@ -144,8 +144,8 @@ public class NetConnection : MonoBehaviour {
   
     public void Sender(string Command)
     {
-        //Debug.Log("trying to send");
-        //Debug.Log(Command);
+        Debug.Log("trying to send");
+        Debug.Log(Command);
         if (SocketConnection==null)
         {
             Debug.Log("NULL");
@@ -163,7 +163,7 @@ public class NetConnection : MonoBehaviour {
             {                
                 byte[] ByteMessageToServer = Encoding.ASCII.GetBytes(Command);
                 stream.Write(ByteMessageToServer, 0, ByteMessageToServer.Length);
-                //Debug.Log("sended");
+                Debug.Log("sended");
             }        
             else Debug.Log("stream cant write");
         }
