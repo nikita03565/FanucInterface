@@ -78,7 +78,7 @@ public class TelegaManager : MonoBehaviour
         {
             rc.aims[i] = new Vector3(rc.aims[i].x, telega.transform.position.y, rc.aims[i].z);
         }
-        
+
         for (int j = 1; j < rc.aims.Count - 1; ++j)
         {
             a = rc.aims[j] - rc.aims[j - 1];
@@ -116,7 +116,6 @@ public class TelegaManager : MonoBehaviour
         }
         rc.aims.RemoveAt(0);
         rc.aims.RemoveAt(0);
-
     }
 
     IEnumerator DirectionalMoving()
@@ -129,7 +128,7 @@ public class TelegaManager : MonoBehaviour
         {
             rc.aims[i] = new Vector3(rc.aims[i].x, telega.transform.position.y, rc.aims[i].z);
         }
-        
+
         for (int j = 1; j < rc.aims.Count - 1; ++j)
         {
             a = rc.aims[j] - rc.aims[j - 1];
@@ -166,7 +165,6 @@ public class TelegaManager : MonoBehaviour
         }
         rc.aims.RemoveAt(0);
         rc.aims.RemoveAt(0);
-
     }
 
     public void Synchronize()
