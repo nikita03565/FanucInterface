@@ -52,6 +52,7 @@ public class SceneManager : MonoBehaviour {
         {
             CloseAllUI();
             UserControlLock = true;
+            fanuc.mode = 0;
         }
 
     }

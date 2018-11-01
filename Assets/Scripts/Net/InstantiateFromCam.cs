@@ -66,7 +66,7 @@ public class InstantiateFromCam : MonoBehaviour
                     if (obj.name == "fanuc")
                     {
                         Debug.Log("FANUUUUC");
-                        StopAllCoroutines();
+                        StopCoroutine("Move");
                         StartCoroutine(SceneManager.fanuc.Move(floatCoordArr));
                         
                     }
