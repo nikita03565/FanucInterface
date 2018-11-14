@@ -21,7 +21,10 @@ public class TelegaManager : MonoBehaviour
     public float[] dist;
     public float[] angle;
 
-
+    public void AddNextTelegaPoint(Vector2 point)
+    {
+        rc.aims.Add(new Vector3(point.x, telega.transform.position.y, point.y));
+    }
     // Use this for initialization
     void Start()
     {
@@ -68,7 +71,7 @@ public class TelegaManager : MonoBehaviour
     }
 
 
-    IEnumerator ParallelMoving()
+    public IEnumerator ParallelMoving()
     {
 
         rc.aims.Insert(0, telega.PointA.transform.position);
@@ -119,7 +122,7 @@ public class TelegaManager : MonoBehaviour
 
     }
 
-    IEnumerator DirectionalMoving()
+    public IEnumerator DirectionalMoving()
     {
 
         rc.aims.Insert(0, telega.PointA.transform.position);

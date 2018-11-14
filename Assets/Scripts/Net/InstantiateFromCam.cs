@@ -9,6 +9,7 @@ public class InstantiateFromCam : MonoBehaviour
     string[] Names;
     string[] StringCoordArr;
     float[] floatCoordArr;
+    float[] FanucCoords;
     Vector3[] PositionCoords;
     bool Synchro = false;
     // Use this for initialization
@@ -35,6 +36,8 @@ public class InstantiateFromCam : MonoBehaviour
                 Names[index] = i;
                 StringCoordArr = dict[i].Split();
                 floatCoordArr = new float[StringCoordArr.Length];
+                if (i == "fanuc")
+                    FanucCoords = floatCoordArr;
                 Debug.Log("length of parsed array " + StringCoordArr.Length);
                 for (int j = 0; j < StringCoordArr.Length; ++j)
                     floatCoordArr[j] = float.Parse(StringCoordArr[j]);
@@ -65,10 +68,15 @@ public class InstantiateFromCam : MonoBehaviour
                 {
                     if (obj.name == "fanuc")
                     {
-                        Debug.Log("FANUUUUC");
                         StopCoroutine("Move");
-                        StartCoroutine(SceneManager.fanuc.Move(floatCoordArr));
+                        StartCoroutine(SceneManager.fanuc.Move(FanucCoords));
                         
+                    }
+                    if(obj.name =="telega")
+                    {
+                        StopCoroutine("DirectionalMoving");
+                        SceneManager.telega.AddNextTelegaPoint(new Vector2(PositionCoords[i][0], PositionCoords[i][1]));
+                        StartCoroutine(SceneManager.telega.DirectionalMoving());
                     }
                     else
                     {
