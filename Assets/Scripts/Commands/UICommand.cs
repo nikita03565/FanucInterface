@@ -6,6 +6,9 @@ using UnityEngine.UI;
 [System.Serializable]
 public class UICommand : MonoBehaviour
 {
+    private static int saveIndex = 0;
+    public int localSaveIndex = 0;
+
     protected CommandBuilder CommandBuilder;
     public  Button SettingsButton;
     public  Button DeleteButton;

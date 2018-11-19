@@ -7,16 +7,14 @@ using System.IO;
 [System.Serializable]
 public class UIComplexCommand :UICommand
 {
-    private static int saveIndex = 0;
-    public int localSaveIndex = 0;
+  
     public List<UICommand> UICommandElements = new List<UICommand>();
     public List<Command> CommandsSet = new List<Command>();
     public UIComplexCommand original;
     
     public int IndexUp()
     {
-        ++saveIndex;
-        return localSaveIndex = saveIndex;
+        return ++localSaveIndex;
     }
 
     public UIComplexCommand(UIComplexCommand com)
@@ -110,6 +108,7 @@ public class UIComplexCommand :UICommand
         NewCommand.SettingsButton.interactable = false;
         NewCommand.GetComponentInChildren<Text>().text = this.GetComponentInChildren<Text>().text;
         NewCommand.CommandName = this.CommandName;
+        NewCommand.localSaveIndex = this.localSaveIndex;
     }
    
     public override void Delete()
