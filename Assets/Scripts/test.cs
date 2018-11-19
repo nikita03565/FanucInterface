@@ -8,10 +8,12 @@ public class test : MonoBehaviour {
 	void Start () {
 
 
-        Debug.Log("Position of normal cube (which named data) "+CoordTransformation.UnityToRobotPosOnly(this.transform.position));
-
+       
     }
-
+    public void dothat(string message)
+    {
+        GameObject.FindObjectOfType<InstantiateFromCam>().Syncronization(message);
+    }
     // Update is called once per frame
     void Update () {
 		

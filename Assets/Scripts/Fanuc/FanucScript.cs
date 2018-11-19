@@ -11,7 +11,9 @@ public class FanucScript : MonoBehaviour
     public AddPoint addPoint;
 
     //need to be changed for cartesian coords
-    float speed = 30.0f;
+    public float  standartSpeed=30;
+    public float speed = 30;
+    public float desyncSpeed = 300;
 
     public float[] jointAngles = new float[6] { 0f, 0f, 0f, 0f, -90f, 0f };
     public float[] worldPos = new float[6] { 985f, 0f, 940f, -180f, 0f, 0f };
@@ -31,7 +33,7 @@ public class FanucScript : MonoBehaviour
     public Transform[] Fanuc;
     public Transform[] FanucColliders;
 
-
+    public int semafor = 0;
     //move to FanucScriptUI
     public Text speedText;
     public Text hideshow;
@@ -217,9 +219,15 @@ public class FanucScript : MonoBehaviour
         else SceneManager.Net.Sender(RobotCommands.FanucMoving(false));
         ReadytoSend = true;
     }
-
+    public IEnumerator Stopper()
+    {
+        StopCoroutine("Move");
+        yield return null;
+    }
     public IEnumerator Move(float[] newCoord)
     {
+        semafor += 1;
+        Debug.Log(mode);
         SceneManager.UserControlLock = true;
         Debug.Log(newCoord[0] + " " + newCoord[1] + " " + newCoord[2] + " " +
             newCoord[3] + " " + newCoord[4] + " " + newCoord[5] + " " + mode + "--------------------------------------------------------");
@@ -272,6 +280,8 @@ public class FanucScript : MonoBehaviour
 
             RotateFanuc(Fanuc, jointAngles);
             CoordDisplayAndSave();
+            
+            
         }
 
         if (NoCollisions)
@@ -282,7 +292,8 @@ public class FanucScript : MonoBehaviour
             }
             CoordDisplayAndSave();
         }
-        SceneManager.UserControlLock = false;
+        if(!SceneManager.ObserverMode) SceneManager.UserControlLock = false;
+        semafor -= 1;
     }
 
     public void CollisionLimiter()
@@ -335,7 +346,7 @@ public class FanucScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.anyKey && !Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&!SceneManager.UserControlLock && !inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
+        if (Input.anyKey && !Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&!SceneManager.ObserverMode&&!SceneManager.UserControlLock&&!inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
         {
 
             for (int i = 0; i < 6; ++i)

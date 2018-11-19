@@ -12,39 +12,62 @@ public class InstantiateFromCam : MonoBehaviour
     float[] FanucCoords;
     Vector3[] PositionCoords;
     bool Synchro = false;
+
+    public static bool stopCoroutine=false;
     // Use this for initialization
 
     public void Syncronization(string message)//string ObjectList)
     {
         //-------------------------------------Here should be parser--------------------------------------------------------
         //string message = "{\"fanuc\":\"12 32 1 34 65 -90\",\"telega\":\"100 -2000 300 -1 -2 -3\"}";
-        Debug.Log("synchro...");
+        //Debug.Log("synchro...");
         try
         {
             var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
-            Debug.Log(dict);
+           // Debug.Log(dict);
             NumberofObjects = dict.Count; //what's the magic number???
-            Debug.Log(NumberofObjects);
+            //Debug.Log(NumberofObjects);
             Names = new string[NumberofObjects]; //IDs
             PositionCoords = new Vector3[NumberofObjects];
             //Quaternion[] RotationCoords = new Quaternion[NumberofObjects];
             int index = 0;
             foreach (var i in dict.Keys)
             {
-
-                Debug.Log(i + ": " + dict[i]);
+                
+                //Debug.Log(i + ": " + dict[i]);
                 Names[index] = i;
                 StringCoordArr = dict[i].Split();
                 floatCoordArr = new float[StringCoordArr.Length];
-                if (i == "fanuc")
-                    FanucCoords = floatCoordArr;
-                Debug.Log("length of parsed array " + StringCoordArr.Length);
-                for (int j = 0; j < StringCoordArr.Length; ++j)
-                    floatCoordArr[j] = float.Parse(StringCoordArr[j]);
-                PositionCoords[index] = CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(StringCoordArr[0]), float.Parse(StringCoordArr[1]), float.Parse(StringCoordArr[2]), 0));
-                Debug.Log(Names[index]);
+                switch (i)
+                {
+                    case "fanuc":
+                        {
+                            FanucCoords = floatCoordArr;
+                            break;
+                        }
+                    case "telega":
+                        {
+                            floatCoordArr[0] = float.Parse(StringCoordArr[0]);
+                            floatCoordArr[1] = float.Parse(StringCoordArr[1]);
+                            break;
+                        }
+                    default:
+                        {
+                            if (SceneManager.Pull.Find(Names[index]))
+                            {
+                                for (int j = 0; j < StringCoordArr.Length; ++j)
+                                    floatCoordArr[j] = float.Parse(StringCoordArr[j]);
+                                PositionCoords[index] = CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(StringCoordArr[0]), float.Parse(StringCoordArr[1]), float.Parse(StringCoordArr[2]) - 190f, 1));
+                                Debug.Log(Names[index] + " object found, coords added");
+                            }
+                            break;
+                        }
+                }
+                
+               // Debug.Log("length of parsed array " + StringCoordArr.Length);
+                
                 //Debug.Log("Position: "+PositionCoords[index]); 
-                Debug.Log(floatCoordArr);
+                //Debug.Log(floatCoordArr);
                 ++index;
             }
             //-------------------------------------Here he ends------------------------------------------------------------------      
@@ -55,6 +78,11 @@ public class InstantiateFromCam : MonoBehaviour
             Debug.Log(ex);
         }
     }
+    //IEnumerator MoveManager()
+    //{
+    //    yield return new WaitUntil(() => stopCoroutine == true);
+    //    StartCoroutine(SceneManager.fanuc.Move(FanucCoords));
+    //}
     // Update is called once per frame
     void Update () {
         if (Synchro)
@@ -68,24 +96,33 @@ public class InstantiateFromCam : MonoBehaviour
                 {
                     if (obj.name == "fanuc")
                     {
-                        StopCoroutine("Move");
-                        StartCoroutine(SceneManager.fanuc.Move(FanucCoords));
+
+                        if (SceneManager.fanuc.semafor == 0)
+                        {
+                            SceneManager.fanuc.speed = SceneManager.fanuc.standartSpeed;
+                            StartCoroutine(SceneManager.fanuc.Move(FanucCoords));
+                        }
+                        else
+                        {
+                            SceneManager.fanuc.speed = SceneManager.fanuc.desyncSpeed;
+                        }
                         
                     }
+                    else 
                     if(obj.name =="telega")
                     {
-                        StopCoroutine("DirectionalMoving");
-                        SceneManager.telega.AddNextTelegaPoint(new Vector2(PositionCoords[i][0], PositionCoords[i][1]));
-                        StartCoroutine(SceneManager.telega.DirectionalMoving());
+                        AddPoint.AddFromObserver(floatCoordArr[0], floatCoordArr[1]);
+                        SceneManager.telega.Synchronize();
+                      
                     }
                     else
                     {
                         obj.transform.position = PositionCoords[i];
                         obj.SetActive(true);
                     }
-                    Debug.Log(Names[i] + " found");
+                    //Debug.Log(Names[i] + " found");
                 }
-                else Debug.Log(i + "   " + Names[i] + "Not Found");
+                //else Debug.Log(i + "   " + Names[i] + "Not Found");
             }
             Synchro = false;
         }

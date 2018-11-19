@@ -17,7 +17,8 @@ public class SceneManager : MonoBehaviour {
     public static BuilderInterface builderInterface;
     public static InstantiateFromCam SceneSynchronization;
     public static bool UserControlLock=false;
-    bool ObserverMode;
+     
+    public static bool ObserverMode;
     bool Timer = true;
     //add SlotScript
 
@@ -48,11 +49,14 @@ public class SceneManager : MonoBehaviour {
         dropdownSceneObjects.gameObject.SetActive(false);
         fanuc = FindObjectOfType<FanucScript>();
         SceneSynchronization = FindObjectOfType<InstantiateFromCam>();
+        telega.telega.Type = telegaScript.MoveType.RotateBarsAndMove;
         if (ObserverMode)
         {
             CloseAllUI();
             UserControlLock = true;
             fanuc.mode = 0;
+            telega.telega.Type = telegaScript.MoveType.RotateBarsAndMove;
+
         }
 
     }

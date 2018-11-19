@@ -19,7 +19,14 @@ public class AddPoint : MonoBehaviour {
 	void Update () {
 		
 	}
+    public static void AddFromObserver(float x, float y)
+    {
+        raycast cam = GameObject.FindObjectOfType<raycast>();
+        cam.aims.Add(CoordTransformation.RobotToUnityPosOnly(new Vector3(x, y, 381f)));
+        cam.balls.Add(Instantiate(cam.GetComponent<raycast>().BallPr));
+        cam.balls[cam.GetComponent<raycast>().balls.Count - 1].transform.position = cam.GetComponent<raycast>().aims[cam.GetComponent<raycast>().balls.Count - 1];
 
+    }
     public void Add()
     { 
         if (!SceneManager.telega.telega.isMoved)
