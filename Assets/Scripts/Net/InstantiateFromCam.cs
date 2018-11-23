@@ -10,6 +10,7 @@ public class InstantiateFromCam : MonoBehaviour
     string[] StringCoordArr;
     float[] floatCoordArr;
     float[] FanucCoords;
+    float[] TelegaCoord=new float[6];
     Vector3[] PositionCoords;
     bool Synchro = false;
 
@@ -34,36 +35,45 @@ public class InstantiateFromCam : MonoBehaviour
             foreach (var i in dict.Keys)
             {
                 
-                //Debug.Log(i + ": " + dict[i]);
+                Debug.Log(i + ": " + dict[i]);
                 Names[index] = i;
                 StringCoordArr = dict[i].Split();
                 floatCoordArr = new float[StringCoordArr.Length];
-                switch (i)
-                {
-                    case "fanuc":
-                        {
-                            FanucCoords = floatCoordArr;
-                            break;
-                        }
-                    case "telega":
-                        {
-                            floatCoordArr[0] = float.Parse(StringCoordArr[0]);
-                            floatCoordArr[1] = float.Parse(StringCoordArr[1]);
-                            break;
-                        }
-                    default:
-                        {
-                            if (SceneManager.Pull.Find(Names[index]))
-                            {
-                                for (int j = 0; j < StringCoordArr.Length; ++j)
-                                    floatCoordArr[j] = float.Parse(StringCoordArr[j]);
-                                PositionCoords[index] = CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(StringCoordArr[0]), float.Parse(StringCoordArr[1]), float.Parse(StringCoordArr[2]) - 190f, 1));
-                                Debug.Log(Names[index] + " object found, coords added");
-                            }
-                            break;
-                        }
-                }
                 
+                //switch (i)
+                //{
+                //    case "fanuc":
+                //        {
+                //            FanucCoords = floatCoordArr;
+                //            break;
+                //        }
+                //    case "telega":
+                //        {
+                //            Debug.Log("here telega " + StringCoordArr);
+                //            TelegaCoord = floatCoordArr;
+                //            Debug.Log(floatCoordArr[0]+" "+ floatCoordArr[1]);
+                //            break;
+                //        }
+
+                   
+                //}
+                if(i== "fanuc")
+                {
+                     FanucCoords = floatCoordArr;
+                    
+               }
+                if (i == "telega")
+                {
+                    TelegaCoord[0] = float.Parse(StringCoordArr[0]);
+                    TelegaCoord[1] = float.Parse(StringCoordArr[1]);
+                }else
+                if (SceneManager.Pull.Find(Names[index]))
+                {
+                    for (int j = 0; j < StringCoordArr.Length; ++j)
+                        floatCoordArr[j] = float.Parse(StringCoordArr[j]);
+                    PositionCoords[index] = CoordTransformation.RobotToUnityPosOnly(new Vector4(float.Parse(StringCoordArr[0]), float.Parse(StringCoordArr[1]), float.Parse(StringCoordArr[2]) - 190f, 1));
+                    Debug.Log(Names[index] + " object found, coords added");
+                }
                // Debug.Log("length of parsed array " + StringCoordArr.Length);
                 
                 //Debug.Log("Position: "+PositionCoords[index]); 
@@ -111,7 +121,8 @@ public class InstantiateFromCam : MonoBehaviour
                     else 
                     if(obj.name =="telega")
                     {
-                        AddPoint.AddFromObserver(floatCoordArr[0], floatCoordArr[1]);
+                        Debug.Log(TelegaCoord[0] + " " + TelegaCoord[1] + "------------------------");
+                        AddPoint.AddFromObserver(TelegaCoord[0], TelegaCoord[1]);
                         SceneManager.telega.Synchronize();
                       
                     }

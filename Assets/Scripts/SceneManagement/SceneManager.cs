@@ -49,6 +49,7 @@ public class SceneManager : MonoBehaviour {
         dropdownSceneObjects.gameObject.SetActive(false);
         fanuc = FindObjectOfType<FanucScript>();
         SceneSynchronization = FindObjectOfType<InstantiateFromCam>();
+
         telega.telega.Type = telegaScript.MoveType.RotateBarsAndMove;
         if (ObserverMode)
         {

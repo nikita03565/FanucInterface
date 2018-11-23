@@ -94,13 +94,17 @@ public class BuilderInterface : MonoBehaviour
             else newCommand.CommandsSet.Add(newCommand.UICommandElements[i].command);
         newCommand.GetComponentInChildren<Text>().text = commandBuilder.CommandName.text;
         newCommand.CommandName = commandBuilder.CommandName.text;
-        
+        foreach (UICommand com in newCommand.UICommandElements)
+        {
+            if (newCommand.localSaveIndex <= com.localSaveIndex)
+                newCommand.localSaveIndex = com.localSaveIndex + 1;
+        }
         savedCommand = newCommand;
         SerializeToJson(savedCommand);
         cancelRewriting();
         SceneManager.avalaibleCommands.AvailableCommandsSet.Add(savedCommand);
         SceneManager.avalaibleCommands.Names.Add(savedCommand.CommandName);
-
+        
     }
     public void RewriteMode()
     {
@@ -130,13 +134,15 @@ public class BuilderInterface : MonoBehaviour
     public void Execute()
     {
         
-        if(!CheckName(commandBuilder.CommandName))
-            return;
+        //if(!CheckName(commandBuilder.CommandName))
+         //   return;
         ComplexScenario ListToSend = new ComplexScenario();
         ListToSend.Scenario = new List<Command>(commandBuilder.CommandsSet);
-        Debug.Log(JsonUtility.ToJson(ListToSend));
+       
         ListToSend.flag = "0";
         ListToSend.name = commandBuilder.CommandName.text;
+        Debug.Log(ListToSend.name);
+        Debug.Log(JsonUtility.ToJson(ListToSend));
         SceneManager.Net.Sender(JsonUtility.ToJson(ListToSend)) ;
        // File.WriteAllText("C:/Users/virri/Desktop/1.json", JsonUtility.ToJson(ListToSend));
         
@@ -182,7 +188,6 @@ public class BuilderInterface : MonoBehaviour
     {
         System.IO.Directory.CreateDirectory( Application.persistentDataPath + "/" + com.GetComponentInChildren<Text>().text);
         Debug.Log("ss-s-s-s-s-SAVED");
-        com.IndexUp();
         File.WriteAllText(Application.persistentDataPath+"/" +com.GetComponentInChildren<Text>().text+".json", JsonUtility.ToJson(com));
         
         for (int i = 0; i < com.transform.childCount-DefaulChilds; ++i)
