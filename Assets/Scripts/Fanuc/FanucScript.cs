@@ -214,7 +214,7 @@ public class FanucScript : MonoBehaviour
 
     IEnumerator CoordtoServer()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.25f);
         if (mode == 0) SceneManager.Net.Sender(RobotCommands.FanucMoving());
         else SceneManager.Net.Sender(RobotCommands.FanucMoving(false));
         ReadytoSend = true;
@@ -226,8 +226,8 @@ public class FanucScript : MonoBehaviour
     }
     public IEnumerator Move(float[] newCoord)
     {
+        
         semafor += 1;
-        Debug.Log(mode);
         SceneManager.UserControlLock = true;
         Debug.Log(newCoord[0] + " " + newCoord[1] + " " + newCoord[2] + " " +
             newCoord[3] + " " + newCoord[4] + " " + newCoord[5] + " " + mode + "--------------------------------------------------------");
@@ -280,8 +280,12 @@ public class FanucScript : MonoBehaviour
 
             RotateFanuc(Fanuc, jointAngles);
             CoordDisplayAndSave();
-            
-            
+            if (ReadytoSend)
+            {
+                StartCoroutine(CoordtoServer());
+                ReadytoSend = false;
+            }
+
         }
 
         if (NoCollisions)
@@ -346,9 +350,10 @@ public class FanucScript : MonoBehaviour
 
     void FixedUpdate()
     {
+        Debug.Log(semafor);
         if (Input.anyKey && !Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&!SceneManager.ObserverMode&&!SceneManager.UserControlLock&&!inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
         {
-
+            Debug.Log("im in update");   
             for (int i = 0; i < 6; ++i)
             {
                 UpdateCoord(i);
@@ -363,17 +368,17 @@ public class FanucScript : MonoBehaviour
             if (NoCollisions)
             {
                 RotateFanuc(Fanuc, jointAngles);
-                
+
             }
             else StopCoroutine("Move");
 
             if (ReadytoSend)
             {
-                
+
                 StartCoroutine(CoordtoServer());
                 ReadytoSend = false;
             }
-        
+
             NoCollisions = true;
 
             if (mode == 2)
