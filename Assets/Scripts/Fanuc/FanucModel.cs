@@ -166,24 +166,17 @@ public class FanucModel : RoboModel
 
             theta[it, 1] = Mathf.Atan2(sintheta, costheta);
         }
-
-        for (int it = 0; it < numberOfRoots; ++it)
-        {
-            float[] q = {theta[it, 0], theta[it, 1], theta[it, 2], 0f, 0f, 0f};
-            var joints = JointsToQReverse(ref q);
-            theta[it, 0] = joints[0];
-            theta[it, 1] = joints[1];
-            theta[it, 2] = joints[2];
-        }
         
         List<int> ind = new List<int>();
 
         for (int it = 0; it < numberOfRoots; ++it)
         {
             bool isOk = true;
+            float[] q = {theta[it, 0], theta[it, 1], theta[it, 2], 0f, 0f, 0f};
+            var joints = JointsToQReverse(ref q);
             for (int jt = 0; jt < 3; ++jt)
             {
-                if (theta[it, jt] > limMax[jt] * Mathf.Deg2Rad || theta[it, jt] < limMin[jt] * Mathf.Deg2Rad)
+                if (joints[jt] > limMax[jt] * Mathf.Deg2Rad || joints[jt] < limMin[jt] * Mathf.Deg2Rad)
                 {
                     isOk = false;
                 }
@@ -197,7 +190,7 @@ public class FanucModel : RoboModel
 
         if (ind.Count == 0)
         {
-            Debug.Log("POS!!!!!!!!!!!!!!!!!!!!!!");
+            Debug.Log("No solution for positioning task");
             return new float[0, 0];
         }
         //--------------------------------------------------------------
@@ -214,17 +207,15 @@ public class FanucModel : RoboModel
             }
         }
         
-        //Debug.Log("ind.Count = " + ind.Count.ToString());
-        
         for (int it = 0; it < ind.Count; ++it)
         {
 
             float[] q = new float[6];
             Debug.Log("START Q");
-            Debug.Log(string.Format("BEFORE {0}: {1} {2} {3}", it, thetaPrefinal[it, 0] * Mathf.Rad2Deg, thetaPrefinal[it, 1] * Mathf.Rad2Deg, thetaPrefinal[it, 2]  * Mathf.Rad2Deg));
+            Debug.Log(string.Format("BEFORE {0}: {1} {2} {3}", it, thetaPrefinal[it* k, 0] * Mathf.Rad2Deg, thetaPrefinal[it* k, 1] * Mathf.Rad2Deg, thetaPrefinal[it* k, 2]  * Mathf.Rad2Deg));
             q[0] = thetaPrefinal[it * k, 0];
-            q[1] = -thetaPrefinal[it * k, 1] + Mathf.PI / 2;
-            q[2] = thetaPrefinal[it * k, 2] + thetaPrefinal[it * k, 1];
+            q[1] = thetaPrefinal[it * k, 1];
+            q[2] = thetaPrefinal[it * k, 2];
             Debug.Log(string.Format("AFTER {0}: {1} {2} {3}", it, q[0] * Mathf.Rad2Deg, q[1] * Mathf.Rad2Deg, q[2]  * Mathf.Rad2Deg));
             Debug.Log("END Q");
             Matrix4x4 r03 = FanucModel.qi(param[0]._alphaParam, q[0]) * FanucModel.qi(param[1]._alphaParam, q[1]) * FanucModel.qi(param[2]._alphaParam, q[2]);
@@ -311,7 +302,6 @@ public class FanucModel : RoboModel
         }
 
         float[,] thetaFinal = new float[indFinal.Count, 6];
-        //Debug.Log("indFinal.Count = " + indFinal.Count.ToString());
         for (int it = 0; it < indFinal.Count; ++it)
         {
             thetaFinal[it, 0] = thetaPrefinal[indFinal[it], 0] * Mathf.Rad2Deg;
@@ -322,16 +312,6 @@ public class FanucModel : RoboModel
             thetaFinal[it, 5] = thetaPrefinal[indFinal[it], 5] * Mathf.Rad2Deg;
         }
 
-        //System.String str = System.String.Empty;
-        //int k1 = 0;
-        //foreach (float temp in thetaFinal)
-        //{
-        //    str += ((temp).ToString() + " ");
-        //    ++k1;
-        //    if (k1 % 6 == 0) str += "\n";
-        //    //Debug.Log(temp);
-        //}
-        //Debug.Log(str);
         return thetaFinal;
     }
 
