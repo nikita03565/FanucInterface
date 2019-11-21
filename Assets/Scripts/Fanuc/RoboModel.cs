@@ -5,9 +5,12 @@ using System.Text;
 using UnityEngine;
 
 
-public class RoboModel
+public abstract class RoboModel
 {
     protected int N;
+
+    public abstract float[] JointsToQ(ref float[] j);
+    public abstract float[] JointsToQReverse(ref float[] q);
 
     /**
     * \brief Struct of Denavit-Hartenberg parameters.

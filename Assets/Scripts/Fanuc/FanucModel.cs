@@ -10,11 +10,28 @@ public class FanucModel : RoboModel
     public static readonly float[] limMin = new float[] { -170f, -70f, -70f, -200f, -140f, -270f };
     public static readonly float[] limMax = new float[] { 170f, 90f, 200f, 200f, 140f, 270f };
 
-    public static float[] JointsToQ(ref float[] j)
+    public override float[] JointsToQ(ref float[] j)
     {
-        return new float[]{j[0] * Mathf.PI / 180.0f, -j[1] * Mathf.PI / 180.0f + Mathf.PI / 2,
-         (j[1] + j[2]) * Mathf.PI / 180.0f, -j[3] * Mathf.PI / 180.0f,
-          j[4] * Mathf.PI / 180.0f, -j[5] * Mathf.PI / 180.0f };
+        return new float[]{
+            j[0] * Mathf.Deg2Rad,
+           -j[1] * Mathf.Deg2Rad + Mathf.PI / 2,
+           (j[1] + j[2]) * Mathf.Deg2Rad,
+           -j[3] * Mathf.Deg2Rad,
+            j[4] * Mathf.Deg2Rad,
+           -j[5] * Mathf.Deg2Rad 
+           };
+    }
+
+    public override float[] JointsToQReverse(ref float[] q)
+    {
+        return new float[]{
+            q[0] * Mathf.Deg2Rad,
+           -q[1] * Mathf.Deg2Rad + Mathf.PI / 2,
+           (q[2] - (-q[1] + 90f)) * Mathf.Deg2Rad,
+           -q[3] * Mathf.Deg2Rad,
+            q[4] * Mathf.Deg2Rad,
+           -q[5] * Mathf.Deg2Rad 
+           };
 
     }
     
@@ -23,14 +40,14 @@ public class FanucModel : RoboModel
     }
 
     public FanucModel() : base(6, new float[][] {
-    new float[] { 0, 0, 150, Mathf.PI / 2 },
-    new float[] { 0, 0, 790, 0 },
-    new float[] { 0, 0, 250, Mathf.PI / 2 },
-    new float[] { 835, 0, 0, -Mathf.PI / 2 },
-    new float[] { 0, 0, 0, Mathf.PI / 2 },
-    new float[] { 100, 0, 0, 0 },
-    new float[] { 130, Mathf.PI / 2, -90, 0 },
-    new float[] { -190, 0, 0, 0 }
+        new float[] { 0, 0, 150, Mathf.PI / 2 },
+        new float[] { 0, 0, 790, 0 },
+        new float[] { 0, 0, 250, Mathf.PI / 2 },
+        new float[] { 835, 0, 0, -Mathf.PI / 2 },
+        new float[] { 0, 0, 0, Mathf.PI / 2 },
+        new float[] { 100, 0, 0, 0 },
+        new float[] { 130, Mathf.PI / 2, -90, 0 },
+        new float[] { -190, 0, 0, 0 }
     })
     {
     }
@@ -55,7 +72,7 @@ public class FanucModel : RoboModel
         float[] wprAngles = AnglesFromMat(transformMatrix);
 
         return new float[] {transformMatrix[0, 3], transformMatrix[1, 3], transformMatrix[2, 3],
-        wprAngles[0] * 180f / Mathf.PI, wprAngles[1] * 180f / Mathf.PI, wprAngles[2] * 180f / Mathf.PI };
+        wprAngles[0] * Mathf.Rad2Deg, wprAngles[1] * Mathf.Rad2Deg, wprAngles[2] * Mathf.Rad2Deg };
     }
     
     public static Matrix4x4 rotMatrix(float w, float p, float r)
@@ -77,16 +94,7 @@ public class FanucModel : RoboModel
         float w = _w * Mathf.Deg2Rad;
         float p = _p * Mathf.Deg2Rad;
         float r = _r * Mathf.Deg2Rad;
-        Matrix4x4 mx = new Matrix4x4
-            (new Vector4(1f, 0f, 0f, 0f), new Vector4(0f, Mathf.Cos(w), Mathf.Sin(w), 0f),
-             new Vector4(0f, -Mathf.Sin(w), Mathf.Cos(w), 0f), new Vector4(0f, 0f, 0f, 1f));
-        Matrix4x4 my = new Matrix4x4
-            (new Vector4(Mathf.Cos(p), 0f, -Mathf.Sin(p), 0f), new Vector4(0f, 1f, 0, 0f),
-             new Vector4(Mathf.Sin(p), 0f, Mathf.Cos(p), 0f), new Vector4(0f, 0f, 0f, 1f));
-        Matrix4x4 mz = new Matrix4x4
-            (new Vector4(Mathf.Cos(r), Mathf.Sin(r), 0f, 0f), new Vector4(-Mathf.Sin(r), Mathf.Cos(r), 0f, 0f),
-             new Vector4(0f, 0f, 1f, 0f), new Vector4(0f, 0f, 0f, 1f));
-        return mz * my * mx;
+        return FanucModel.rotMatrix(w, p, r);
     }
 
     public static Matrix4x4 coordMatrixDegrees(Vector3 pos, Vector3 rot)
@@ -123,20 +131,28 @@ public class FanucModel : RoboModel
         return result;
     }
 
-    public float[,] InverseTask(ref float[] coordIn)//, ref float[] jointCoordCur)
+    // coords: x y z w p r
+    public float[] CalculateWrist(ref float[] coords)
     {
         var param = KinematicChain;
-
-        Matrix4x4 rot = FanucModel.rotMatrix(coordIn[3] * Mathf.Deg2Rad, coordIn[4] * Mathf.Deg2Rad, coordIn[5] * Mathf.Deg2Rad);
+        Matrix4x4 rot = FanucModel.rotMatrixDegrees(coords[3], coords[4], coords[5]);
         float[] coord = new float[]
         {
-            coordIn[0] - rot[0, 2] * 100.0f,
-            coordIn[1] - rot[1, 2] * 100.0f,
-            coordIn[2] - rot[2, 2] * 100.0f,
-            coordIn[3],
-            coordIn[4],
-            coordIn[5]
+            coords[0] - rot[0, 2] * param[5]._dParam,
+            coords[1] - rot[1, 2] * param[5]._dParam,
+            coords[2] - rot[2, 2] * param[5]._dParam,
+            coords[3],
+            coords[4],
+            coords[5]
         };
+        return coord;
+    }
+
+    // coords: x y z w p r
+    public float[,] InverseTask(ref float[] coordIn)
+    {
+        var param = KinematicChain;
+        float[] coord = this.CalculateWrist(ref coordIn);
 
         float a = 2.0f * param[0]._aParam * coord[0];
         float b = 2.0f * param[0]._aParam * coord[1];
@@ -226,8 +242,12 @@ public class FanucModel : RoboModel
 
         for (int it = 0; it < numberOfRoots; ++it)
         {
+            Debug.Log("START THETA FIRST");
+            Debug.Log(string.Format("BEFORE {0}: {1} {2} {3}", it, theta[it, 0] * Mathf.Rad2Deg, theta[it, 1] * Mathf.Rad2Deg, theta[it, 2]  * Mathf.Rad2Deg));
             theta[it, 1] = -theta[it, 1] + Mathf.PI / 2;
             theta[it, 2] -= theta[it, 1];
+            Debug.Log(string.Format("AFTER {0}: {1} {2} {3}", it, theta[it, 0] * Mathf.Rad2Deg, theta[it, 1] * Mathf.Rad2Deg, theta[it, 2]  * Mathf.Rad2Deg));
+            Debug.Log("END THETA FIRST");
         }
         
         List<int> ind = new List<int>();
@@ -274,10 +294,13 @@ public class FanucModel : RoboModel
         {
 
             float[] q = new float[6];
+            Debug.Log("START Q");
+            Debug.Log(string.Format("BEFORE {0}: {1} {2} {3}", it, thetaPrefinal[it, 0] * Mathf.Rad2Deg, thetaPrefinal[it, 1] * Mathf.Rad2Deg, thetaPrefinal[it, 2]  * Mathf.Rad2Deg));
             q[0] = thetaPrefinal[it * k, 0];
             q[1] = -thetaPrefinal[it * k, 1] + Mathf.PI / 2;
             q[2] = thetaPrefinal[it * k, 2] + thetaPrefinal[it * k, 1];
-            
+            Debug.Log(string.Format("AFTER {0}: {1} {2} {3}", it, q[0] * Mathf.Rad2Deg, q[1] * Mathf.Rad2Deg, q[2]  * Mathf.Rad2Deg));
+            Debug.Log("END Q");
             Matrix4x4 r03 = FanucModel.qi(param[0]._alphaParam, q[0]) * FanucModel.qi(param[1]._alphaParam, q[1]) * FanucModel.qi(param[2]._alphaParam, q[2]);
             Matrix4x4 r36 = r03.inverse * FanucModel.rotMatrix(coord[3] * Mathf.Deg2Rad, coord[4] * Mathf.Deg2Rad, coord[5] * Mathf.Deg2Rad);
 
