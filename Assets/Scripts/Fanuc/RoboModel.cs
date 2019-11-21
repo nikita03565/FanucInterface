@@ -9,6 +9,33 @@ public abstract class RoboModel
 {
     protected int N;
 
+    public float[] _limMin;
+    public float[] _limMax;
+
+    public float[] limMin
+    {
+        get
+        {
+            return _limMin;
+        }
+        set 
+        {
+            _limMin = value;
+        }
+    }
+
+    public float[] limMax
+    {
+        get
+        {
+            return _limMax;
+        }
+        set 
+        {
+            _limMax = value;
+        }
+    }
+
     public abstract float[] JointsToQ(ref float[] j);
     public abstract float[] JointsToQReverse(ref float[] q);
     public abstract float[] CalculateWrist(ref float[] coords);

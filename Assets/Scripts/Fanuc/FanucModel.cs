@@ -7,9 +7,6 @@ using UnityEngine;
 
 public class FanucModel : RoboModel
 {
-    public static readonly float[] limMin = new float[] { -170f, -70f, -70f, -200f, -140f, -270f };
-    public static readonly float[] limMax = new float[] { 170f, 90f, 200f, 200f, 140f, 270f };
-
     public override float[] JointsToQ(ref float[] j)
     {
         return new float[]{
@@ -50,6 +47,8 @@ public class FanucModel : RoboModel
         new float[] { -190, 0, 0, 0 }
     })
     {
+        limMin = new float[] { -170f, -70f, -70f, -200f, -140f, -270f };
+        limMax = new float[] { 170f, 90f, 200f, 200f, 140f, 270f };
     }
 
     public Matrix4x4 fanucForwardTask(ref float[] inputJoints)
@@ -72,6 +71,7 @@ public class FanucModel : RoboModel
             coords[4],
             coords[5]
         };
+        Debug.Log(String.Format("{0} {1} {2} {3} {4} {5}", limMax[0], limMax[1], limMax[2], limMax[3], limMax[4], limMax[5]));
         return coord;
     }
 
@@ -79,7 +79,7 @@ public class FanucModel : RoboModel
     public float[,] InverseTask(ref float[] coordIn)
     {
         var param = KinematicChain;
-        float[] coord = this.CalculateWrist(ref coordIn);
+        float[] coord = CalculateWrist(ref coordIn);
 
         float a = 2.0f * param[0]._aParam * coord[0];
         float b = 2.0f * param[0]._aParam * coord[1];
@@ -264,7 +264,7 @@ public class FanucModel : RoboModel
         }
         
         List<int> indFinal = new List<int>();
-       
+
         for (int it = 0; it < ind.Count * k; ++it)
         {
             bool isOk = true;
@@ -277,7 +277,7 @@ public class FanucModel : RoboModel
             
             for (int jt = 3; jt < 6; ++jt)
             {
-                if (Mathf.Abs(thetaPrefinal[it, jt]) > limMax[jt])
+                if (thetaPrefinal[it, jt] > limMax[jt] || thetaPrefinal[it, jt] < limMin[jt])
                 {
                     isOk = false;
                 }

@@ -176,7 +176,7 @@ public class FanucScript : MonoBehaviour
                         for (int i = 0; i < 6; ++i)
                         {
                             newCoord[i] = float.Parse(arr[i]);
-                            if (newCoord[i] > FanucModel.limMax[i] || newCoord[i] < FanucModel.limMin[i])
+                            if (newCoord[i] > model.limMax[i] || newCoord[i] < model.limMin[i])
                             {
                                 input.text = "Out of limits";
                                 throw new System.Exception();
@@ -358,7 +358,7 @@ public class FanucScript : MonoBehaviour
             {
                 UpdateCoord(i);
                 if (mode == 0)
-                    if (jointAngles[i] + jointAnglesInc[i] > FanucModel.limMin[i] && jointAngles[i] + jointAnglesInc[i] < FanucModel.limMax[i])
+                    if (jointAngles[i] + jointAnglesInc[i] > model.limMin[i] && jointAngles[i] + jointAnglesInc[i] < model.limMax[i])
                         jointAngles[i] += jointAnglesInc[i];
                 if (mode == 2)
                     worldPos[i] += worldPosInc[i];
