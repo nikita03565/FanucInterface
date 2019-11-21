@@ -332,7 +332,7 @@ public class FanucScript : MonoBehaviour
     {
         string outputAngles = "";
         string outputForwardTask = "";
-        worldPos = FanucModel.GetCoordsFromMat(model.fanucForwardTask(ref jointAngles));
+        worldPos = FanucModel.GetCoordsFromMat(model.ForwardTask(jointAngles));
         foreach (float j in jointAngles)
         {
             outputAngles += (j.ToString("0.00") + ", ");

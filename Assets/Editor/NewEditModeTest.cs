@@ -102,7 +102,7 @@ public class NewEditModeTest {
 
     bool compare(int num)
     {
-        var res = FanucModel.GetCoordsFromMat(model.fanucForwardTask(ref coords[num]));
+        var res = FanucModel.GetCoordsFromMat(model.ForwardTask(coords[num]));
         var resInv = model.InverseTask(ref res);
         bool[] f = new bool[resInv.Length/6];
         for (int i = 0; i < resInv.Length / 6; ++i)

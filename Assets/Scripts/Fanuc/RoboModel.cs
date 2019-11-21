@@ -129,8 +129,9 @@ public abstract class RoboModel
     * \param[in] inputq Generalized D-H coordinates.
     * \return Coordinates of end-effector in world frame: x, y, z in mm and w, p, r in radians.
     */
-    protected Matrix4x4 ForwardTask(float[] inputq)
+    public Matrix4x4 ForwardTask(float[] input)
     {
+        float[] inputq = JointsToQ(ref input);
         _kinematicChain[0]._qParam = inputq[0];
         Matrix4x4 transformMatrix = PrevMatTransform(0);
         for (int i = 1; i < inputq.Length; ++i)

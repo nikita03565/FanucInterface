@@ -51,12 +51,6 @@ public class FanucModel : RoboModel
         limMax = new float[] { 170f, 90f, 200f, 200f, 140f, 270f };
     }
 
-    public Matrix4x4 fanucForwardTask(ref float[] inputJoints)
-    {
-        float[] q = JointsToQ(ref inputJoints);
-        return ForwardTask(q);
-    }
-
     // coords: x y z w p r
     public override float[] CalculateWrist(ref float[] coords)
     {
