@@ -25,12 +25,12 @@ public class FanucModel : RoboModel
     public override float[] JointsToQReverse(ref float[] q)
     {
         return new float[]{
-            q[0] * Mathf.Deg2Rad,
-           -q[1] * Mathf.Deg2Rad + Mathf.PI / 2,
-           (q[2] - (-q[1] + 90f)) * Mathf.Deg2Rad,
-           -q[3] * Mathf.Deg2Rad,
-            q[4] * Mathf.Deg2Rad,
-           -q[5] * Mathf.Deg2Rad 
+            q[0],
+           -q[1] + Mathf.PI / 2,
+           (q[2] - (-q[1] + Mathf.PI / 2)),
+           -q[3],
+            q[4],
+           -q[5] 
            };
 
     }
@@ -58,81 +58,8 @@ public class FanucModel : RoboModel
         return ForwardTask(q);
     }
 
-    public static float[] AnglesFromMat(Matrix4x4 p6)
-    {
-        float[] angleVector = new float[3];
-        angleVector[0] = Mathf.Atan2(p6[2, 1], p6[2, 2]);
-        angleVector[1] = Mathf.Atan2(-p6[2, 0], Mathf.Sqrt(p6[2, 1] * p6[2, 1] + p6[2, 2] * p6[2, 2]));
-        angleVector[2] = Mathf.Atan2(p6[1, 0], p6[0, 0]);
-        return angleVector;
-    }
-
-    public static float[] GetCoordsFromMat(Matrix4x4 transformMatrix)
-    {
-        float[] wprAngles = AnglesFromMat(transformMatrix);
-
-        return new float[] {transformMatrix[0, 3], transformMatrix[1, 3], transformMatrix[2, 3],
-        wprAngles[0] * Mathf.Rad2Deg, wprAngles[1] * Mathf.Rad2Deg, wprAngles[2] * Mathf.Rad2Deg };
-    }
-    
-    public static Matrix4x4 rotMatrix(float w, float p, float r)
-    {
-        Matrix4x4 mx = new Matrix4x4
-            (new Vector4(1f, 0f, 0f, 0f), new Vector4(0f, Mathf.Cos(w), Mathf.Sin(w), 0f),
-             new Vector4(0f, -Mathf.Sin(w), Mathf.Cos(w), 0f), new Vector4(0f, 0f, 0f, 1f));
-        Matrix4x4 my = new Matrix4x4
-            (new Vector4(Mathf.Cos(p), 0f, -Mathf.Sin(p), 0f), new Vector4(0f, 1f, 0, 0f),
-             new Vector4(Mathf.Sin(p), 0f , Mathf.Cos(p), 0f), new Vector4(0f, 0f, 0f, 1f));
-        Matrix4x4 mz = new Matrix4x4
-            (new Vector4(Mathf.Cos(r), Mathf.Sin(r), 0f, 0f), new Vector4(-Mathf.Sin(r), Mathf.Cos(r),0f, 0f),
-             new Vector4(0f, 0f, 1f, 0f), new Vector4(0f, 0f, 0f, 1f));
-        return mz * my * mx;
-    }
-
-    public static Matrix4x4 rotMatrixDegrees(float _w, float _p, float _r)
-    {
-        float w = _w * Mathf.Deg2Rad;
-        float p = _p * Mathf.Deg2Rad;
-        float r = _r * Mathf.Deg2Rad;
-        return FanucModel.rotMatrix(w, p, r);
-    }
-
-    public static Matrix4x4 coordMatrixDegrees(Vector3 pos, Vector3 rot)
-    {
-        Matrix4x4 res = rotMatrixDegrees(rot[0], rot[1], rot[2]);
-        res[0, 3] = pos[0];
-        res[1, 3] = pos[1];
-        res[2, 3] = pos[2];
-        res[3, 3] = 1;
-        return res;
-    }
-
-    public static Matrix4x4 qi(float alpha, float q)
-    {
-        Matrix4x4 result = new Matrix4x4();
-        result[0, 0] = Mathf.Cos(q);
-        result[0, 1] = -Mathf.Cos(alpha) * Mathf.Sin(q);
-        result[0, 2] = Mathf.Sin(alpha) * Mathf.Sin(q);
-        result[0, 3] =  0;
-
-        result[1, 0] = Mathf.Sin(q);
-        result[1, 1] = Mathf.Cos(alpha) * Mathf.Cos(q);
-        result[1, 2] = -Mathf.Sin(alpha) * Mathf.Cos(q);
-        result[1, 3] =  0;
-
-        result[2, 0] = 0;
-        result[2, 1] = Mathf.Sin(alpha);
-        result[2, 2] = Mathf.Cos(alpha);
-        result[2, 3] = 0 ;
-
-        result[3, 0] = result[3, 1] = result[3, 2] = 0;
-        result[3, 3] = 1;
-
-        return result;
-    }
-
     // coords: x y z w p r
-    public float[] CalculateWrist(ref float[] coords)
+    public override float[] CalculateWrist(ref float[] coords)
     {
         var param = KinematicChain;
         Matrix4x4 rot = FanucModel.rotMatrixDegrees(coords[3], coords[4], coords[5]);
@@ -198,7 +125,7 @@ public class FanucModel : RoboModel
 
         if (numberOfRoots != 2 && numberOfRoots != 4)
         {
-            Debug.Log("something is wrong with roots of equatation");
+            Debug.Log("something is wrong with roots of equation");
             return new float[0, 0];
         }
 
@@ -242,12 +169,11 @@ public class FanucModel : RoboModel
 
         for (int it = 0; it < numberOfRoots; ++it)
         {
-            Debug.Log("START THETA FIRST");
-            Debug.Log(string.Format("BEFORE {0}: {1} {2} {3}", it, theta[it, 0] * Mathf.Rad2Deg, theta[it, 1] * Mathf.Rad2Deg, theta[it, 2]  * Mathf.Rad2Deg));
-            theta[it, 1] = -theta[it, 1] + Mathf.PI / 2;
-            theta[it, 2] -= theta[it, 1];
-            Debug.Log(string.Format("AFTER {0}: {1} {2} {3}", it, theta[it, 0] * Mathf.Rad2Deg, theta[it, 1] * Mathf.Rad2Deg, theta[it, 2]  * Mathf.Rad2Deg));
-            Debug.Log("END THETA FIRST");
+            float[] q = {theta[it, 0], theta[it, 1], theta[it, 2], 0f, 0f, 0f};
+            var joints = JointsToQReverse(ref q);
+            theta[it, 0] = joints[0];
+            theta[it, 1] = joints[1];
+            theta[it, 2] = joints[2];
         }
         
         List<int> ind = new List<int>();

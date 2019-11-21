@@ -11,6 +11,7 @@ public abstract class RoboModel
 
     public abstract float[] JointsToQ(ref float[] j);
     public abstract float[] JointsToQReverse(ref float[] q);
+    public abstract float[] CalculateWrist(ref float[] coords);
 
     /**
     * \brief Struct of Denavit-Hartenberg parameters.
@@ -135,6 +136,79 @@ public abstract class RoboModel
             transformMatrix = transformMatrix * PrevMatTransform(i);
         }
         return transformMatrix;
+    }
+
+    public static float[] AnglesFromMat(Matrix4x4 p6)
+    {
+        float[] angleVector = new float[3];
+        angleVector[0] = Mathf.Atan2(p6[2, 1], p6[2, 2]);
+        angleVector[1] = Mathf.Atan2(-p6[2, 0], Mathf.Sqrt(p6[2, 1] * p6[2, 1] + p6[2, 2] * p6[2, 2]));
+        angleVector[2] = Mathf.Atan2(p6[1, 0], p6[0, 0]);
+        return angleVector;
+    }
+
+    public static float[] GetCoordsFromMat(Matrix4x4 transformMatrix)
+    {
+        float[] wprAngles = AnglesFromMat(transformMatrix);
+
+        return new float[] {transformMatrix[0, 3], transformMatrix[1, 3], transformMatrix[2, 3],
+        wprAngles[0] * Mathf.Rad2Deg, wprAngles[1] * Mathf.Rad2Deg, wprAngles[2] * Mathf.Rad2Deg };
+    }
+    
+    public static Matrix4x4 rotMatrix(float w, float p, float r)
+    {
+        Matrix4x4 mx = new Matrix4x4
+            (new Vector4(1f, 0f, 0f, 0f), new Vector4(0f, Mathf.Cos(w), Mathf.Sin(w), 0f),
+             new Vector4(0f, -Mathf.Sin(w), Mathf.Cos(w), 0f), new Vector4(0f, 0f, 0f, 1f));
+        Matrix4x4 my = new Matrix4x4
+            (new Vector4(Mathf.Cos(p), 0f, -Mathf.Sin(p), 0f), new Vector4(0f, 1f, 0, 0f),
+             new Vector4(Mathf.Sin(p), 0f , Mathf.Cos(p), 0f), new Vector4(0f, 0f, 0f, 1f));
+        Matrix4x4 mz = new Matrix4x4
+            (new Vector4(Mathf.Cos(r), Mathf.Sin(r), 0f, 0f), new Vector4(-Mathf.Sin(r), Mathf.Cos(r),0f, 0f),
+             new Vector4(0f, 0f, 1f, 0f), new Vector4(0f, 0f, 0f, 1f));
+        return mz * my * mx;
+    }
+
+    public static Matrix4x4 rotMatrixDegrees(float _w, float _p, float _r)
+    {
+        float w = _w * Mathf.Deg2Rad;
+        float p = _p * Mathf.Deg2Rad;
+        float r = _r * Mathf.Deg2Rad;
+        return RoboModel.rotMatrix(w, p, r);
+    }
+
+    public static Matrix4x4 qi(float alpha, float q)
+    {
+        Matrix4x4 result = new Matrix4x4();
+        result[0, 0] = Mathf.Cos(q);
+        result[0, 1] = -Mathf.Cos(alpha) * Mathf.Sin(q);
+        result[0, 2] = Mathf.Sin(alpha) * Mathf.Sin(q);
+        result[0, 3] =  0;
+
+        result[1, 0] = Mathf.Sin(q);
+        result[1, 1] = Mathf.Cos(alpha) * Mathf.Cos(q);
+        result[1, 2] = -Mathf.Sin(alpha) * Mathf.Cos(q);
+        result[1, 3] =  0;
+
+        result[2, 0] = 0;
+        result[2, 1] = Mathf.Sin(alpha);
+        result[2, 2] = Mathf.Cos(alpha);
+        result[2, 3] = 0 ;
+
+        result[3, 0] = result[3, 1] = result[3, 2] = 0;
+        result[3, 3] = 1;
+
+        return result;
+    }
+
+    public static Matrix4x4 coordMatrixDegrees(Vector3 pos, Vector3 rot)
+    {
+        Matrix4x4 res = rotMatrixDegrees(rot[0], rot[1], rot[2]);
+        res[0, 3] = pos[0];
+        res[1, 3] = pos[1];
+        res[2, 3] = pos[2];
+        res[3, 3] = 1;
+        return res;
     }
 }
    
