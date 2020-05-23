@@ -66,9 +66,9 @@ public static class RobotCommands{
     }
     static public string Sensors()
     {
-        string MessageToServer = "{\"flag\":\"0\",\"name\":\"\",\"Scenario\":[{\"parallel\":false,\"name\":\"f\",\"time\":0,\"energy\":0,\"command\":\"f\"}]}";
-
-        return MessageToServer;
+        //string MessageToServer = "{\"flag\":\"0\",\"name\":\"\",\"Scenario\":[{\"parallel\":false,\"name\":\"f\",\"time\":0,\"energy\":0,\"command\":\"f\"}]}";
+        throw new System.NotImplementedException();
+        //return MessageToServer;
     }
 
     static public string TelegaMoving(string coord)

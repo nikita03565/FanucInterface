@@ -8,8 +8,8 @@ public class TelegaManager : MonoBehaviour
 {
     public telegaScript telega;
     raycast rc;
-   // public Text textOnButton;
-    //public GameObject panel;
+    public Text textOnButton;
+    public GameObject panel;
 
     public bool isTelegaMode;
     private new GameObject camera;
@@ -55,8 +55,8 @@ public class TelegaManager : MonoBehaviour
             camera.GetComponent<CameraOrbit>().SwitchMode();
 
             camera.GetComponent<Camera>().orthographic = true;
-            //textOnButton.text = "Normal mode";
-            //panel.transform.position = new Vector3(88, panel.transform.position.y, panel.transform.position.z);
+            textOnButton.text = "Normal mode";
+            panel.transform.position = new Vector3(88, panel.transform.position.y, panel.transform.position.z);
             camera.GetComponent<CameraOrbit>().SwitchMode();
         }
         else
@@ -65,8 +65,8 @@ public class TelegaManager : MonoBehaviour
             SceneManager.UserControlLock = false;
             camera.GetComponent<raycast>().enabled = false;
             camera.GetComponent<Camera>().orthographic = false;
-            //textOnButton.text = "Telega Mode";
-            //panel.transform.position = new Vector3(-100, panel.transform.position.y, panel.transform.position.z);
+            textOnButton.text = "Telega Mode";
+            panel.transform.position = new Vector3(-88, panel.transform.position.y, panel.transform.position.z);
         }
     }
 

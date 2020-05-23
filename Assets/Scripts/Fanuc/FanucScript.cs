@@ -350,10 +350,9 @@ public class FanucScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(semafor);
-        if (Input.anyKey && !Input.GetMouseButton(0)&&!Input.GetMouseButton(1)&&!SceneManager.ObserverMode&&!SceneManager.UserControlLock&&!inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
+        if (Input.anyKey &&!Input.GetMouseButton(1)&&!SceneManager.ObserverMode&&!SceneManager.UserControlLock&&!inputField.isFocused && !InputSpeedField.isFocused && !addPoint.input.isFocused)
         {
-            Debug.Log("im in update");   
+            // Debug.Log("im in update");   
             for (int i = 0; i < 6; ++i)
             {
                 UpdateCoord(i);

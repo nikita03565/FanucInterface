@@ -94,6 +94,7 @@ public class CommandFanucUI : MonoBehaviour
 
     public void OnConfirm()
     {
+        Debug.Log("in confirm");
         var toggle = ModeGroup.GetActive();
         if (toggle.name == "Mode1")
             command.mode = 0;
@@ -121,7 +122,7 @@ public class CommandFanucUI : MonoBehaviour
             if (LockInput(coordField) && (coordField.text.Length != 0))
             {
                 command.command = RobotCommands.FanucMoving(coordField.text, objName);
-                Debug.Log(RobotCommands.FanucMoving(coordField.text, objName));
+                Debug.Log("AAA" + RobotCommands.FanucMoving(coordField.text, objName));
                 ModeGroup.SetActive(0);
                 coordField.text = "";
                 nameField.text = "";
@@ -139,7 +140,7 @@ public class CommandFanucUI : MonoBehaviour
             ModeGroup.SetActive(0);
             coordField.text = "";
             GraspGroup.SetActive(2);
-            DoCommand();
+            //DoCommand();
             this.gameObject.SetActive(false);
             SceneManager.dropdownSceneObjects.gameObject.SetActive(false);
         }

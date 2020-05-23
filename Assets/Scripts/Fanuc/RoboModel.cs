@@ -142,12 +142,28 @@ public abstract class RoboModel
         return transformMatrix;
     }
 
+    public static bool nearlyEqual(float a, float b, float epsilon=0.01f) {
+    float absA = Mathf.Abs(a);
+    float absB = Mathf.Abs(b);
+    float diff = Mathf.Abs(a - b);
+
+    if (a == b) { // shortcut, handles infinities
+        return true;
+    } else if (a == 0 || b == 0 || absA + absB < 0.001f) {
+        // a or b is zero or both are extremely close to it
+        // relative error is less meaningful here
+        return diff < (epsilon * 0.001f);
+    } else { // use relative error
+        return diff / (absA + absB) < epsilon;
+    }
+}
+
     // coords: x y z w p r
     public float[,] InverseTask(ref float[] coordIn)
     {
         var param = KinematicChain;
         float[] coord = CalculateWrist(ref coordIn);
-
+        //Debug.Log("check C: " + coord[0] + " " + coord[1] + ", " + (coord[0] * coord[0] + coord[1] * coord[1] < 0.001f));
         float a = 2.0f * param[0]._aParam * coord[0];
         float b = 2.0f * param[0]._aParam * coord[1];
         float c = 2.0f * param[1]._aParam * param[2]._aParam - 2.0f * param[1]._dParam * param[3]._dParam *
@@ -186,7 +202,9 @@ public abstract class RoboModel
             (e + c) * (e + c) - 4.0f * param[0]._aParam * param[0]._aParam * Mathf.Sin(param[0]._alphaParam) *
             Mathf.Sin(param[0]._alphaParam) *
             (coord[0] * coord[0] + coord[1] * coord[1]);
-
+        float delta1 = a * g - f * b;
+        // param[0]._aParam || Mathf.Sin(param[0]._alphaParam)
+        //Debug.Log("check delta1" + delta1 + ", " + param[0]._aParam + ", " + Mathf.Sin(param[0]._alphaParam));
         float[] x = new float[4];
         int numberOfRoots = Poly34.SolveP4(ref x, s / r, t / r, u / r, v / r);
 
@@ -222,15 +240,16 @@ public abstract class RoboModel
                 Mathf.Sin(theta[it, 2]) + param[2]._dParam * Mathf.Sin(param[1]._alphaParam) + param[3]._dParam *
                 Mathf.Sin(param[2]._alphaParam) * Mathf.Cos(param[1]._alphaParam) * Mathf.Cos(theta[it, 2]) +
                 param[3]._dParam * Mathf.Sin(param[1]._alphaParam) * Mathf.Cos(param[2]._alphaParam);
+            float delta2 = (a11 * a11 + a12 * a12);
             costheta = (a11 * (coord[0] * Mathf.Cos(theta[it, 0]) + coord[1] * Mathf.Sin(theta[it, 0]) - param[0]._aParam)
                 - a12 * (-coord[0] * Mathf.Cos(param[0]._alphaParam) * Mathf.Sin(theta[it, 0]) + coord[1] *
                     Mathf.Cos(param[0]._alphaParam) * Mathf.Cos(theta[it, 0]) + (coord[2] - param[0]._dParam) * Mathf.Sin(param[0]._alphaParam)))
-                / (a11 * a11 + a12 * a12);
+                / delta2;
             sintheta = (a12 * (coord[0] * Mathf.Cos(theta[it, 0]) + coord[1] * Mathf.Sin(theta[it, 0]) - param[0]._aParam) + a11 *
                 (-coord[0] * Mathf.Cos(param[0]._alphaParam) * Mathf.Sin(theta[it, 0]) + coord[1] *
                     Mathf.Cos(param[0]._alphaParam) *
-                    Mathf.Cos(theta[it, 0]) + (coord[2] - param[0]._dParam) * Mathf.Sin(param[0]._alphaParam))) / (a11 * a11 + a12 * a12);
-
+                    Mathf.Cos(theta[it, 0]) + (coord[2] - param[0]._dParam) * Mathf.Sin(param[0]._alphaParam))) / delta2;
+            //Debug.Log("delta2: " + delta2);
             theta[it, 1] = Mathf.Atan2(sintheta, costheta);
         }
         
@@ -278,10 +297,27 @@ public abstract class RoboModel
         {    
             Matrix4x4 r03 = FanucModel.qi(param[0]._alphaParam, thetaPrefinal[it * k, 0]) * FanucModel.qi(param[1]._alphaParam, thetaPrefinal[it * k, 1]) * FanucModel.qi(param[2]._alphaParam, thetaPrefinal[it * k, 2]);
             Matrix4x4 r36 = r03.inverse * FanucModel.rotMatrix(coord[3] * Mathf.Deg2Rad, coord[4] * Mathf.Deg2Rad, coord[5] * Mathf.Deg2Rad);
-
+            Matrix4x4 r06 = FanucModel.rotMatrix(coord[3] * Mathf.Deg2Rad, coord[4] * Mathf.Deg2Rad, coord[5] * Mathf.Deg2Rad);
             float xi = r36[0, 2];
             float y = r36[1, 2];
             float z = r36[2, 2];
+            float xi1 = r06[0, 2];
+            float y1 = r06[1, 2];
+            float z1 = r06[2, 2];
+
+            float xi2 = r03[0, 2];
+            float y2 = r03[1, 2];
+            float z2 = r03[2, 2];
+            Vector3 v1 = new Vector3(xi1, y1, z1);
+            Vector3 v2 = new Vector3(xi2, y2, z2);
+            //Debug.Log("angle " + Vector3.Angle(v1, v2));
+            if (Vector3.Angle(v1, v2) < 3f) {
+                Debug.Log("ALARM SINGULARITY");
+            };
+            // Debug.Log("xi eta zeta: " + xi+" " +y+" "+z+"\n"+
+            // "xi1 eta1 zeta1: " + xi1+" " +y1+" "+z1+"\n"+
+            // "xi2 eta2 zeta2: " + xi2+" " +y2+" "+z2+"\n"
+            // );
 
             float tau1 = (xi * Mathf.Sin(param[3]._alphaParam) + Mathf.Sqrt((xi * xi + y * y) * Mathf.Sin(param[3]._alphaParam) * Mathf.Sin(param[3]._alphaParam)
                 - (Mathf.Cos(param[4]._alphaParam) - z * Mathf.Cos(param[3]._alphaParam)) * (Mathf.Cos(param[4]._alphaParam) - z * Mathf.Cos(param[3]._alphaParam))))

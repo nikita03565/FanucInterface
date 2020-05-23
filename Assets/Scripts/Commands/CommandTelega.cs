@@ -24,9 +24,24 @@ public class CommandTelega : Command
         
     }
 
+    private string Parse(string command) 
+    {
+        var x = command.Split();
+        return x[1] + " "+ x[2];
+    }
+
     public override void GetWindow()
     {
         SceneManager.TelegaSettingsPanel.command = this;
+        if (this.command != "") 
+        {
+            var res = this.Parse(this.command);
+            Debug.Log(res);
+            SceneManager.TelegaSettingsPanel.coordField.text = res;
+        }
+        else {
+            SceneManager.TelegaSettingsPanel.coordField.text = this.command;
+        }
         SceneManager.TelegaSettingsPanel.show();
     }
 

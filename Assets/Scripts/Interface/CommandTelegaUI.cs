@@ -39,9 +39,9 @@ public class CommandTelegaUI : MonoBehaviour
             {
                 var arr = input.text.Split();
 
-                if (arr.Length == 3)
+                if (arr.Length == 2)
                 {
-                    for (int i = 0; i < 3; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         float.Parse(arr[i]);
                     }

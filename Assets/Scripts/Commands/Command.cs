@@ -30,9 +30,33 @@ public  class Command
 
     }
 
+    private string ParseTelega(string command) 
+    {
+        var x = command.Split();
+        return x[1] + " "+ x[2];
+    }
+
+    private string ParseFanuc(string command) 
+    {
+        var x = command.Split();
+        return x[1] + " " + x[2] + " " + x[3] + " " + x[4] + " " + x[5] + " " + x[6];
+    }
+
     public virtual void GetWindow()
     {
-        Debug.Log("WHAAAAT");
+        if (name == "f" && command != "f") {
+            //SceneManager.FanucSettingsPanel.command = this;
+            SceneManager.FanucSettingsPanel.coordField.text = this.ParseFanuc(this.command);
+            SceneManager.FanucSettingsPanel.show();
+        } else if (name == "t") {
+            // SceneManager.TelegaSettingsPanel.command = this;
+            SceneManager.TelegaSettingsPanel.coordField.text = this.ParseTelega(this.command);
+            SceneManager.TelegaSettingsPanel.show();
+        } else {
+            // SceneManager.CameraSettingsPanel.command = this;
+            SceneManager.CameraSettingsPanel.show();
+        }
+        //Debug.Log("WHAAAAT");
     }
 
 

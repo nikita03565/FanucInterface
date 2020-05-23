@@ -17,13 +17,33 @@ public class CommandFanuc : Command
         Command.Copy(this, parent);        
     }
 
-   
-
+   private string Parse(string command) 
+    {
+        var x = command.Split();
+        return x[1] + " " + x[2] + " " + x[3] + " " + x[4] + " " + x[5] + " " + x[6];
+    }
     public override void GetWindow()
     {
         SceneManager.FanucSettingsPanel.command = this;
-        SceneManager.FanucSettingsPanel.show();    
+        if (this.command != "") 
+        {
+            var res = this.Parse(this.command);
+            Debug.Log(res);
+            SceneManager.FanucSettingsPanel.coordField.text = res;
+        }
+        else 
+        {
+            SceneManager.FanucSettingsPanel.coordField.text = this.command;
+        }
+        SceneManager.FanucSettingsPanel.show();
     }
+
+    // public override void GetWindow()
+    // {
+    //     SceneManager.FanucSettingsPanel.command = this;
+    //     SceneManager.FanucSettingsPanel.coordField.text = this.command;
+    //     SceneManager.FanucSettingsPanel.show();    
+    // }
 
     public override void DoCommand()
     {
